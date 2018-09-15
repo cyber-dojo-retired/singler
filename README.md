@@ -22,6 +22,7 @@ API:
 - [GET id?](#get-id)
 - [GET id_completed](#get-id_completed)
 - [GET id_completions](#get-id_completions)
+- [POST ran_tests](#post-ran_tests)
 
 - - - -
 
@@ -115,8 +116,8 @@ Asks whether the practice-session with the given id exists.
 - - - -
 
 ## GET id_completed
-If it exists, returns the 10-digit id which uniquely completes
-the given partial_id, otherwise returns the empty string.
+If it exists, returns the 10-digit pratice-session id which uniquely
+completes the given partial_id, otherwise returns the empty string.
 - parameter, the partial-id to complete, eg
 ```
   { "partial_id": "A551C5" } # must be at least 6 characters long.
@@ -130,7 +131,7 @@ the given partial_id, otherwise returns the empty string.
 - - - -
 
 ## GET id_completions
-Returns all the id's starting with the given outer_id.
+Returns all the practice-session id's starting with the given outer_id.
 - parameter, eg
 ```
   { "outer_id": "A5" } # must be 2 characters long
@@ -147,6 +148,36 @@ Returns all the id's starting with the given outer_id.
 
 - - - -
 
+## POST ran_tests
+In the practice-session with the given id,
+the given visible files were submitted, at the given time,
+which produced the given stdout, stderr, with the given traffic-light colour.
+- parameters, eg
+```
+  {      "id": "A551C528C3",
+      "files": {       "hiker.h" : "ifndef HIKER_INCLUDED\n...",
+                       "hiker.c" : "#include \"hiker.h\"...",
+                 "hiker.tests.c" : "#include <assert.h>\n...",
+                  "instructions" : "Write a program that...",
+                      "makefile" : "CFLAGS += -I. -Wall...",
+                 "cyber-dojo.sh" : "make"
+               }
+        "now": [2016,12,6, 12,31,15],
+     "stdout": "",
+     "stderr": "Assert failed: answer() == 42",
+     "colour": "red"
+  }
+```
+Returns increments, eg
+```
+  { "ran_tests": [
+      {  "event": "created", "time": [2016,12,5, 11,15,18], "number": 0 },
+      { "colour": "red,      "time": [2016,12,6, 12,31,15], "number": 1 }
+    ]
+  }
+```
+
+- - - -
 
 * [Take me to cyber-dojo's home github repo](https://github.com/cyber-dojo/cyber-dojo).
 * [Take me to http://cyber-dojo.org](http://cyber-dojo.org).
