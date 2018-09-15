@@ -7,6 +7,7 @@ alt="cyber-dojo yin/yang logo" width="50px" height="50px"/>
 # cyberdojo/singler docker image
 
 - A docker-containerized micro-service for [cyber-dojo](http://cyber-dojo.org).
+- Stores the visible files, output, and traffic-light status of every test event.
 - Work in progress - not yet used
 
 API:
@@ -17,6 +18,99 @@ API:
 
 - - - -
 
+# [sha](#get-sha)
+# [exists?](#get-exists)
+# [create](#post-create)
+# [manifest](#get-manifest)
+
+- - - -
+
+## GET sha
+Returns the git commit sha used to create the docker image.
+- parameters, none
+```
+  {}
+```
+- returns the sha, eg
+```
+  { "sha": "afe46e4bba4c7c5b630ef7fceda52f29001a10da" }
+```
+
+- - - -
+
+## GET exists?
+Asks whether the practice-session with the given iid exists.
+- parameters, eg
+```
+  { "iid": "15B9AD6C42" }
+```
+- returns true if it does, false if it doesn't, eg
+```
+  { "exists?": true   }
+  { "exists?": false  }
+```
+
+- - - -
+
+## POST create
+Creates a practice-session from the given json manifest.
+- parameter, eg
+```
+    { "manifest": {
+                   "created": [2017,12,15, 11,13,38],
+              "display_name": "C (gcc), assert",
+                "image_name": "cyberdojofoundation/gcc_assert",
+             "visible_files": {        "hiker.h": "#ifndef HIKER_INCLUDED...",
+                                       "hiker.c": "#include \"hiker.h\"...",
+                                "hiker.tests.c" : "#include <assert.h>\n...",
+                                 "instructions" : "Write a program that...",
+                                     "makefile" : "CFLAGS += -I. -Wall...",
+                                "cyber-dojo.sh" : "make"
+                              },
+             "runner_choice": "stateless",
+                  "exercise": "Fizz_Buzz",
+               "max_seconds": 10,
+        "filename_extension": [ ".c", "*.h" ],
+                  "tab_size": 4,
+      }
+    }
+```
+- returns the id of the kata created from the given manifest, eg
+```
+  { "create": "A551C528C3"
+  }
+```
+
+- - - -
+
+## GET manifest
+Returns the manifest used to create the practice-session with the given iid.
+- parameter, eg
+```
+  { "iid": "A551C528C3" }
+```
+- returns, eg
+```
+    { "manifest": {
+                        "id": "A551C528C3",
+                   "created": [2017,12,15, 11,13,38],
+              "display_name": "C (gcc), assert",
+                "image_name": "cyberdojofoundation/gcc_assert",
+             "visible_files": {       "hiker.h" : "ifndef HIKER_INCLUDED\n...",
+                                      "hiker.c" : "#include \"hiker.h\"...",
+                                "hiker.tests.c" : "#include <assert.h>\n...",
+                                 "instructions" : "Write a program that...",
+                                     "makefile" : "CFLAGS += -I. -Wall...",
+                                "cyber-dojo.sh" : "make"
+                              },
+             "runner_choice": "stateless",
+                  "exercise": "Fizz_Buzz",
+               "max_seconds": 10,
+        "filename_extension": [ ".c", "*.h" ],
+                  "tab_size": 4
+      }
+    }
+```
 
 - - - -
 
