@@ -30,3 +30,20 @@ services:
     read_only: true
     tmpfs: /tmp
     restart: 'no'
+    volumes:
+      - /tmp:/persistent-dir
+    depends_on:
+      - starter
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # starter is handy in tests for creating kata-manifests
+
+  starter:
+    user: nobody
+    image: cyberdojo/starter
+    init: true
+    container_name: test-singler-starter-server
+    read_only: true
+    tmpfs: /tmp
+    volumes:
+      - ./start_points:/app/start_points:ro
