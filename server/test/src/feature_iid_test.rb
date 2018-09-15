@@ -14,7 +14,7 @@ class IidTest < TestBase
     generated = iid
     assert Base58.string?(generated), "Base58.string?(#{generated})"
     assert_equal 10, iid.size
-    #refute exists?(generated)
+    refute exists?(generated)
   end
 
 end

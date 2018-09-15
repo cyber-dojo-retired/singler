@@ -30,7 +30,7 @@ class ExternalStdoutLoggerTest < TestBase
   end
 
   def logger
-    externas.logger
+    externals.logger
   end
 
 end

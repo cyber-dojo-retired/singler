@@ -18,11 +18,11 @@ class ExternalIidGenerator
   private
 
   def singler
-    #@externals.singler
+    @externals.singler
   end
 
   def valid?(iid)
-    #!singler.exists?(iid) &&
+    !singler.exists?(iid) &&
       !iid.include?('L') &&
         !iid.include?('l')
   end

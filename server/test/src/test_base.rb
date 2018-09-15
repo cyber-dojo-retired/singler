@@ -17,6 +17,10 @@ class TestBase < HexMiniTest
     singler.iid
   end
 
+  def exists?(iid)
+    singler.exists?(iid)
+  end
+
   private
 
   def singler
