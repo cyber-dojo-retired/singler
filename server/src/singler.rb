@@ -14,12 +14,6 @@ class Singler
 
   # - - - - - - - - - - - - - - - - - - -
 
-  def exists?(id)
-    id_dir(id).exists?
-  end
-
-  # - - - - - - - - - - - - - - - - - - -
-
   def create(manifest)
     # Generates an id, puts it in the manifest,
     # saves the manifest, and returns the id.
@@ -66,6 +60,12 @@ class Singler
 
   # - - - - - - - - - - - - - - - - - - -
 
+  def id?(id)
+    id_dir(id).exists?
+  end
+
+  # - - - - - - - - - - - - - - - - - - -
+
   def id_completions(outer_id)
     # for Batch-Method iteration over large number of pratice-sessions...
     unless disk[dir_join(path, outer_id)].exists?
@@ -83,7 +83,7 @@ class Singler
   end
 
   def assert_id_exists(id)
-    unless exists?(id)
+    unless id?(id)
       invalid('id')
     end
   end

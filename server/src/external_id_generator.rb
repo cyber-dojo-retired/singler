@@ -22,7 +22,7 @@ class ExternalIdGenerator
   end
 
   def valid?(id)
-    !singler.exists?(id) &&
+    !singler.id?(id) &&
       !id.include?('L') &&
         !id.include?('l')
   end

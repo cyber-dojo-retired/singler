@@ -7,7 +7,19 @@ class ExistsTest < TestBase
     '97431'
   end
 
-  # - - - - - - - - - - - - - - - - -
+  def hex_setup
+    @real_id_generator = externals.id_generator
+    @stub_id_generator = IdGeneratorStub.new
+    externals.id_generator = @stub_id_generator
+  end
+
+  def hex_teardown
+    externals.id_generator = @real_id_generator
+  end
+
+  attr_reader :stub_id_generator
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - -
   # sha
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -23,24 +35,13 @@ class ExistsTest < TestBase
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '218',
-  'singler.path is set but there is no volume-mount so its emphemeral' do
+  'singler.path is set but in test there is no volume-mount so its emphemeral' do
     assert_equal '/persistent-dir/ids', singler.path
   end
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # exists?(id) create(manifest) manifest(id)
+  # create(manifest) manifest(id)
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test '42B',
-  'exists? is false before creation' do
-    refute exists?('123456789A')
-  end
-
-  test '42C',
-  'exists? is true after creation' do
-    id = create(create_manifest)
-    assert exists?(id)
-  end
 
   test '42D',
   'manifest raises when id does not exist' do
@@ -52,37 +53,50 @@ class ExistsTest < TestBase
 
   test '42E',
   'manifest round-trip' do
+    stub_id = '0ADDE7572A'
+    stub_id_generator.stub(stub_id)
     expected = create_manifest
     id = create(expected)
+    assert_equal stub_id, id
     expected['id'] = id
     actual = manifest(id)
     assert_equal expected, actual
   end
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # id_completed(partial_id), id_completions(outer_id)
+  # id?(id), id_completed(partial_id), id_completions(outer_id)
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  test '393',
-  'id_completed returns empty-string when no completion' do
-    partial_id = '28EEC2'
-    assert_equal '', id_completed(partial_id)
+  test '392',
+  'id? is false before creation, true after creation' do
+    stub_id = '50C8C661CD'
+    stub_id_generator.stub(stub_id)
+    refute id?(stub_id)
+    create(create_manifest)
+    assert id?(stub_id)
   end
 
-  test '394',
+  test '393',
   'id_completed returns id when unique completion' do
+    stub_id = 'E4ABB48CA4'
+    stub_id_generator.stub(stub_id)
     id = create(create_manifest)
     partial_id = id[0...6]
     assert_equal id, id_completed(partial_id)
   end
 
+  test '394',
+  'id_completed return empty-string when no completion' do
+    partial_id = 'AC9A0215C9'
+    assert_equal '', id_completed(partial_id)
+  end
+
   test '395',
   'id_completed returns empty-string when no unique completion' do
-    externals.id_generator = IdGeneratorStub.new
     stub_id = '9504E6559'
     id0 = stub_id + '0'
     id1 = stub_id + '1'
-    externals.id_generator.stub(id0, id1)
+    stub_id_generator.stub(id0, id1)
     manifest = create_manifest
     id = create(manifest)
     assert_equal id0, id
@@ -100,6 +114,8 @@ class ExistsTest < TestBase
 
   test '397',
   'id_completions when a single completion' do
+    stub_id = '7CA8A87A2B'
+    stub_id_generator.stub(stub_id)
     id = create(create_manifest)
     outer_id = id[0...2]
     assert_equal [id], id_completions(outer_id)
@@ -107,11 +123,10 @@ class ExistsTest < TestBase
 
   test '398',
   'id_completions when two completions' do
-    externals.id_generator = IdGeneratorStub.new
     outer_id = '22'
     id0 = outer_id + '0' + '3D2DF43'
     id1 = outer_id + '1' + '3D2DF43'
-    externals.id_generator.stub(id0, id1)
+    stub_id_generator.stub(id0, id1)
     manifest = create_manifest
     id = create(manifest)
     assert_equal id0, id

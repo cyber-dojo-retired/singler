@@ -14,16 +14,16 @@ class TestBase < HexMiniTest
     singler.sha
   end
 
-  def exists?(iid)
-    singler.exists?(iid)
-  end
-
   def create(manifest)
     singler.create(manifest)
   end
 
-  def manifest(iid)
-    singler.manifest(iid)
+  def manifest(id)
+    singler.manifest(id)
+  end
+
+  def id?(id)
+    singler.id?(id)
   end
 
   def id_completed(partial_id)

@@ -17,9 +17,9 @@ API:
     * If the method raises an exception, the key equals "exception".
 
 - [GET sha](#get-sha)
-- [GET exists?](#get-exists)
 - [GET manifest](#get-manifest)
 - [POST create](#post-create)
+- [GET id?](#get-id)
 - [GET id_completed](#get-id_completed)
 - [GET id_completions](#get-id_completions)
 
@@ -34,20 +34,6 @@ Returns the git commit sha used to create the docker image.
 - returns the sha, eg
 ```
   { "sha": "afe46e4bba4c7c5b630ef7fceda52f29001a10da" }
-```
-
-- - - -
-
-## GET exists?
-Asks whether the practice-session with the given id exists.
-- parameters, eg
-```
-  { "id": "15B9AD6C42" }
-```
-- returns true if it does, false if it doesn't, eg
-```
-  { "exists?": true   }
-  { "exists?": false  }
 ```
 
 - - - -
@@ -110,6 +96,20 @@ Returns the manifest used to create the practice-session with the given id.
                   "tab_size": 4
       }
     }
+```
+
+- - - -
+
+## GET id?
+Asks whether the practice-session with the given id exists.
+- parameters, eg
+```
+  { "id": "15B9AD6C42" }
+```
+- returns true if it does, false if it doesn't, eg
+```
+  { "id?": true   }
+  { "id?": false  }
 ```
 
 - - - -

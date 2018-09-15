@@ -34,7 +34,7 @@ class RackDispatcher
     @well_formed_args = WellFormedArgs.new(request.body.read)
     args = case name
       when /^sha$/                  then []
-      when /^exists$/,
+      when /^id$/,
            /^manifest$/             then [id]
       when /^create$/               then [manifest]
       when /^id_completed$/         then [partial_id]
@@ -72,7 +72,7 @@ class RackDispatcher
   # - - - - - - - - - - - - - - - -
 
   def query?(name)
-    name == 'exists'
+    name == 'id'
   end
 
 end
