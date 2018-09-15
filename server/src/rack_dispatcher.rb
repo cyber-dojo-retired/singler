@@ -34,7 +34,8 @@ class RackDispatcher
     @well_formed_args = WellFormedArgs.new(request.body.read)
     args = case name
       when /^sha$/                  then []
-      when /^exists$/               then [iid]
+      when /^exists$/,
+           /^manifest$/             then [iid]
       when /^create$/               then [manifest]
       else
         raise ClientError, 'json:malformed'

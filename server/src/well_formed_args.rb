@@ -44,6 +44,14 @@ class WellFormedArgs
     arg
   end
 
+  # - - - - - - - - - - - - - - - -
+
+  def iid
+    @arg_name = __method__.to_s
+    malformed unless Base58.string?(arg) && arg.length == 10
+    arg
+  end
+
   private # = = = = = = = = = = = =
 
   attr_reader :args, :arg_name

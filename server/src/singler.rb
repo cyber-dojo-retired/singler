@@ -32,10 +32,23 @@ class Singler
     iid
   end
 
+  def manifest(iid)
+    assert_iid_exists(iid)
+    dir = iid_dir(iid)
+    json = dir.read(manifest_filename)
+    JSON.parse(json)
+  end
+
   private
 
   def iid_generator
     @externals.iid_generator
+  end
+
+  def assert_iid_exists(iid)
+    unless exists?(iid)
+      invalid('iid')
+    end
   end
 
   def iid_dir(iid)
@@ -66,6 +79,10 @@ class Singler
 
   def dir_join(*args)
     File.join(*args)
+  end
+
+  def invalid(name)
+    fail ArgumentError.new("#{name}:invalid")
   end
 
   def disk

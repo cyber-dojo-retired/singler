@@ -27,18 +27,37 @@ class ExistsTest < TestBase
   end
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # exists?
+  # exists?(iid) create(manifest) manifest(iid)
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  test '42E',
+  test '42B',
   'exists? is false before creation' do
     refute exists?('123456789A')
   end
 
-  test '42F',
+  test '42C',
   'exists? is true after creation' do
     iid = create(create_manifest)
     assert exists?(iid)
   end
+
+  test '42D',
+  'manifest raises when iid does not exist' do
+    error = assert_raises(ArgumentError) {
+      manifest('B4AB376BE2')
+    }
+    assert_equal 'iid:invalid', error.message
+  end
+
+  test '42E',
+  'manifest round-trip' do
+    expected = create_manifest
+    iid = create(create_manifest)
+    expected['id'] = iid
+    actual = manifest(iid)
+    assert_equal expected, actual
+  end
+
+
 
 end

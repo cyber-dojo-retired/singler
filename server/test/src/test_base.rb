@@ -22,13 +22,17 @@ class TestBase < HexMiniTest
     singler.create(manifest)
   end
 
+  def manifest(iid)
+    singler.manifest(iid)
+  end
+
   #- - - - - - - - - - - - - - -
 
   def create_manifest(visible_files = nil)
     manifest = starter.language_manifest('C (gcc), assert', 'Fizz_Buzz')
-    unless visible_files.nil?
-      manifest['visible_files'] = visible_files
-    end
+    #unless visible_files.nil?
+    #  manifest['visible_files'] = visible_files
+    #end
     manifest['created'] = creation_time
     manifest
   end
