@@ -18,7 +18,7 @@ class IidGenerator
   private
 
   def singler
-    @externals.singler
+    #@externals.singler
   end
 
   def valid?(iid)
