@@ -16,12 +16,10 @@ API:
     * If the method completes, the key equals the method's name.
     * If the method raises an exception, the key equals "exception".
 
-- - - -
-
-# [sha](#get-sha)
-# [exists?](#get-exists)
-# [create](#post-create)
-# [manifest](#get-manifest)
+- [GET sha](#get-sha)
+- [GET exists?](#get-exists)
+- [GET manifest](#get-manifest)
+- [POST create](#post-create)
 
 - - - -
 
