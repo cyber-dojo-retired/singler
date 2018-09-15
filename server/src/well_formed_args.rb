@@ -76,8 +76,54 @@ class WellFormedArgs
 
   # - - - - - - - - - - - - - - - -
 
+  def files
+    @arg_name = __method__.to_s
+    malformed unless arg.is_a?(Hash)
+    arg.each do |key,value|
+      malformed unless key.is_a?(String)
+      malformed unless value.is_a?(String)
+    end
+    arg
+  end
 
+  # - - - - - - - - - - - - - - - -
 
+  def now
+    @arg_name = __method__.to_s
+    malformed unless arg.is_a?(Array)
+    malformed unless arg.length == 6
+    malformed unless arg.all?{ |n| n.is_a?(Integer) }
+    Time.mktime(*arg)
+    arg
+  rescue ArgumentError
+    malformed
+  end
+
+  # - - - - - - - - - - - - - - - -
+
+  def stdout
+    @arg_name = __method__.to_s
+    malformed unless arg.is_a?(String)
+    arg
+  end
+
+  # - - - - - - - - - - - - - - - -
+
+  def stderr
+    @arg_name = __method__.to_s
+    malformed unless arg.is_a?(String)
+    arg
+  end
+
+  # - - - - - - - - - - - - - - - -
+
+  def colour
+    @arg_name = __method__.to_s
+    unless ['red','amber','green','timed_out'].include?(arg)
+      malformed
+    end
+    arg
+  end
 
   private # = = = = = = = = = = = =
 

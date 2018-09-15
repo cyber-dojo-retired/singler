@@ -172,6 +172,147 @@ class WellFormedArgsTest < TestBase
     ]
   end
 
+  # - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # files
+  # - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  test '846',
+  'files does not raise when well-formed' do
+    files = { 'cyber-dojo.sh' => 'make' }
+    json = { files:files }.to_json
+    assert_equal files, WellFormedArgs.new(json).files
+  end
+
+  test '847',
+  'files raises when malformed' do
+    expected = 'files:malformed'
+    malformed_files.each do |malformed|
+      json = { files:malformed }.to_json
+      wfa = WellFormedArgs.new(json)
+      error = assert_raises { wfa.files }
+      assert_equal expected, error.message, malformed
+    end
+  end
+
+  def malformed_files
+    [
+      [],              # ! Hash
+      { "x" => 42 },   # content ! String
+      { "y" => true }, # content ! String
+      { "z" => nil },  # content ! String
+    ]
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # now
+  # - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  test 'FF4',
+  'now does not raise when well-formed' do
+    now = [2018,3,28, 19,18,45]
+    json = { now:now }.to_json
+    assert_equal now, WellFormedArgs.new(json).now
+  end
+
+  test 'FF5',
+  'now raises when malformed' do
+    expected = 'now:malformed'
+    malformed_nows.each do |malformed|
+      json = { now:malformed }.to_json
+      wfa = WellFormedArgs.new(json)
+      error = assert_raises { wfa.now }
+      assert_equal expected, error.message, malformed
+    end
+  end
+
+  def malformed_nows
+    [
+      [], {}, nil, true, 42,
+      [2018,-3,28, 19,18,45],
+      [2018,3,28, 19,18]
+    ]
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # stdout
+  # - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  test 'E35',
+  'stdout does not raise when well-formed' do
+    stdout = 'gsdfg'
+    json = { stdout:stdout }.to_json
+    assert_equal stdout, WellFormedArgs.new(json).stdout
+  end
+
+  test 'E36',
+  'stdout raises when malformed' do
+    expected = 'stdout:malformed'
+    malformed_stdouts.each do |malformed|
+      json = { stdout:malformed }.to_json
+      wfa = WellFormedArgs.new(json)
+      error = assert_raises { wfa.stdout }
+      assert_equal expected, error.message, malformed
+    end
+  end
+
+  def malformed_stdouts
+    [ nil, true, [1], {} ] # ! String
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # stderr
+  # - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  test '8DB',
+  'stderr does not raise when well-formed' do
+    stderr = 'ponoi'
+    json = { stderr:stderr }.to_json
+    assert_equal stderr, WellFormedArgs.new(json).stderr
+  end
+
+  test '8DC',
+  'stderr raises when malformed' do
+    expected = 'stderr:malformed'
+    malformed_stderrs.each do |malformed|
+      json = { stderr:malformed }.to_json
+      wfa = WellFormedArgs.new(json)
+      error = assert_raises { wfa.stderr }
+      assert_equal expected, error.message, malformed
+    end
+  end
+
+  def malformed_stderrs
+    [ nil, true, [1], {} ] # ! String
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # colour
+  # - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  test '041',
+  'colour does not raise when well-formed' do
+    colours = [ 'red', 'amber', 'green', 'timed_out' ]
+    colours.each do |colour|
+      json = { colour:colour }.to_json
+      assert_equal colour, WellFormedArgs.new(json).colour
+    end
+  end
+
+  test '042',
+  'colour raises when malformed' do
+    expected = 'colour:malformed'
+    malformed_colours.each do |malformed|
+      json = { colour:malformed }.to_json
+      wfa = WellFormedArgs.new(json)
+      error = assert_raises { wfa.colour }
+      assert_equal expected, error.message, malformed
+    end
+  end
+
+  def malformed_colours
+    [ nil, true, {}, [], 'RED' ]
+  end
+
 =begin
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -247,147 +388,6 @@ class WellFormedArgsTest < TestBase
       error = assert_raises { wfa.now_tag }
       assert_equal expected, error.message, malformed
     end
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # stdout
-  # - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test 'E35',
-  'stdout does not raise when well-formed' do
-    stdout = 'gsdfg'
-    json = { stdout:stdout }.to_json
-    assert_equal stdout, WellFormedArgs.new(json).stdout
-  end
-
-  test 'E36',
-  'stdout raises when malformed' do
-    expected = 'stdout:malformed'
-    malformed_stdouts.each do |malformed|
-      json = { stdout:malformed }.to_json
-      wfa = WellFormedArgs.new(json)
-      error = assert_raises { wfa.stdout }
-      assert_equal expected, error.message, malformed
-    end
-  end
-
-  def malformed_stdouts
-    [ nil, true, [1], {} ] # ! String
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # stderr
-  # - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test '8DB',
-  'stderr does not raise when well-formed' do
-    stderr = 'ponoi'
-    json = { stderr:stderr }.to_json
-    assert_equal stderr, WellFormedArgs.new(json).stderr
-  end
-
-  test '8DC',
-  'stderr raises when malformed' do
-    expected = 'stderr:malformed'
-    malformed_stderrs.each do |malformed|
-      json = { stderr:malformed }.to_json
-      wfa = WellFormedArgs.new(json)
-      error = assert_raises { wfa.stderr }
-      assert_equal expected, error.message, malformed
-    end
-  end
-
-  def malformed_stderrs
-    [ nil, true, [1], {} ] # ! String
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # files
-  # - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test '846',
-  'files does not raise when well-formed' do
-    files = {'cyber-dojo.sh' => 'make' }
-    json = { files:files }.to_json
-    assert_equal files, WellFormedArgs.new(json).files
-  end
-
-  test '847',
-  'files raises when malformed' do
-    expected = 'files:malformed'
-    malformed_files.each do |malformed|
-      json = { files:malformed }.to_json
-      wfa = WellFormedArgs.new(json)
-      error = assert_raises { wfa.files }
-      assert_equal expected, error.message, malformed
-    end
-  end
-
-  def malformed_files
-    [
-      [],              # ! Hash
-      { "x" => 42 },   # content ! String
-      { "y" => true }, # content ! String
-      { "z" => nil },  # content ! String
-    ]
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # colour
-  # - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test '041',
-  'colour does not raise when well-formed' do
-    colours = [ 'red', 'amber', 'green', 'timed_out' ]
-    colours.each do |colour|
-      json = { colour:colour }.to_json
-      assert_equal colour, WellFormedArgs.new(json).colour
-    end
-  end
-
-  test '042',
-  'colour raises when malformed' do
-    expected = 'colour:malformed'
-    malformed_colours.each do |malformed|
-      json = { colour:malformed }.to_json
-      wfa = WellFormedArgs.new(json)
-      error = assert_raises { wfa.colour }
-      assert_equal expected, error.message, malformed
-    end
-  end
-
-  def malformed_colours
-    [ nil, true, {}, [], 'RED' ]
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # now
-  # - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test 'FF4',
-  'now does not raise when well-formed' do
-    now = [2018,3,28, 19,18,45]
-    json = { now:now }.to_json
-    assert_equal now, WellFormedArgs.new(json).now
-  end
-
-  test 'FF5',
-  'now raises when malformed' do
-    expected = 'now:malformed'
-    malformed_nows.each do |malformed|
-      json = { now:malformed }.to_json
-      wfa = WellFormedArgs.new(json)
-      error = assert_raises { wfa.now }
-      assert_equal expected, error.message, malformed
-    end
-  end
-
-  def malformed_nows
-    [
-      [], {}, nil, true, 42,
-      [2018,-3,28, 19,18,45],
-      [2018,3,28, 19,18]
-    ]
   end
 =end
 

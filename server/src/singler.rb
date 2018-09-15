@@ -76,6 +76,23 @@ class Singler
     }
   end
 
+  # - - - - - - - - - - - - - - - - - - -
+
+  def ran_tests(id, files, now, stdout, stderr, colour)
+    assert_id_exists(id)
+    increments = read_increments(id)
+    tag = most_recent_tag(id, increments) + 1
+    increments << { 'colour' => colour, 'time' => now, 'number' => tag }
+    write_increments(id, increments)
+    # don't alter caller's files argument
+    files = files.clone
+    files['output'] = stdout + stderr
+    write_tag_files(id, tag, files)
+    increments
+  end
+
+  # - - - - - - - - - - - - - - - - - - -
+
   private
 
   def id_generator
@@ -110,6 +127,57 @@ class Singler
     # A manifest stores the meta information such as
     # such as the chosen language, chosen tests framework.
     'manifest.json'
+  end
+
+  # - - - - - - - - - - - - - -
+
+  def write_increments(id, increments)
+    json = JSON.unparse(increments)
+    dir = id_dir(id)
+    dir.write(increments_filename, json)
+  end
+
+  def read_increments(id)
+    # increments holds a cache of colours
+    # and time-stamps for all the [test]s.
+    # Helps optimize dashboard traffic-lights views.
+    # Not saving tag0 in increments.json
+    # to maintain compatibility with old git-format
+    dir = id_dir(id)
+    json = dir.read(increments_filename)
+    JSON.parse(json)
+  end
+
+  def increments_filename
+    'increments.json'
+  end
+
+  # - - - - - - - - - - - - - -
+
+  def write_tag_files(id, tag, files)
+    json = JSON.unparse(files)
+    dir = tag_dir(id, tag)
+    dir.make
+    dir.write(manifest_filename, json)
+  end
+
+  def read_tag_files(id, tag)
+    dir = tag_dir(id, tag)
+    json = dir.read(manifest_filename)
+    JSON.parse(json)
+  end
+
+  def most_recent_tag(id, increments = nil)
+    increments ||= read_increments(id)
+    increments.size
+  end
+
+  def tag_dir(id, tag)
+    disk[tag_path(id, tag)]
+  end
+
+  def tag_path(id, tag)
+    dir_join(id_path(id), tag.to_s)
   end
 
   # - - - - - - - - - - - - - -
