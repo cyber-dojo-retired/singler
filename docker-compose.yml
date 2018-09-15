@@ -1,0 +1,32 @@
+
+version: '2.2'
+
+services:
+
+  singler_client:
+    build:
+      context: client
+    user: nobody
+    image: cyberdojo/singler-client
+    init: true
+    container_name: test-singler-client
+    read_only: true
+    tmpfs: /tmp
+    restart: 'no'
+    depends_on:
+      - singler
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  singler:
+    build:
+      context: server
+      args:
+        - SHA
+    user: nobody #singler
+    image: cyberdojo/singler
+    init: true
+    container_name: test-singler-server
+    read_only: true
+    tmpfs: /tmp
+    restart: 'no'
