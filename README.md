@@ -117,7 +117,7 @@ Returns the manifest used to create the practice-session with the given id.
 ## GET id_completed
 If it exists, returns the 10-digit id which uniquely completes
 the given partial_id, otherwise returns the empty string.
-- parameter, the 6-digit partial-id to complete, eg
+- parameter, the partial-id to complete, eg
 ```
   { "partial_id": "A551C5" } # must be at least 6 characters long.
 ```
@@ -130,10 +130,10 @@ the given partial_id, otherwise returns the empty string.
 - - - -
 
 ## GET id_completions
-Returns all the id's starting with the given 2-digit long outer_id.
+Returns all the id's starting with the given outer_id.
 - parameter, eg
 ```
-  { "outer_id": "A5" }
+  { "outer_id": "A5" } # must be 2 characters long
 ```
 - returns, eg
 ```

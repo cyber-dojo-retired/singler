@@ -15,6 +15,8 @@ cd ${MY_DIR}/src
 readonly FILES=(*_test.rb)
 readonly ARGS=(${*})
 
+rm -rf /persistent-dir/ids/*
+
 ruby -e "([ '../coverage.rb' ] + %w(${FILES[*]})).each{ |file| require './'+file }" \
   -- ${ARGS[@]} | tee ${TEST_LOG}
 
