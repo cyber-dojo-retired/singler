@@ -4,6 +4,10 @@ require_relative '../../src/externals'
 
 class TestBase < HexMiniTest
 
+  def sha
+    singler.sha
+  end
+
   def iid
     singler.iid
   end

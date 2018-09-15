@@ -5,6 +5,10 @@ class Singler
     @externals = externals
   end
 
+  def sha
+    IO.read('/app/sha.txt').strip
+  end
+
   def iid
     iid_generator.generate
   end
