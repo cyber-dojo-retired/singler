@@ -1,8 +1,13 @@
 require_relative 'hex_mini_test'
 require_relative '../../src/externals'
-#require 'json'
 
 class TestBase < HexMiniTest
+
+  def externals
+    @externals ||= Externals.new
+  end
+
+  #- - - - - - - - - - - - - - -
 
   def sha
     singler.sha
@@ -14,6 +19,8 @@ class TestBase < HexMiniTest
 
   private
 
-  include Externals
+  def singler
+    externals.singler
+  end
 
 end

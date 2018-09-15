@@ -1,14 +1,16 @@
 require_relative 'client_error'
-require_relative 'externals'
-require_relative 'singler'
 require_relative 'well_formed_args'
 require 'json'
-require 'rack'
 
 class RackDispatcher
 
+  def initialize(singler, request)
+    @singler = singler
+    @request = request
+  end
+
   def call(env)
-    request = Rack::Request.new(env)
+    request = @request.new(env)
     name, args = validated_name_args(request)
     result = singler.public_send(name, *args)
     json_response(200, { name => result })
@@ -51,8 +53,6 @@ class RackDispatcher
   def status(error)
     error.is_a?(ClientError) ? 400 : 500
   end
-
-  include Externals
 
   def self.well_formed_args(*names)
     names.each do |name|

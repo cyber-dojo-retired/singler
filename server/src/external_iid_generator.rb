@@ -1,6 +1,6 @@
 require_relative 'base58'
 
-class IidGenerator
+class ExternalIidGenerator
 
   def initialize(externals)
     @externals = externals

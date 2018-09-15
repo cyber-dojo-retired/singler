@@ -1,14 +1,32 @@
-require_relative 'iid_generator'
 require_relative 'singler'
+require_relative 'external_bash_sheller'
+require_relative 'external_disk_writer'
+require_relative 'external_iid_generator'
+require_relative 'external_stdout_logger'
 
-module Externals # mix-in
+class Externals
 
   def singler
     @singler ||= Singler.new(self)
   end
 
   def iid_generator
-    @generator ||= IidGenerator.new(self)
+    @generator ||= ExternalIidGenerator.new(self)
+  end
+
+  def logger
+    @logger ||= ExternalStdoutLogger.new(self)
+  end
+  def logger=(arg)
+    @logger = arg
+  end
+
+  def shell
+    @shell ||= ExternalBashSheller.new(self)
+  end
+
+  def disk
+    @disk ||= ExternalDiskWriter.new(self)
   end
 
 end

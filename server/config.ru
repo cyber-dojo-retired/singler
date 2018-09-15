@@ -1,3 +1,5 @@
-require_relative './src/rack_dispatcher'
+require_relative 'src/externals'
+require_relative 'src/rack_dispatcher'
 
-run RackDispatcher.new
+externals = Externals.new
+run RackDispatcher.new(externals.singler, Rack::Request)
