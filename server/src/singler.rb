@@ -12,9 +12,13 @@ class Singler
     IO.read('/app/sha.txt').strip
   end
 
+  # - - - - - - - - - - - - - - - - - - -
+
   def exists?(id)
     id_dir(id).exists?
   end
+
+  # - - - - - - - - - - - - - - - - - - -
 
   def create(manifest)
     # Generates an id, puts it in the manifest,
@@ -32,11 +36,44 @@ class Singler
     id
   end
 
+  # - - - - - - - - - - - - - - - - - - -
+
   def manifest(id)
     assert_id_exists(id)
     dir = id_dir(id)
     json = dir.read(manifest_filename)
     JSON.parse(json)
+  end
+
+  # - - - - - - - - - - - - - - - - - - -
+
+  def id_completed(partial_id)
+    # Attempt to complete partial_id into a full (10 character) id.
+    outer_dir = disk[dir_join(path, outer(partial_id))]
+    unless outer_dir.exists?
+      return ''
+    end
+    # As the number of inner dirs increases this
+    # gets sloooooow...
+    dirs = outer_dir.each_dir.select { |inner_dir|
+      inner_dir.start_with?(inner(partial_id))
+    }
+    unless dirs.length == 1
+      return ''
+    end
+    outer(partial_id) + dirs[0] # success!
+  end
+
+  # - - - - - - - - - - - - - - - - - - -
+
+  def id_completions(outer_id)
+    # for Batch-Method iteration over large number of pratice-sessions...
+    unless disk[dir_join(path, outer_id)].exists?
+      return []
+    end
+    disk[dir_join(path, outer_id)].each_dir.collect { |dir|
+      outer_id + dir
+    }
   end
 
   private

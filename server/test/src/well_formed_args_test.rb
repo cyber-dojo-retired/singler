@@ -112,7 +112,6 @@ class WellFormedArgsTest < TestBase
     ]
   end
 
-=begin
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
   # outer_id
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -173,69 +172,7 @@ class WellFormedArgsTest < TestBase
     ]
   end
 
-  # - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # avatars_names
-  # - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test '442',
-  'avatars_names does not raise when well-formed' do
-    avatars_names = [ 'lion','salmon' ]
-    json = { avatars_names:avatars_names }.to_json
-    assert_equal avatars_names, WellFormedArgs.new(json).avatars_names
-  end
-
-  test '443',
-  'avatars_names raises when malformed' do
-    expected = 'avatars_names:malformed'
-    malformed_avatars_names.each do |malformed|
-      json = { avatars_names:malformed }.to_json
-      wfa = WellFormedArgs.new(json)
-      error = assert_raises { wfa.avatars_names }
-      assert_equal expected, error.message, malformed
-    end
-  end
-
-  def malformed_avatars_names
-    [
-      nil,       # not an Array
-      [],        # empty Array
-      [''],      # not a name
-      ['blurb'], # not a name
-      ['dolpin'] # not a name (dolphin has an H)
-    ]
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # avatar_name
-  # - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test '8AC',
-  'avatar_name does not raise when well-formed' do
-    avatar_name = 'salmon'
-    json = { avatar_name:avatar_name }.to_json
-    assert_equal avatar_name, WellFormedArgs.new(json).avatar_name
-  end
-
-  test '8AD',
-  'avatar_name raises when malformed' do
-    expected = 'avatar_name:malformed'
-    malformed_avatar_names.each do |malformed|
-      json = { avatar_name:malformed }.to_json
-      wfa = WellFormedArgs.new(json)
-      error = assert_raises { wfa.avatar_name }
-      assert_equal expected, error.message, malformed
-    end
-  end
-
-  def malformed_avatar_names
-    [
-      nil,     # ! String
-      [],      # ! String
-      '',      # ! avatar-name
-      'blurb', # ! avatar-name
-      'dolpin' # ! avatar-name (dolphin has an H)
-    ]
-  end
+=begin
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
   # tag

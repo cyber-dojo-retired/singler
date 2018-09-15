@@ -26,9 +26,17 @@ class TestBase < HexMiniTest
     singler.manifest(iid)
   end
 
+  def id_completed(partial_id)
+    singler.id_completed(partial_id)
+  end
+
+  def id_completions(outer_id)
+    singler.id_completions(outer_id)
+  end
+
   #- - - - - - - - - - - - - - -
 
-  def create_manifest(visible_files = nil)
+  def create_manifest #(visible_files = nil)
     manifest = starter.language_manifest('C (gcc), assert', 'Fizz_Buzz')
     #unless visible_files.nil?
     #  manifest['visible_files'] = visible_files

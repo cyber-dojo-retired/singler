@@ -20,6 +20,8 @@ API:
 - [GET exists?](#get-exists)
 - [GET manifest](#get-manifest)
 - [POST create](#post-create)
+- [GET id_completed](#get-id_completed)
+- [GET id_completions](#get-id_completions)
 
 - - - -
 
@@ -111,6 +113,40 @@ Returns the manifest used to create the practice-session with the given id.
 ```
 
 - - - -
+
+## GET id_completed
+If it exists, returns the 10-digit id which uniquely completes
+the given partial_id, otherwise returns the empty string.
+- parameter, the 6-digit partial-id to complete, eg
+```
+  { "partial_id": "A551C5" } # must be at least 6 characters long.
+```
+- returns, eg
+```
+  { "id_completed": "A551C528C3"  } # completed
+  { "id_completed": ""            } # not completed
+```
+
+- - - -
+
+## GET id_completions
+Returns all the id's starting with the given 2-digit long outer_id.
+- parameter, eg
+```
+  { "outer_id": "A5" }
+```
+- returns, eg
+```
+  { "id_completions": [
+       "A551C528C3",
+       "A5DA2CDC58",
+       "A5EAFE6E53"
+    ]
+  }
+```
+
+- - - -
+
 
 * [Take me to cyber-dojo's home github repo](https://github.com/cyber-dojo/cyber-dojo).
 * [Take me to http://cyber-dojo.org](http://cyber-dojo.org).

@@ -1,4 +1,5 @@
 require_relative 'test_base'
+require_relative 'id_generator_stub'
 
 class ExistsTest < TestBase
 
@@ -52,12 +53,72 @@ class ExistsTest < TestBase
   test '42E',
   'manifest round-trip' do
     expected = create_manifest
-    id = create(create_manifest)
+    id = create(expected)
     expected['id'] = id
     actual = manifest(id)
     assert_equal expected, actual
   end
 
+  #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # id_completed(partial_id), id_completions(outer_id)
+  #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  test '393',
+  'id_completed returns empty-string when no completion' do
+    partial_id = '28EEC2'
+    assert_equal '', id_completed(partial_id)
+  end
+
+  test '394',
+  'id_completed returns id when unique completion' do
+    id = create(create_manifest)
+    partial_id = id[0...6]
+    assert_equal id, id_completed(partial_id)
+  end
+
+  test '395',
+  'id_completed returns empty-string when no unique completion' do
+    externals.id_generator = IdGeneratorStub.new
+    stub_id = '9504E6559'
+    id0 = stub_id + '0'
+    id1 = stub_id + '1'
+    externals.id_generator.stub(id0, id1)
+    manifest = create_manifest
+    id = create(manifest)
+    assert_equal id0, id
+    id = create(manifest)
+    assert_equal id1, id
+    partial_id = stub_id[0...6]
+    assert_equal '', id_completed(partial_id)
+  end
+
+  test '396',
+  'id_completions when no completions' do
+    outer_id = '28'
+    assert_equal [], id_completions(outer_id)
+  end
+
+  test '397',
+  'id_completions when a single completion' do
+    id = create(create_manifest)
+    outer_id = id[0...2]
+    assert_equal [id], id_completions(outer_id)
+  end
+
+  test '398',
+  'id_completions when two completions' do
+    externals.id_generator = IdGeneratorStub.new
+    stub_id = '223D2DF43'
+    id0 = stub_id + '0'
+    id1 = stub_id + '1'
+    externals.id_generator.stub(id0, id1)
+    manifest = create_manifest
+    id = create(manifest)
+    assert_equal id0, id
+    id = create(manifest)
+    assert_equal id1, id
+    outer_id = stub_id[0...2]
+    assert_equal [id0,id1].sort, id_completions(outer_id).sort
+  end
 
 end

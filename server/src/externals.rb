@@ -11,7 +11,10 @@ class Externals
   end
 
   def id_generator
-    @generator ||= ExternalIdGenerator.new(self)
+    @id_generator ||= ExternalIdGenerator.new(self)
+  end
+  def id_generator=(arg)
+    @id_generator = arg
   end
 
   def logger

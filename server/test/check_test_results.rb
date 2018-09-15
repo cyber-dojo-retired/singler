@@ -96,10 +96,10 @@ table =
     [ 'errors',                 error_count,        '==',   0 ],
     [ 'skips',                  skip_count,         '==',   0 ],
     [ 'duration(test)[s]',      test_duration,      '<=',   4 ],
-    [ 'coverage(src)[%]',       src_coverage,       '>=',  98 ],
-    [ 'coverage(test)[%]',      test_coverage,      '>=',  99 ],
-    [ 'lines(test)/lines(src)', f2(line_ratio),     '>=', 1.4 ],
-    [ 'hits(src)/hits(test)',   f2(hits_ratio),     '>=', 1.9 ],
+    [ 'coverage(src)[%]',       src_coverage,       '==', 100 ],
+    [ 'coverage(test)[%]',      test_coverage,      '==', 100 ],
+    [ 'lines(test)/lines(src)', f2(line_ratio),     '>=', 1.7 ],
+    [ 'hits(src)/hits(test)',   f2(hits_ratio),     '>=', 2.1 ],
   ]
 
 # - - - - - - - - - - - - - - - - - - - - - - -
