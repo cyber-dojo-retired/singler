@@ -34,13 +34,26 @@ class TestBase < HexMiniTest
     singler.id_completions(outer_id)
   end
 
+  def ran_tests(id, files, now, stdout, stderr, colour)
+    singler.ran_tests(id, files, now, stdout, stderr, colour)
+  end
+
+  def increments(id)
+    singler.increments(id)
+  end
+
+  def visible_files(id)
+    singler.visible_files(id)
+  end
+
+  def tag_visible_files(id, tag)
+    singler.tag_visible_files(id, tag)
+  end
+
   #- - - - - - - - - - - - - - -
 
-  def create_manifest #(visible_files = nil)
+  def create_manifest
     manifest = starter.language_manifest('C (gcc), assert', 'Fizz_Buzz')
-    #unless visible_files.nil?
-    #  manifest['visible_files'] = visible_files
-    #end
     manifest['created'] = creation_time
     manifest
   end

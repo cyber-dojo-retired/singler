@@ -135,4 +135,140 @@ class ExistsTest < TestBase
     assert_equal [id0,id1].sort, id_completions(outer_id).sort
   end
 
+  #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # ran_tests(id,...), increments(id), visible_files(id)
+  #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  test '822',
+  'increments raises when id does not exist' do
+    error = assert_raises(ArgumentError) {
+      increments('B4AB376BE2')
+    }
+    assert_equal 'id:invalid', error.message
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - -
+
+  test '823',
+  'ran_tests raises when id does not exist' do
+    error = assert_raises(ArgumentError) {
+      ran_tests(*make_args('B4AB376BE2', edited_files))
+    }
+    assert_equal 'id:invalid', error.message
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - -
+
+  test '824',
+  'visible_files raises when id does not exist' do
+    error = assert_raises(ArgumentError) {
+      visible_files('B4AB376BE2')
+    }
+    assert_equal 'id:invalid', error.message
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - -
+
+  test '825', %w(
+    after ran_tests():
+    there is one more tag,
+    one more traffic-light,
+    visible_files are retrievable by implicit current-tag,
+    visible_files are retrievable by explicit tag
+  ) do
+    was_tag = 0
+
+    stub_id = '9DD618D263'
+    stub_id_generator.stub(stub_id)
+    m = create_manifest
+    starting_files = m['visible_files']
+    id = create(m)
+    assert_equal stub_id, id, 'stub_id'
+
+    lights = [
+      { 'event'  => 'created',
+        'time'   => creation_time,
+        'number' => was_tag
+      }
+    ]
+    diagnostic = 'increments(id) #0'
+    assert_equal lights, increments(id), diagnostic
+
+    vfiles = visible_files(id)
+    tag_vfiles = tag_visible_files(id, was_tag)
+
+    diagnostic =  'visible_files(id) [output] #0'
+    assert vfiles.keys.include?('output'), diagnostic
+    tag_diagnostic = 'tag_visible_files(id,0) [output]'
+    assert tag_vfiles.keys.include?('output'), tag_diagnostic
+
+    starting_files.each do |filename,content|
+      diagnostic = "visible_files(id) [#{filename}] #0"
+      assert_equal content, vfiles[filename], diagnostic
+      tag_diagnostic = "tag_visible_files(id,0) [#{filename}]"
+      assert_equal content, tag_vfiles[filename], tag_diagnostic
+    end
+
+    ran_tests(*make_args(id, edited_files))
+    now_tag = 1
+
+    lights << {
+      'colour' => red,
+      'time'   => time_now,
+      'number' => now_tag
+    }
+    diagnostic = 'increments(id) #1'
+    assert_equal lights, increments(id),
+
+    vfiles = visible_files(id)
+    tag_vfiles = tag_visible_files(id, now_tag)
+
+    diagnostic = 'visible_files(id) [output] #1'
+    assert_equal stdout+stderr, vfiles['output'], diagnostic
+    tag_diagnostic = 'tag_visible_files(id,1) [output]'
+    assert_equal stdout+stderr, tag_vfiles['output'], tag_diagnostic
+
+    edited_files.each do |filename,content|
+      diagnostic = "visible_files(id,1) [#{filename}]"
+      assert_equal content, vfiles[filename], diagnostic
+      tag_diagnostic = "tag_visible_files(id,1) [#{filename}]"
+      assert_equal content, tag_vfiles[filename], tag_diagnostic
+    end
+
+    # both tags at once
+    #hash = tags_visible_files(id, was_tag, now_tag)
+    #assert_hash_equal was_tag_visible_files, hash['was_tag']
+    #assert_hash_equal now_tag_visible_files, hash['now_tag']
+  end
+
+  private
+
+  def make_args(id, files)
+    [ id, files, time_now, stdout, stderr, red ]
+  end
+
+  def edited_files
+    { 'cyber-dojo.sh' => 'gcc',
+      'hiker.c'       => '#include "hiker.h"',
+      'hiker.h'       => '#ifndef HIKER_INCLUDED',
+      'hiker.tests.c' => '#include <assert.h>'
+    }
+  end
+
+  def time_now
+    [2016,12,2, 6,14,57]
+  end
+
+  def stdout
+    ''
+  end
+
+  def stderr
+    'Assertion failed: answer() == 42'
+  end
+
+  def red
+    'red'
+  end
+
 end

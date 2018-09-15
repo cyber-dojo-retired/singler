@@ -27,6 +27,7 @@ class Singler
     dir = id_dir(id)
     dir.make
     dir.write(manifest_filename, JSON.unparse(manifest))
+    write_increments(id, [])
     id
   end
 
@@ -93,6 +94,51 @@ class Singler
 
   # - - - - - - - - - - - - - - - - - - -
 
+  def increments(id)
+    assert_id_exists(id)
+    # Return increments with tag0 to avoid client
+    # having to make extra service call
+    tag0 =
+      {
+         'event' => 'created',
+          'time' => manifest(id)['created'],
+        'number' => 0
+      }
+    [tag0] + read_increments(id)
+  end
+
+  # - - - - - - - - - - - - - - - - - - -
+
+  def visible_files(id)
+    assert_id_exists(id)
+    tag = most_recent_tag(id)
+    tag_visible_files(id, tag)
+  end
+
+  # - - - - - - - - - - - - - - - - - - -
+  # tag
+  # - - - - - - - - - - - - - - - - - - -
+
+  def tag_visible_files(id, tag)
+    assert_id_exists(id)
+    if tag == -1
+      tag = most_recent_tag(id)
+    end
+    assert_tag_exists(id, tag)
+    if tag == 0 # tag zero is a special case
+      return manifest(id)['visible_files']
+    end
+    dir = tag_dir(id, tag)
+    if dir.exists? # new non-git-format
+      read_tag_files(id, tag)
+    else # old git-format
+      path = id_path(id)
+      git = "git show #{tag}:#{manifest_filename}"
+      src = shell.cd_exec(path, git)[0]
+      JSON.parse(src)
+    end
+  end
+
   private
 
   def id_generator
@@ -153,6 +199,17 @@ class Singler
   end
 
   # - - - - - - - - - - - - - -
+
+  def assert_tag_exists(id, tag)
+    unless tag_exists?(id, tag)
+      invalid('tag')
+    end
+  end
+
+  def tag_exists?(id, tag)
+    # Has to work with old git-format and new non-git format
+    0 <= tag && tag <= most_recent_tag(id)
+  end
 
   def write_tag_files(id, tag, files)
     json = JSON.unparse(files)

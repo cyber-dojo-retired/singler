@@ -125,6 +125,14 @@ class WellFormedArgs
     arg
   end
 
+  # - - - - - - - - - - - - - - - -
+
+  def tag
+    @arg_name = __method__.to_s
+    malformed unless arg.is_a?(Integer)
+    arg
+  end
+
   private # = = = = = = = = = = = =
 
   attr_reader :args, :arg_name

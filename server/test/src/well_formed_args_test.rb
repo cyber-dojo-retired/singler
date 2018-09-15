@@ -313,8 +313,6 @@ class WellFormedArgsTest < TestBase
     [ nil, true, {}, [], 'RED' ]
   end
 
-=begin
-
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
   # tag
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -345,6 +343,8 @@ class WellFormedArgsTest < TestBase
       '42'          # ! Integer
     ]
   end
+
+=begin
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
   # was_tag

@@ -33,13 +33,16 @@ class RackDispatcher
     name = request.path_info[1..-1] # lose leading /
     @well_formed_args = WellFormedArgs.new(request.body.read)
     args = case name
-      when /^sha$/             then []
+      when /^sha$/               then []
       when /^id$/,
-           /^manifest$/        then [id]
-      when /^create$/          then [manifest]
-      when /^id_completed$/    then [partial_id]
-      when /^id_completions$/  then [outer_id]
-      when /^ran_tests$/       then [id, files, now, stdout, stderr, colour]
+           /^manifest$/,
+           /^increments$/,
+           /^visible_files$/     then [id]
+      when /^create$/            then [manifest]
+      when /^id_completed$/      then [partial_id]
+      when /^id_completions$/    then [outer_id]
+      when /^ran_tests$/         then [id, files, now, stdout, stderr, colour]
+      when /^tag_visible_files$/ then [id, tag]
       else
         raise ClientError, 'json:malformed'
     end
@@ -68,7 +71,7 @@ class RackDispatcher
   well_formed_args :manifest
   well_formed_args :id, :partial_id, :outer_id
   well_formed_args :files, :now, :stdout, :stderr, :colour
-  #well_formed_args :tag, :was_tag, :now_tag
+  well_formed_args :tag #, :was_tag, :now_tag
 
   # - - - - - - - - - - - - - - - -
 
