@@ -17,8 +17,8 @@ API:
     * If the method raises an exception, the key equals "exception".
 
 - [GET sha](#get-sha)
-- [GET manifest](#get-manifest)
 - [POST create](#post-create)
+- [GET manifest](#get-manifest)
 - [GET id?](#get-id)
 - [GET id_completed](#get-id_completed)
 - [GET id_completions](#get-id_completions)
