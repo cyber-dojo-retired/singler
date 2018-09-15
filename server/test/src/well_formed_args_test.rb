@@ -79,28 +79,28 @@ class WellFormedArgsTest < TestBase
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # iid
+  # id
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '61A',
-  'iid does not raise when well-formed' do
-    iid = 'A1B2F345kn'
-    json = { iid:iid }.to_json
-    assert_equal iid, WellFormedArgs.new(json).iid
+  'id does not raise when well-formed' do
+    id = 'A1B2F345kn'
+    json = { id:id }.to_json
+    assert_equal id, WellFormedArgs.new(json).id
   end
 
   test '61B',
-  'iid raises when malformed' do
-    expected = 'iid:malformed'
-    malformed_iids.each do |malformed|
-      json = { iid:malformed }.to_json
+  'id raises when malformed' do
+    expected = 'id:malformed'
+    malformed_ids.each do |malformed|
+      json = { id:malformed }.to_json
       wfa = WellFormedArgs.new(json)
-      error = assert_raises { wfa.iid }
+      error = assert_raises { wfa.id }
       assert_equal expected, error.message, malformed
     end
   end
 
-  def malformed_iids
+  def malformed_ids
     [
       nil,          # ! String
       [],           # ! string

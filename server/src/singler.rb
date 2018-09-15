@@ -3,7 +3,7 @@ class Singler
 
   def initialize(externals)
     @externals = externals
-    @path = '/persistent-dir/iids'
+    @path = '/persistent-dir/ids'
   end
 
   attr_reader :path
@@ -12,59 +12,59 @@ class Singler
     IO.read('/app/sha.txt').strip
   end
 
-  def exists?(iid)
-    iid_dir(iid).exists?
+  def exists?(id)
+    id_dir(id).exists?
   end
 
   def create(manifest)
-    # Generates an iid, puts it in the manifest,
-    # saves the manifest, and returns the iid.
+    # Generates an id, puts it in the manifest,
+    # saves the manifest, and returns the id.
     # Rack calls create() in threads so in theory
     # you could get a race condition with both
     # threads attempting a create with the same id.
     # Assuming base58 id generation is reasonably well
     # behaved (random) this is extremely unlikely.
-    iid = iid_generator.generate
-    manifest['id'] = iid
-    dir = iid_dir(iid)
+    id = id_generator.generate
+    manifest['id'] = id
+    dir = id_dir(id)
     dir.make
     dir.write(manifest_filename, JSON.unparse(manifest))
-    iid
+    id
   end
 
-  def manifest(iid)
-    assert_iid_exists(iid)
-    dir = iid_dir(iid)
+  def manifest(id)
+    assert_id_exists(id)
+    dir = id_dir(id)
     json = dir.read(manifest_filename)
     JSON.parse(json)
   end
 
   private
 
-  def iid_generator
-    @externals.iid_generator
+  def id_generator
+    @externals.id_generator
   end
 
-  def assert_iid_exists(iid)
-    unless exists?(iid)
-      invalid('iid')
+  def assert_id_exists(id)
+    unless exists?(id)
+      invalid('id')
     end
   end
 
-  def iid_dir(iid)
-    disk[iid_path(iid)]
+  def id_dir(id)
+    disk[id_path(id)]
   end
 
-  def iid_path(iid)
-    dir_join(path, outer(iid), inner(iid))
+  def id_path(id)
+    dir_join(path, outer(id), inner(id))
   end
 
-  def outer(iid)
-    iid[0..1]  # eg 'e5' 2-chars long
+  def outer(id)
+    id[0..1]  # eg 'e5' 2-chars long
   end
 
-  def inner(iid)
-    iid[2..-1] # eg '6aM327PE' 8-chars long
+  def inner(id)
+    id[2..-1] # eg '6aM327PE' 8-chars long
   end
 
   # - - - - - - - - - - - - - -

@@ -46,7 +46,7 @@ class WellFormedArgs
 
   # - - - - - - - - - - - - - - - -
 
-  def iid
+  def id
     @arg_name = __method__.to_s
     malformed unless Base58.string?(arg) && arg.length == 10
     arg

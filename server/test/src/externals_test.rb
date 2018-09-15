@@ -15,7 +15,7 @@ class ExternalsTest < TestBase
     assert_equal 'ExternalDiskWriter',   externals.disk.class.name
     assert_equal 'ExternalStdoutLogger', externals.logger.class.name
     assert_equal 'ExternalBashSheller',  externals.shell.class.name
-    assert_equal 'ExternalIidGenerator', externals.iid_generator.class.name
+    assert_equal 'ExternalIdGenerator',  externals.id_generator.class.name
 
   end
 

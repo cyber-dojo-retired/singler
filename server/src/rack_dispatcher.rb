@@ -35,7 +35,7 @@ class RackDispatcher
     args = case name
       when /^sha$/                  then []
       when /^exists$/,
-           /^manifest$/             then [iid]
+           /^manifest$/             then [id]
       when /^create$/               then [manifest]
       else
         raise ClientError, 'json:malformed'
@@ -63,7 +63,7 @@ class RackDispatcher
   end
 
   well_formed_args :manifest
-  well_formed_args :iid    #, :partial_id, :outer_id
+  well_formed_args :id    #, :partial_id, :outer_id
   #well_formed_args :files, :now, :stdout, :stderr, :colour
   #well_formed_args :tag, :was_tag, :now_tag
 

@@ -1,7 +1,7 @@
 require_relative 'singler'
 require_relative 'external_bash_sheller'
 require_relative 'external_disk_writer'
-require_relative 'external_iid_generator'
+require_relative 'external_id_generator'
 require_relative 'external_stdout_logger'
 
 class Externals
@@ -10,8 +10,8 @@ class Externals
     @singler ||= Singler.new(self)
   end
 
-  def iid_generator
-    @generator ||= ExternalIidGenerator.new(self)
+  def id_generator
+    @generator ||= ExternalIdGenerator.new(self)
   end
 
   def logger

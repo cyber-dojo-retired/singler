@@ -37,10 +37,10 @@ Returns the git commit sha used to create the docker image.
 - - - -
 
 ## GET exists?
-Asks whether the practice-session with the given iid exists.
+Asks whether the practice-session with the given id exists.
 - parameters, eg
 ```
-  { "iid": "15B9AD6C42" }
+  { "id": "15B9AD6C42" }
 ```
 - returns true if it does, false if it doesn't, eg
 ```
@@ -82,10 +82,10 @@ Creates a practice-session from the given json manifest.
 - - - -
 
 ## GET manifest
-Returns the manifest used to create the practice-session with the given iid.
+Returns the manifest used to create the practice-session with the given id.
 - parameter, eg
 ```
-  { "iid": "A551C528C3" }
+  { "id": "A551C528C3" }
 ```
 - returns, eg
 ```

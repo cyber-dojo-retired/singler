@@ -1,6 +1,6 @@
 require_relative 'base58'
 
-class ExternalIidGenerator
+class ExternalIdGenerator
 
   def initialize(externals)
     @externals = externals
@@ -21,10 +21,10 @@ class ExternalIidGenerator
     @externals.singler
   end
 
-  def valid?(iid)
-    !singler.exists?(iid) &&
-      !iid.include?('L') &&
-        !iid.include?('l')
+  def valid?(id)
+    !singler.exists?(id) &&
+      !id.include?('L') &&
+        !id.include?('l')
   end
 
 end
