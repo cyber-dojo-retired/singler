@@ -20,7 +20,7 @@ class Singler
     manifest['id'] = id
     dir = id_dir(id)
     dir.make
-    dir.write(manifest_filename, JSON.pretty_generate(manifest))
+    dir.write(manifest_filename, json_unparse(manifest))
     tag0 = {
          'event' => 'created',
           'time' => manifest(id)['created'],
@@ -36,8 +36,7 @@ class Singler
   def manifest(id)
     assert_id_exists(id)
     dir = id_dir(id)
-    json = dir.read(manifest_filename)
-    JSON.parse(json)
+    json_parse(dir.read(manifest_filename))
   end
 
   # - - - - - - - - - - - - - - - - - - -
@@ -130,30 +129,26 @@ class Singler
   # - - - - - - - - - - - - - -
 
   def write_increments(id, increments)
-    json = JSON.pretty_generate(increments)
     dir = id_dir(id)
-    dir.write(increments_filename, json)
+    dir.write(increments_filename, json_unparse(increments))
   end
 
   def read_increments(id)
     dir = id_dir(id)
-    json = dir.read(increments_filename)
-    JSON.parse(json)
+    json_parse(dir.read(increments_filename))
   end
 
   # - - - - - - - - - - - - - -
 
   def write_tag_files(id, tag, files)
-    json = JSON.pretty_generate(files)
     dir = tag_dir(id, tag)
     dir.make
-    dir.write(manifest_filename, json)
+    dir.write(manifest_filename, json_unparse(files))
   end
 
   def read_tag_files(id, tag)
     dir = tag_dir(id, tag)
-    json = dir.read(manifest_filename)
-    JSON.parse(json)
+    json_parse(dir.read(manifest_filename))
   end
 
   def most_recent_tag(id, increments = nil)
@@ -207,6 +202,16 @@ class Singler
 
   def invalid(name)
     fail ArgumentError.new("#{name}:invalid")
+  end
+
+  # - - - - - - - - - - - - - -
+
+  def json_unparse(o)
+    JSON.pretty_generate(o)
+  end
+
+  def json_parse(s)
+    JSON.parse(s)
   end
 
   # - - - - - - - - - - - - - -
