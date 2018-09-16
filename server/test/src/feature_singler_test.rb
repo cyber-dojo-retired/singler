@@ -198,27 +198,17 @@ class ExistsTest < TestBase
     starting_files = m['visible_files']
     id = create(m)
 
-    vfiles = visible_files(id)
-    diagnostic =  'visible_files(id) [output] #0'
-    assert vfiles.keys.include?('output'), diagnostic
-    assert_equal '', vfiles['output']
-
-    starting_files.each do |filename,content|
-      diagnostic = "visible_files(id) [#{filename}] #0"
-      assert_equal content, vfiles[filename], diagnostic
-    end
+    actual = visible_files(id)
+    diagnostic = "#0 visible_files(#{id})"
+    output = ''
+    assert_visible_files(starting_files, actual, output, diagnostic)
 
     ran_tests(*make_args(id, edited_files))
 
-    vfiles = visible_files(id)
-    diagnostic =  'visible_files(id) [output] #1'
-    assert vfiles.keys.include?('output'), diagnostic
-    assert_equal stdout+stderr, vfiles['output']
-
-    edited_files.each do |filename,content|
-      diagnostic = "visible_files(id) [#{filename}] #1"
-      assert_equal content, vfiles[filename], diagnostic
-    end
+    actual = visible_files(id)
+    diagnostic = "#1 visible_files(#{id})"
+    output = stdout+stderr
+    assert_visible_files(edited_files, actual, output, diagnostic)
   end
 
   # - - - - - - - - - - - - - - - - - - - - -
@@ -231,27 +221,17 @@ class ExistsTest < TestBase
     starting_files = m['visible_files']
     id = create(m)
 
-    vfiles = tag_visible_files(id, 0)
-    diagnostic =  'tag_visible_files(id,0) [output]'
-    assert vfiles.keys.include?('output'), diagnostic
-    assert_equal '', vfiles['output']
-
-    starting_files.each do |filename,content|
-      diagnostic = "tag_visible_files(id,0) [#{filename}]"
-      assert_equal content, vfiles[filename], diagnostic
-    end
+    actual = tag_visible_files(id, 0)
+    diagnostic = "tag_visible_files(#{id},0)"
+    output = ''
+    assert_visible_files(starting_files, actual, output, diagnostic)
 
     ran_tests(*make_args(id, edited_files))
 
-    vfiles = tag_visible_files(id, 1)
-    diagnostic =  'tag_visible_files(id, 1) [output]'
-    assert vfiles.keys.include?('output'), diagnostic
-    assert_equal stdout+stderr, vfiles['output']
-
-    edited_files.each do |filename,content|
-      diagnostic = "tag_visible_files(id, 1) [#{filename}]"
-      assert_equal content, vfiles[filename], diagnostic
-    end
+    actual = tag_visible_files(id, 1)
+    diagnostic = "tag_visible_files(#{id},1)"
+    output = stdout+stderr
+    assert_visible_files(edited_files, actual, output, diagnostic)
   end
 
   # - - - - - - - - - - - - - - - - - - - - -
@@ -264,27 +244,17 @@ class ExistsTest < TestBase
     starting_files = m['visible_files']
     id = create(m)
 
-    vfiles = tag_visible_files(id, -1)
-    diagnostic =  'tag_visible_files(id,-1) [output] #0'
-    assert vfiles.keys.include?('output'), diagnostic
-    assert_equal '', vfiles['output']
-
-    starting_files.each do |filename,content|
-      diagnostic = "tag_visible_files(id,-1) [#{filename}] #0"
-      assert_equal content, vfiles[filename], diagnostic
-    end
+    actual = tag_visible_files(id, -1)
+    diagnostic = "#0 tag_visible_files(#{id},-1)"
+    output = ''
+    assert_visible_files(starting_files, actual, output, diagnostic)
 
     ran_tests(*make_args(id, edited_files))
 
-    vfiles = tag_visible_files(id, -1)
-    diagnostic =  'tag_visible_files(id, -1) [output] #1'
-    assert vfiles.keys.include?('output'), diagnostic
-    assert_equal stdout+stderr, vfiles['output']
-
-    edited_files.each do |filename,content|
-      diagnostic = "tag_visible_files(id, -1) [#{filename}] #1"
-      assert_equal content, vfiles[filename], diagnostic
-    end
+    actual = tag_visible_files(id, -1)
+    diagnostic = "#1 tag_visible_files(#{id},-1)"
+    output = stdout+stderr
+    assert_visible_files(edited_files, actual, output, diagnostic)
   end
 
   # - - - - - - - - - - - - - - - - - - - - -
@@ -356,6 +326,16 @@ class ExistsTest < TestBase
   end
 
   private
+
+  def assert_visible_files(expected, actual, output, diagnostic)
+    assert actual.keys.include?('output'), diagnostic + ' [output]'
+    assert_equal output, actual['output']
+    expected.each do |filename,content|
+      assert_equal content, actual[filename], diagnostic + " [#{filename}]"
+    end
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - -
 
   def make_args(id, files)
     [ id, files, time_now, stdout, stderr, red ]
