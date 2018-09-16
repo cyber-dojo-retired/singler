@@ -21,8 +21,13 @@ class Singler
     dir = id_dir(id)
     dir.make
     dir.write(manifest_filename, JSON.pretty_generate(manifest))
-    write_increments(id, [])
-    #write_tag_files(id, tag=0, manifest['visible_files'])
+    tag0 = {
+         'event' => 'created',
+          'time' => manifest(id)['created'],
+        'number' => 0
+      }
+    write_increments(id, [tag0])
+    write_tag_files(id, tag=0, manifest['visible_files'])
     id
   end
 
@@ -87,15 +92,7 @@ class Singler
 
   def increments(id)
     assert_id_exists(id)
-    # Return increments with tag0 to avoid client
-    # having to make extra service call
-    tag0 =
-      {
-         'event' => 'created',
-          'time' => manifest(id)['created'],
-        'number' => 0
-      }
-    [tag0] + read_increments(id)
+    read_increments(id)
   end
 
   # - - - - - - - - - - - - - - - - - - -
@@ -103,7 +100,7 @@ class Singler
   def visible_files(id)
     assert_id_exists(id)
     tag = most_recent_tag(id)
-    tag_visible_files(id, tag)
+    read_tag_files(id, tag)
   end
 
   # - - - - - - - - - - - - - - - - - - -
@@ -111,26 +108,63 @@ class Singler
   # - - - - - - - - - - - - - - - - - - -
 
   def tag_visible_files(id, tag)
-    assert_id_exists(id)
     if tag == -1
+      assert_id_exists(id)
       tag = most_recent_tag(id)
-    end
-    assert_tag_exists(id, tag)
-    if tag == 0 # tag zero is a special case
-      manifest(id)['visible_files']
     else
-      read_tag_files(id, tag)
+      assert_tag_exists(id, tag)
     end
+    read_tag_files(id, tag)
   end
 
   private
 
-  def id_generator
-    @externals.id_generator
+  def manifest_filename
+    'manifest.json'
   end
 
+  def increments_filename
+    'increments.json'
+  end
+
+  # - - - - - - - - - - - - - -
+
+  def write_increments(id, increments)
+    json = JSON.pretty_generate(increments)
+    dir = id_dir(id)
+    dir.write(increments_filename, json)
+  end
+
+  def read_increments(id)
+    dir = id_dir(id)
+    json = dir.read(increments_filename)
+    JSON.parse(json)
+  end
+
+  # - - - - - - - - - - - - - -
+
+  def write_tag_files(id, tag, files)
+    json = JSON.pretty_generate(files)
+    dir = tag_dir(id, tag)
+    dir.make
+    dir.write(manifest_filename, json)
+  end
+
+  def read_tag_files(id, tag)
+    dir = tag_dir(id, tag)
+    json = dir.read(manifest_filename)
+    JSON.parse(json)
+  end
+
+  def most_recent_tag(id, increments = nil)
+    increments ||= read_increments(id)
+    increments.size - 1
+  end
+
+  # - - - - - - - - - - - - - -
+
   def assert_id_exists(id)
-    unless id?(id)
+    unless id_dir(id).exists?
       invalid('id')
     end
   end
@@ -153,64 +187,10 @@ class Singler
 
   # - - - - - - - - - - - - - -
 
-  def manifest_filename
-    # A manifest stores the meta information such as
-    # such as the chosen language, chosen tests framework.
-    'manifest.json'
-  end
-
-  # - - - - - - - - - - - - - -
-
-  def write_increments(id, increments)
-    json = JSON.pretty_generate(increments)
-    dir = id_dir(id)
-    dir.write(increments_filename, json)
-  end
-
-  def read_increments(id)
-    # increments holds a cache of colours
-    # and time-stamps for all the [test]s.
-    # Helps optimize dashboard traffic-lights views.
-    # Not saving tag0 in increments.json
-    # to maintain compatibility with old git-format
-    dir = id_dir(id)
-    json = dir.read(increments_filename)
-    JSON.parse(json)
-  end
-
-  def increments_filename
-    'increments.json'
-  end
-
-  # - - - - - - - - - - - - - -
-
   def assert_tag_exists(id, tag)
-    unless tag_exists?(id, tag)
+    unless tag_dir(id, tag).exists?
       invalid('tag')
     end
-  end
-
-  def tag_exists?(id, tag)
-    # Has to work with old git-format and new non-git format
-    0 <= tag && tag <= most_recent_tag(id)
-  end
-
-  def write_tag_files(id, tag, files)
-    json = JSON.pretty_generate(files)
-    dir = tag_dir(id, tag)
-    dir.make
-    dir.write(manifest_filename, json)
-  end
-
-  def read_tag_files(id, tag)
-    dir = tag_dir(id, tag)
-    json = dir.read(manifest_filename)
-    JSON.parse(json)
-  end
-
-  def most_recent_tag(id, increments = nil)
-    increments ||= read_increments(id)
-    increments.size
   end
 
   def tag_dir(id, tag)
@@ -221,8 +201,6 @@ class Singler
     dir_join(id_path(id), tag.to_s)
   end
 
-  # - - - - - - - - - - - - - -
-
   def dir_join(*args)
     File.join(*args)
   end
@@ -231,8 +209,14 @@ class Singler
     fail ArgumentError.new("#{name}:invalid")
   end
 
+  # - - - - - - - - - - - - - -
+
   def disk
     @externals.disk
+  end
+
+  def id_generator
+    @externals.id_generator
   end
 
 end
