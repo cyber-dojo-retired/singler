@@ -1,3 +1,4 @@
+require 'json'
 
 class Singler
 
@@ -19,8 +20,9 @@ class Singler
     manifest['id'] = id
     dir = id_dir(id)
     dir.make
-    dir.write(manifest_filename, JSON.unparse(manifest))
+    dir.write(manifest_filename, JSON.pretty_generate(manifest))
     write_increments(id, [])
+    #write_tag_files(id, tag=0, manifest['visible_files'])
     id
   end
 
@@ -76,8 +78,6 @@ class Singler
     tag = most_recent_tag(id, increments) + 1
     increments << { 'colour' => colour, 'time' => now, 'number' => tag }
     write_increments(id, increments)
-    # don't alter caller's files argument
-    files = files.clone
     files['output'] = stdout + stderr
     write_tag_files(id, tag, files)
     increments
@@ -162,7 +162,7 @@ class Singler
   # - - - - - - - - - - - - - -
 
   def write_increments(id, increments)
-    json = JSON.unparse(increments)
+    json = JSON.pretty_generate(increments)
     dir = id_dir(id)
     dir.write(increments_filename, json)
   end
@@ -196,7 +196,7 @@ class Singler
   end
 
   def write_tag_files(id, tag, files)
-    json = JSON.unparse(files)
+    json = JSON.pretty_generate(files)
     dir = tag_dir(id, tag)
     dir.make
     dir.write(manifest_filename, json)
