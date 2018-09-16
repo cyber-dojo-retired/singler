@@ -51,6 +51,8 @@ class ExistsTest < TestBase
     assert_equal 'id:invalid', error.message
   end
 
+  #- - - - - - - - - - - - - - - - - - - - - -
+
   test '42E',
   'manifest round-trip' do
     stub_id = '0ADDE7572A'
@@ -70,11 +72,12 @@ class ExistsTest < TestBase
   test '392',
   'id? is false before creation, true after creation' do
     stub_id = '50C8C661CD'
-    stub_id_generator.stub(stub_id)
     refute id?(stub_id)
-    create(create_manifest)
+    stub_create(stub_id)
     assert id?(stub_id)
   end
+
+  #- - - - - - - - - - - - - - - - - - - - - -
 
   test '393',
   'id_completed returns id when unique completion' do
@@ -83,11 +86,15 @@ class ExistsTest < TestBase
     assert_equal id, id_completed(partial_id)
   end
 
+  #- - - - - - - - - - - - - - - - - - - - - -
+
   test '394',
   'id_completed return empty-string when no completion' do
     partial_id = 'AC9A0215C9'
     assert_equal '', id_completed(partial_id)
   end
+
+  #- - - - - - - - - - - - - - - - - - - - - -
 
   test '395',
   'id_completed returns empty-string when no unique completion' do
@@ -104,11 +111,15 @@ class ExistsTest < TestBase
     assert_equal '', id_completed(partial_id)
   end
 
+  #- - - - - - - - - - - - - - - - - - - - - -
+
   test '396',
   'id_completions when no completions' do
     outer_id = '28'
     assert_equal [], id_completions(outer_id)
   end
+
+  #- - - - - - - - - - - - - - - - - - - - - -
 
   test '397',
   'id_completions when a single completion' do
@@ -116,6 +127,8 @@ class ExistsTest < TestBase
     outer_id = id[0...2]
     assert_equal [id], id_completions(outer_id)
   end
+
+  #- - - - - - - - - - - - - - - - - - - - - -
 
   test '398',
   'id_completions when two completions' do
@@ -182,7 +195,7 @@ class ExistsTest < TestBase
   # - - - - - - - - - - - - - - - - - - - - -
 
   test '826',
-  'visible_files are retrievable by implicit current-tag' do
+  'visible_files are retrievable by implicit current tag' do
     id = stub_create('79608F899B')
 
     actual = visible_files(id)
@@ -220,7 +233,7 @@ class ExistsTest < TestBase
   # - - - - - - - - - - - - - - - - - - - - -
 
   test '828',
-  'visible_files are retrievable by explicit tag -1 (most recent)' do
+  'visible_files are retrievable by explicit -1 tag (most recent)' do
     id = stub_create('41B318D009')
 
     actual = tag_visible_files(id, -1)
@@ -240,9 +253,7 @@ class ExistsTest < TestBase
 
   test '829',
   'two sets of visible files can be retrieved at once' do
-    # Batch-Method optimization for differ
     id = stub_create('D1620CC63B')
-
     ran_tests(*make_args(id, edited_files))
 
     hash = tags_visible_files(id, was_tag=0, now_tag=1)
@@ -275,7 +286,6 @@ class ExistsTest < TestBase
   test '927',
   'tag_visible_files raises when tag does not exist' do
     id = stub_create('53A8779B07')
-
     error = assert_raises(ArgumentError) {
       tag_visible_files(id, 1)
     }
@@ -287,7 +297,6 @@ class ExistsTest < TestBase
   test '928',
   'tags_visible_files raises when now_tag does not exist' do
     id = stub_create('E05D5FB3CA')
-
     error = assert_raises(ArgumentError) {
       tags_visible_files(id, 0, 1)
     }

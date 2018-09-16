@@ -4,15 +4,11 @@ require_relative '../../src/externals'
 
 class TestBase < HexMiniTest
 
-  def externals
-    @externals ||= Externals.new
-  end
-
-  #- - - - - - - - - - - - - - -
-
   def sha
     singler.sha
   end
+
+  # - - - - - - - - - - - - - - - - -
 
   def create(manifest)
     singler.create(manifest)
@@ -21,6 +17,8 @@ class TestBase < HexMiniTest
   def manifest(id)
     singler.manifest(id)
   end
+
+  # - - - - - - - - - - - - - - - - -
 
   def id?(id)
     singler.id?(id)
@@ -34,6 +32,8 @@ class TestBase < HexMiniTest
     singler.id_completions(outer_id)
   end
 
+  # - - - - - - - - - - - - - - - - -
+
   def ran_tests(id, files, now, stdout, stderr, colour)
     singler.ran_tests(id, files, now, stdout, stderr, colour)
   end
@@ -41,6 +41,8 @@ class TestBase < HexMiniTest
   def increments(id)
     singler.increments(id)
   end
+
+  # - - - - - - - - - - - - - - - - -
 
   def visible_files(id)
     singler.visible_files(id)
@@ -65,6 +67,10 @@ class TestBase < HexMiniTest
 
   def creation_time
     [2016,12,2, 6,13,23]
+  end
+
+  def externals
+    @externals ||= Externals.new
   end
 
   private
