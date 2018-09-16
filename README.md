@@ -26,6 +26,7 @@ API:
 - [GET increments](#get-increments)
 - [GET visible_files](#get-visible_files)
 - [GET tag_visible_files](#get-tag_visible_files)
+- [GET tags_visible_files](#get-tags_visible_files)
 
 - - - -
 
@@ -242,6 +243,39 @@ with the given tag number.
         "instructions" : "Write a program that...",
             "makefile" : "CFLAGS += -I. -Wall...",
        "cyber-dojo.sh" : "make"
+    }
+  }
+```
+
+- - - -
+
+## GET tags_visible_files
+Returns the paired set of visible files for the practice-session
+with the given id, with the given tag numbers.
+- parameters, eg
+```
+  {      "id": "A551C528C3",
+    "was_tag": 2,
+    "now_tag": 3
+  }
+```
+- returns, eg
+```
+  { "tags_visible_files": {
+      "was_files": {
+                  "hiker.h" : "#ifndef HIKER_INCLUDED\n...",
+                  "hiker.c" : "#include \"hiker.h\"\n...",
+            "hiker.tests.c" : "#include <assert.h>\n...",
+            "cyber-dojo.sh" : "make",
+         ...
+      },
+      "now_files": {
+               "fizzbuzz.h" : "#ifndef FIZZBUZZ_INCLUDED\n...",
+               "fizzbuzz.c" : "#include \"fizzbuzz.h\"\n...",
+         "fizzbuzz.tests.c" : "#include <assert.h>\n...",
+            "cyber-dojo.sh" : "make",
+         ...
+      }
     }
   }
 ```
