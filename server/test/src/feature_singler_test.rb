@@ -99,14 +99,8 @@ class ExistsTest < TestBase
   test '395',
   'id_completed returns empty-string when no unique completion' do
     stub_id = '9504E6559'
-    id0 = stub_id + '0'
-    id1 = stub_id + '1'
-    stub_id_generator.stub(id0, id1)
-    manifest = create_manifest
-    id = create(manifest)
-    assert_equal id0, id
-    id = create(manifest)
-    assert_equal id1, id
+    stub_create(stub_id + '0')
+    stub_create(stub_id + '1')
     partial_id = stub_id[0...6]
     assert_equal '', id_completed(partial_id)
   end
@@ -135,12 +129,8 @@ class ExistsTest < TestBase
     outer_id = '22'
     id0 = outer_id + '0' + '3D2DF43'
     id1 = outer_id + '1' + '3D2DF43'
-    stub_id_generator.stub(id0, id1)
-    manifest = create_manifest
-    id = create(manifest)
-    assert_equal id0, id
-    id = create(manifest)
-    assert_equal id1, id
+    stub_create(id0)
+    stub_create(id1)
     assert_equal [id0,id1].sort, id_completions(outer_id).sort
   end
 
