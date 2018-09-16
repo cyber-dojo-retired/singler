@@ -15,13 +15,6 @@ class Singler
   # - - - - - - - - - - - - - - - - - - -
 
   def create(manifest)
-    # Generates an id, puts it in the manifest,
-    # saves the manifest, and returns the id.
-    # Rack calls create() in threads so in theory
-    # you could get a race condition with both
-    # threads attempting a create with the same id.
-    # Assuming base58 id generation is reasonably well
-    # behaved (random) this is extremely unlikely.
     id = id_generator.generate
     manifest['id'] = id
     dir = id_dir(id)
@@ -49,13 +42,11 @@ class Singler
   # - - - - - - - - - - - - - - - - - - -
 
   def id_completed(partial_id)
-    # Attempt to complete partial_id into a full (10 character) id.
     outer_dir = disk[dir_join(path, outer(partial_id))]
     unless outer_dir.exists?
       return ''
     end
-    # As the number of inner dirs increases this
-    # gets sloooooow...
+    # Slower with more inner dirs.
     dirs = outer_dir.each_dir.select { |inner_dir|
       inner_dir.start_with?(inner(partial_id))
     }

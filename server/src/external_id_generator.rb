@@ -1,5 +1,11 @@
 require_relative 'base58'
 
+# Rack calls singler.create() in threads so in
+# theory you could get a race condition with both
+# threads attempting a create with the same id.
+# Assuming base58 id generation is reasonably well
+# behaved (random) this is extremely unlikely.
+
 class ExternalIdGenerator
 
   def initialize(externals)
@@ -22,9 +28,7 @@ class ExternalIdGenerator
   end
 
   def valid?(id)
-    !singler.id?(id) &&
-      !id.include?('L') &&
-        !id.include?('l')
+    !singler.id?(id) && !id.upcase.include?('L')
   end
 
 end
