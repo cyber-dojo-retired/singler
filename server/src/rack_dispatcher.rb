@@ -12,7 +12,7 @@ class RackDispatcher
   def call(env)
     request = @request.new(env)
     name, args = validated_name_args(request)
-    result = singler.public_send(name, *args)
+    result = @singler.public_send(name, *args)
     json_response(200, { name => result })
   rescue => error
     info = {

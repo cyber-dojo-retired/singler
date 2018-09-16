@@ -42,6 +42,12 @@ class Singler
 
   # - - - - - - - - - - - - - - - - - - -
 
+  def id?(id)
+    id_dir(id).exists?
+  end
+
+  # - - - - - - - - - - - - - - - - - - -
+
   def id_completed(partial_id)
     # Attempt to complete partial_id into a full (10 character) id.
     outer_dir = disk[dir_join(path, outer(partial_id))]
@@ -57,12 +63,6 @@ class Singler
       return ''
     end
     outer(partial_id) + dirs[0] # success!
-  end
-
-  # - - - - - - - - - - - - - - - - - - -
-
-  def id?(id)
-    id_dir(id).exists?
   end
 
   # - - - - - - - - - - - - - - - - - - -
