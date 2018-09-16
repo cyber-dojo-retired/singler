@@ -178,7 +178,7 @@ class ExistsTest < TestBase
         'number' => (was_tag=0)
       }
     ]
-    diagnostic = 'increments(id) #0'
+    diagnostic = '#0 increments(id)'
     assert_equal lights, increments(id), diagnostic
 
     ran_tests(*make_args(id, edited_files))
@@ -188,7 +188,7 @@ class ExistsTest < TestBase
       'time'   => time_now,
       'number' => (now_tag=1)
     }
-    diagnostic = 'increments(id) #1'
+    diagnostic = '#1 increments(id)'
     assert_equal lights, increments(id), diagnostic
   end
 
@@ -258,17 +258,15 @@ class ExistsTest < TestBase
 
     hash = tags_visible_files(id, was_tag=0, now_tag=1)
 
-    was_files = hash['was_tag']
-    starting_files.each do |filename,content|
-      diagnostic = "tags_visible_files(id,0,1) [#{filename}] #0"
-      assert_equal content, was_files[filename], diagnostic
-    end
+    actual = hash['was_tag']
+    diagnostic = "tags_visible_files(#{id},0,1)['was_tag']"
+    output = ''
+    assert_visible_files(starting_files, actual, output, diagnostic)
 
-    now_files = hash['now_tag']
-    edited_files.each do |filename,content|
-      diagnostic = "tags_visible_files(id,0,1) [#{filename}] #1"
-      assert_equal content, now_files[filename], diagnostic
-    end
+    actual = hash['now_tag']
+    diagnostic = "tags_visible_files(#{id},0,1)['now_tag']"
+    output = stdout+stderr
+    assert_visible_files(edited_files, actual, output, diagnostic)
   end
 
   # - - - - - - - - - - - - - - - - - - - - -
