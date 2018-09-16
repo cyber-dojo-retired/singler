@@ -57,25 +57,20 @@ class TestBase < HexMiniTest
   #- - - - - - - - - - - - - - -
 
   def create_manifest
+    starter = StarterService.new
     manifest = starter.language_manifest('C (gcc), assert', 'Fizz_Buzz')
     manifest['created'] = creation_time
     manifest
   end
 
-  private
-
   def creation_time
     [2016,12,2, 6,13,23]
   end
 
-  #- - - - - - - - - - - - - - -
+  private
 
   def singler
     externals.singler
-  end
-
-  def starter
-    StarterService.new
   end
 
 end
