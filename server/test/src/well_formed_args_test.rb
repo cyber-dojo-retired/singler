@@ -344,8 +344,6 @@ class WellFormedArgsTest < TestBase
     ]
   end
 
-=begin
-
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
   # was_tag
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -389,6 +387,5 @@ class WellFormedArgsTest < TestBase
       assert_equal expected, error.message, malformed
     end
   end
-=end
 
 end

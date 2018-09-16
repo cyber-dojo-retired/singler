@@ -39,6 +39,14 @@ class RackDispatcherTest < TestBase
       'ArgumentError',
       'id:malformed'
     )
+    assert_dispatch_raises('tag_visible_files',
+      {  id: well_formed_id,
+        tag: malformed_tag
+      },
+      500,
+      'ArgumentError',
+      'tag:malformed'
+    )
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -131,10 +139,12 @@ class RackDispatcherTest < TestBase
     )
   end
 
+  # - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   test 'E81',
   'dispatch to tag_visible_files' do
     assert_dispatch('tag_visible_files',
-      { id: well_formed_id,
+      {  id: well_formed_id,
         tag: well_formed_tag
       },
       'hello from StorerStub.tag_visible_files'
@@ -143,19 +153,16 @@ class RackDispatcherTest < TestBase
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-=begin
-  test 'E70',
+  test 'E82',
   'dispatch to tags_visible_files' do
     assert_dispatch('tags_visible_files',
-      { kata_id:well_formed_kata_id,
-        avatar_name:well_formed_avatar_name,
-        was_tag:well_formed_was_tag,
-        now_tag:well_formed_now_tag
+      {      id: well_formed_id,
+        was_tag: well_formed_was_tag,
+        now_tag: well_formed_now_tag
       },
       'hello from StorerStub.tags_visible_files'
     )
   end
-=end
 
 =begin
   test 'E68',
@@ -175,6 +182,10 @@ class RackDispatcherTest < TestBase
 
   def malformed_id
     '==' # ! Base58 String
+  end
+
+  def malformed_tag
+    'sdsd' # !Integer
   end
 
   def well_formed_id
@@ -213,13 +224,13 @@ class RackDispatcherTest < TestBase
     4
   end
 
-  #def well_formed_was_tag
-  #  7
-  #end
+  def well_formed_was_tag
+    7
+  end
 
-  #def well_formed_now_tag
-  #  8
-  #end
+  def well_formed_now_tag
+    8
+  end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 

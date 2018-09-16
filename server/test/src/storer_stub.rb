@@ -49,9 +49,9 @@ class StorerStub
     "hello from #{self.class.name}.#{__method__}"
   end
 
-  #def tags_visible_files(_,_,_)
-  #  "hello from #{self.class.name}.#{__method__}"
-  #end
+  def tags_visible_files(_,_,_)
+    "hello from #{self.class.name}.#{__method__}"
+  end
 
   #def tag_fork(_,_,_,_)
   #  "hello from #{self.class.name}.#{__method__}"

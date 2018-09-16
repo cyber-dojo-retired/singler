@@ -50,6 +50,10 @@ class TestBase < HexMiniTest
     singler.tag_visible_files(id, tag)
   end
 
+  def tags_visible_files(id, was_tag, now_tag)
+    singler.tags_visible_files(id, was_tag, now_tag)
+  end
+
   #- - - - - - - - - - - - - - -
 
   def create_manifest
