@@ -388,4 +388,18 @@ class WellFormedArgsTest < TestBase
     end
   end
 
+  private
+
+
+  def bare_manifest
+    {
+      'display_name' => 'C (gcc), assert',
+      'visible_files' => { 'cyber-dojo.sh' => 'make' },
+      'image_name' => 'cyberdojofoundation/gcc_assert',
+      'runner_choice' => 'stateless',
+      'created' => [2018,3,28, 11,31,45],
+      'filename_extension' => [ '.c', '.h' ]
+    }.dup
+  end
+
 end

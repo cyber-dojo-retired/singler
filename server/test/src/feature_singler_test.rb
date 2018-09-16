@@ -78,9 +78,7 @@ class ExistsTest < TestBase
 
   test '393',
   'id_completed returns id when unique completion' do
-    stub_id = 'E4ABB48CA4'
-    stub_id_generator.stub(stub_id)
-    id = create(create_manifest)
+    id = stub_create('E4ABB48CA4')
     partial_id = id[0...6]
     assert_equal id, id_completed(partial_id)
   end
@@ -114,9 +112,7 @@ class ExistsTest < TestBase
 
   test '397',
   'id_completions when a single completion' do
-    stub_id = '7CA8A87A2B'
-    stub_id_generator.stub(stub_id)
-    id = create(create_manifest)
+    id = stub_create('7CA8A87A2B')
     outer_id = id[0...2]
     assert_equal [id], id_completions(outer_id)
   end
@@ -161,10 +157,7 @@ class ExistsTest < TestBase
 
   test '825',
   'after ran_tests() there is one more tag and one more traffic-light' do
-    stub_id = '9DD618D263'
-    stub_id_generator.stub(stub_id)
-    id = create(create_manifest)
-    assert_equal stub_id, id, 'stub_id'
+    id = stub_create('9DD618D263')
 
     lights = [
       { 'event'  => 'created',
@@ -190,9 +183,7 @@ class ExistsTest < TestBase
 
   test '826',
   'visible_files are retrievable by implicit current-tag' do
-    stub_id = '79608F899B'
-    stub_id_generator.stub(stub_id)
-    id = create(create_manifest)
+    id = stub_create('79608F899B')
 
     actual = visible_files(id)
     diagnostic = "#0 visible_files(#{id})"
@@ -211,9 +202,7 @@ class ExistsTest < TestBase
 
   test '827',
   'visible_files are retrievable by explicit tag' do
-    stub_id = '02238A79A3'
-    stub_id_generator.stub(stub_id)
-    id = create(create_manifest)
+    id = stub_create('02238A79A3')
 
     actual = tag_visible_files(id, 0)
     diagnostic = "tag_visible_files(#{id},0)"
@@ -231,10 +220,8 @@ class ExistsTest < TestBase
   # - - - - - - - - - - - - - - - - - - - - -
 
   test '828',
-  'visible_files are retrievable by explicit tag -1' do
-    stub_id = '41B318D009'
-    stub_id_generator.stub(stub_id)
-    id = create(create_manifest)
+  'visible_files are retrievable by explicit tag -1 (most recent)' do
+    id = stub_create('41B318D009')
 
     actual = tag_visible_files(id, -1)
     diagnostic = "#0 tag_visible_files(#{id},-1)"
@@ -254,9 +241,7 @@ class ExistsTest < TestBase
   test '829',
   'two sets of visible files can be retrieved at once' do
     # Batch-Method optimization for differ
-    stub_id = 'D1620CC63B'
-    stub_id_generator.stub(stub_id)
-    id = create(create_manifest)
+    id = stub_create('D1620CC63B')
 
     ran_tests(*make_args(id, edited_files))
 
@@ -289,13 +274,10 @@ class ExistsTest < TestBase
 
   test '927',
   'tag_visible_files raises when tag does not exist' do
-    stub_id = '53A8779B07'
-    stub_id_generator.stub(stub_id)
-    id = create(create_manifest)
-    assert_equal stub_id, id
+    id = stub_create('53A8779B07')
 
     error = assert_raises(ArgumentError) {
-      tag_visible_files(stub_id, 1)
+      tag_visible_files(id, 1)
     }
     assert_equal 'tag:invalid', error.message
   end
@@ -304,18 +286,24 @@ class ExistsTest < TestBase
 
   test '928',
   'tags_visible_files raises when now_tag does not exist' do
-    stub_id = 'E05D5FB3CA'
-    stub_id_generator.stub(stub_id)
-    id = create(create_manifest)
-    assert_equal stub_id, id
+    id = stub_create('E05D5FB3CA')
 
     error = assert_raises(ArgumentError) {
-      tags_visible_files(stub_id, 0, 1)
+      tags_visible_files(id, 0, 1)
     }
     assert_equal 'tag:invalid', error.message
   end
 
   private
+
+  def stub_create(stub_id)
+    stub_id_generator.stub(stub_id)
+    id = create(create_manifest)
+    assert_equal stub_id, id
+    id
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - -
 
   def assert_visible_files(expected, actual, output, diagnostic)
     assert actual.keys.include?('output'), diagnostic + ' [output]'
@@ -332,7 +320,8 @@ class ExistsTest < TestBase
   end
 
   def starting_files
-    create_manifest['visible_files']
+    manifest = create_manifest
+    manifest['visible_files']
   end
 
   def edited_files

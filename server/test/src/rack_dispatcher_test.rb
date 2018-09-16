@@ -55,7 +55,7 @@ class RackDispatcherTest < TestBase
   test 'E5C',
   'dispatch to create' do
     assert_dispatch('create',
-      { manifest: bare_manifest },
+      { manifest: create_manifest },
       'hello from StorerStub.create'
     )
   end
