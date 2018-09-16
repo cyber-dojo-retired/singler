@@ -126,16 +126,9 @@ class Singler
     end
     assert_tag_exists(id, tag)
     if tag == 0 # tag zero is a special case
-      return manifest(id)['visible_files']
-    end
-    dir = tag_dir(id, tag)
-    if dir.exists? # new non-git-format
+      manifest(id)['visible_files']
+    else
       read_tag_files(id, tag)
-    else # old git-format
-      path = id_path(id)
-      git = "git show #{tag}:#{manifest_filename}"
-      src = shell.cd_exec(path, git)[0]
-      JSON.parse(src)
     end
   end
 

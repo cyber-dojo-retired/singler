@@ -159,22 +159,12 @@ class ExistsTest < TestBase
 
   # - - - - - - - - - - - - - - - - - - - - -
 
-  test '824',
-  'visible_files raises when id does not exist' do
-    error = assert_raises(ArgumentError) {
-      visible_files('B4AB376BE2')
-    }
-    assert_equal 'id:invalid', error.message
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - -
-
   test '825', %w(
     after ran_tests():
     there is one more tag,
     one more traffic-light,
-    visible_files are retrievable by implicit current-tag,
-    visible_files are retrievable by explicit tag
+    visible_files are retrievable
+    by implicit current-tag, by explicit tag, by -1
   ) do
     was_tag = 0
 
@@ -195,18 +185,24 @@ class ExistsTest < TestBase
     assert_equal lights, increments(id), diagnostic
 
     vfiles = visible_files(id)
-    tag_vfiles = tag_visible_files(id, was_tag)
-
     diagnostic =  'visible_files(id) [output] #0'
     assert vfiles.keys.include?('output'), diagnostic
+
+    tag_vfiles = tag_visible_files(id, was_tag)
     tag_diagnostic = 'tag_visible_files(id,0) [output]'
     assert tag_vfiles.keys.include?('output'), tag_diagnostic
+
+    tag_minus_one_vfiles = tag_visible_files(id, -1)
+    tag_diagnostic = 'tag_visible_files(id,-1) [output]'
+    assert tag_minus_one_vfiles.keys.include?('output'), tag_diagnostic
 
     starting_files.each do |filename,content|
       diagnostic = "visible_files(id) [#{filename}] #0"
       assert_equal content, vfiles[filename], diagnostic
       tag_diagnostic = "tag_visible_files(id,0) [#{filename}]"
       assert_equal content, tag_vfiles[filename], tag_diagnostic
+      tag_diagnostic = "tag_visible_files(id,-1) [#{filename}]"
+      assert_equal content, tag_minus_one_vfiles[filename], tag_diagnostic
     end
 
     ran_tests(*make_args(id, edited_files))
@@ -221,24 +217,55 @@ class ExistsTest < TestBase
     assert_equal lights, increments(id),
 
     vfiles = visible_files(id)
-    tag_vfiles = tag_visible_files(id, now_tag)
-
     diagnostic = 'visible_files(id) [output] #1'
     assert_equal stdout+stderr, vfiles['output'], diagnostic
+
+    tag_vfiles = tag_visible_files(id, now_tag)
     tag_diagnostic = 'tag_visible_files(id,1) [output]'
     assert_equal stdout+stderr, tag_vfiles['output'], tag_diagnostic
+
+    tag_minus_one_vfiles = tag_visible_files(id, -1)
+    tag_diagnostic = 'tag_visible_files(id,-1) [output]'
+    assert tag_minus_one_vfiles.keys.include?('output'), tag_diagnostic
 
     edited_files.each do |filename,content|
       diagnostic = "visible_files(id,1) [#{filename}]"
       assert_equal content, vfiles[filename], diagnostic
       tag_diagnostic = "tag_visible_files(id,1) [#{filename}]"
       assert_equal content, tag_vfiles[filename], tag_diagnostic
+      tag_diagnostic = "tag_visible_files(id,-1) [#{filename}]"
+      assert_equal content, tag_minus_one_vfiles[filename], tag_diagnostic
     end
 
     # both tags at once
     #hash = tags_visible_files(id, was_tag, now_tag)
     #assert_hash_equal was_tag_visible_files, hash['was_tag']
     #assert_hash_equal now_tag_visible_files, hash['now_tag']
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - -
+
+  test '826',
+  'visible_files raises when id does not exist' do
+    error = assert_raises(ArgumentError) {
+      visible_files('B4AB376BE2')
+    }
+    assert_equal 'id:invalid', error.message
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - -
+
+  test '827',
+  'tag_visible_files raises when tag does not exist' do
+    stub_id = '53A8779B07'
+    stub_id_generator.stub(stub_id)
+    id = create(create_manifest)
+    assert_equal stub_id, id
+
+    error = assert_raises(ArgumentError) {
+      tag_visible_files(stub_id, 1)
+    }
+    assert_equal 'tag:invalid', error.message
   end
 
   private
