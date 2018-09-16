@@ -163,9 +163,7 @@ class ExistsTest < TestBase
   'after ran_tests() there is one more tag and one more traffic-light' do
     stub_id = '9DD618D263'
     stub_id_generator.stub(stub_id)
-    m = create_manifest
-    starting_files = m['visible_files']
-    id = create(m)
+    id = create(create_manifest)
     assert_equal stub_id, id, 'stub_id'
 
     lights = [
@@ -194,9 +192,7 @@ class ExistsTest < TestBase
   'visible_files are retrievable by implicit current-tag' do
     stub_id = '79608F899B'
     stub_id_generator.stub(stub_id)
-    m = create_manifest
-    starting_files = m['visible_files']
-    id = create(m)
+    id = create(create_manifest)
 
     actual = visible_files(id)
     diagnostic = "#0 visible_files(#{id})"
@@ -217,9 +213,7 @@ class ExistsTest < TestBase
   'visible_files are retrievable by explicit tag' do
     stub_id = '02238A79A3'
     stub_id_generator.stub(stub_id)
-    m = create_manifest
-    starting_files = m['visible_files']
-    id = create(m)
+    id = create(create_manifest)
 
     actual = tag_visible_files(id, 0)
     diagnostic = "tag_visible_files(#{id},0)"
@@ -240,9 +234,7 @@ class ExistsTest < TestBase
   'visible_files are retrievable by explicit tag -1' do
     stub_id = '41B318D009'
     stub_id_generator.stub(stub_id)
-    m = create_manifest
-    starting_files = m['visible_files']
-    id = create(m)
+    id = create(create_manifest)
 
     actual = tag_visible_files(id, -1)
     diagnostic = "#0 tag_visible_files(#{id},-1)"
@@ -264,9 +256,7 @@ class ExistsTest < TestBase
     # Batch-Method optimization for differ
     stub_id = 'D1620CC63B'
     stub_id_generator.stub(stub_id)
-    m = create_manifest
-    starting_files = m['visible_files']
-    id = create(m)
+    id = create(create_manifest)
 
     ran_tests(*make_args(id, edited_files))
 
@@ -339,6 +329,10 @@ class ExistsTest < TestBase
 
   def make_args(id, files)
     [ id, files, time_now, stdout, stderr, red ]
+  end
+
+  def starting_files
+    create_manifest['visible_files']
   end
 
   def edited_files
