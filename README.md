@@ -23,6 +23,9 @@ API:
 - [GET id_completed](#get-id_completed)
 - [GET id_completions](#get-id_completions)
 - [POST ran_tests](#post-ran_tests)
+- [GET increments](#get-increments)
+- [GET visible_files](#get-visible_files)
+- [GET tag_visible_files](#get-tag_visible_files)
 
 - - - -
 
@@ -174,6 +177,72 @@ Returns increments, eg
       {  "event": "created", "time": [2016,12,5, 11,15,18], "number": 0 },
       { "colour": "red,      "time": [2016,12,6, 12,31,15], "number": 1 }
     ]
+  }
+```
+
+- - - -
+
+## GET increments
+Returns details of all traffic-lights, for the practice-session
+with the given id.
+- parameters, eg
+```
+  { "id": "A551C528C3" }
+```
+- returns, eg
+```
+  { "increments": [
+      {  "event": "created", "time": [2016,12,5, 11,15,18], "number": 0 },
+      { "colour": "red,      "time": [2016,12,6, 12,31,15], "number": 1 },
+      { "colour": "green",   "time": [2016,12,6, 12,32,56], "number": 2 },
+      { "colour": "amber",   "time": [2016,12,6, 12,43,19], "number": 3 }
+    ]
+  }
+```
+
+- - - -
+
+## GET visible_files
+Returns the most recent set of visible files, for the practice-session
+with the given id.
+- parameters, eg
+```
+  { "id": "A551C528C3" }
+```
+- returns, eg
+```
+  { "visible_files": {
+            "hiker.h" : "ifndef HIKER_INCLUDED\n...",
+            "hiker.c" : "#include \"hiker.h\"...",
+      "hiker.tests.c" : "#include <assert.h>...",
+       "instructions" : "Write a program that...",
+           "makefile" : "CFLAGS += -I. -Wall...",
+      "cyber-dojo.sh" : "make"
+    }
+  }
+```
+
+- - - -
+
+## GET tag_visible_files
+Returns the set of visible files, for the practice-session with the given id,
+with the given tag number.
+- parameters, eg
+```
+  {  "id": "A551C528C3",
+    "tag": 2
+  }
+```
+- returns, eg
+```
+  { "tag_visible_files": {
+             "hiker.h" : "#ifndef HIKER_INCLUDED\n...",
+             "hiker.c" : "#include \"hiker.h\"\n...",
+       "hiker.tests.c" : "#include <assert.h>\n...",
+        "instructions" : "Write a program that...",
+            "makefile" : "CFLAGS += -I. -Wall...",
+       "cyber-dojo.sh" : "make"
+    }
   }
 ```
 
