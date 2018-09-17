@@ -31,7 +31,7 @@ class WellFormedArgsTest < TestBase
 
   test '591',
   'manifest does not raise when well-formed' do
-    manifest = bare_manifest
+    manifest = create_manifest
     json = { manifest:manifest }.to_json
     assert_equal manifest, WellFormedArgs.new(json).manifest
     manifest['filename_extension'] = '.c'
@@ -53,28 +53,28 @@ class WellFormedArgsTest < TestBase
   def malformed_manifests
     bad_time = [2018,-3,28, 11,33,13]
     [
-      [],                                              # ! Hash
-      {},                                              # required key missing
-      bare_manifest.merge({x:'unknown'}),              # unknown key
-      bare_manifest.merge({display_name:42}),          # ! String
-      bare_manifest.merge({image_name:42}),            # ! String
-      bare_manifest.merge({runner_choice:42}),         # ! String
-      bare_manifest.merge({filename_extension:true}),  # ! String && ! Array
-      bare_manifest.merge({filename_extension:{}}),    # ! String && ! Array
-      bare_manifest.merge({exercise:true}),            # ! String
-      bare_manifest.merge({visible_files:[]}),         # ! Hash
-      bare_manifest.merge({visible_files:{
+      [],                                                # ! Hash
+      {},                                                # required key missing
+      create_manifest.merge({x:'unknown'}),              # unknown key
+      create_manifest.merge({display_name:42}),          # ! String
+      create_manifest.merge({image_name:42}),            # ! String
+      create_manifest.merge({runner_choice:42}),         # ! String
+      create_manifest.merge({filename_extension:true}),  # ! String && ! Array
+      create_manifest.merge({filename_extension:{}}),    # ! String && ! Array
+      create_manifest.merge({exercise:true}),            # ! String
+      create_manifest.merge({visible_files:[]}),         # ! Hash
+      create_manifest.merge({visible_files:{
         'cyber-dojo.sh':42                     # file content must be String
       }}),
-      bare_manifest.merge({highlight_filenames:1}),    # ! Array of Strings
-      bare_manifest.merge({highlight_filenames:[1]}),  # ! Array of Strings
-      bare_manifest.merge({progress_regexs:{}}),       # ! Array of Strings
-      bare_manifest.merge({progress_regexs:[1]}),      # ! Array of Strings
-      bare_manifest.merge({tab_size:true}),            # ! Integer
-      bare_manifest.merge({max_seconds:nil}),          # ! Integer
-      bare_manifest.merge({created:nil}),              # ! Array of 6 Integers
-      bare_manifest.merge({created:['s']}),            # ! Array of 6 Integers
-      bare_manifest.merge({created:bad_time}),         # ! Time
+      create_manifest.merge({highlight_filenames:1}),    # ! Array of Strings
+      create_manifest.merge({highlight_filenames:[1]}),  # ! Array of Strings
+      create_manifest.merge({progress_regexs:{}}),       # ! Array of Strings
+      create_manifest.merge({progress_regexs:[1]}),      # ! Array of Strings
+      create_manifest.merge({tab_size:true}),            # ! Integer
+      create_manifest.merge({max_seconds:nil}),          # ! Integer
+      create_manifest.merge({created:nil}),              # ! Array of 6 Integers
+      create_manifest.merge({created:['s']}),            # ! Array of 6 Integers
+      create_manifest.merge({created:bad_time}),         # ! Time
     ]
   end
 
@@ -386,20 +386,6 @@ class WellFormedArgsTest < TestBase
       error = assert_raises { wfa.now_tag }
       assert_equal expected, error.message, malformed
     end
-  end
-
-  private
-
-
-  def bare_manifest
-    {
-      'display_name' => 'C (gcc), assert',
-      'visible_files' => { 'cyber-dojo.sh' => 'make' },
-      'image_name' => 'cyberdojofoundation/gcc_assert',
-      'runner_choice' => 'stateless',
-      'created' => [2018,3,28, 11,31,45],
-      'filename_extension' => [ '.c', '.h' ]
-    }.dup
   end
 
 end

@@ -161,41 +161,16 @@ class SinglerServiceTest < TestBase
     singler.ran_tests(id, files, now, stdout, stderr, colour)
   end
 
-  # - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-=begin
-  test '5EE',
-  'you can fork from any tag' do
-    id = '420B05BA0A' # dolphin
-    tag = 20
-    now = [2018,3,16, 9,57,19]
-    forked_id = singler.tag_fork(id, tag, now)
-    refute_equal forked_id, id
-  end
-=end
-
   private
 
   def make_manifest
-    {
-      'display_name' => 'C (gcc), assert',
-      'image_name' => 'cyberdojofoundation/gcc_assert',
-      'visible_files' => starting_files,
-      'created' => creation_time,
-      'exercise' => 'Fizz_Buzz',
-      'max_seconds' => 10,
-      'runner_choice' => 'stateless',
-      'filename_extension' => [ '.c', '.h' ],
-      'tab_size' => 4
-    }
+    manifest = starter.language_manifest('C (gcc), assert', 'Fizz_Buzz')
+    manifest['created'] = creation_time
+    manifest
   end
 
   def starting_files
-    {
-      'cyber-dojo.sh' => 'gcc',
-      'hiker.c'       => '#include "hiker.h"',
-      'hiker.h'       => '#include <stdio.h>'
-    }.dup
+    make_manifest['visible_files']
   end
 
   def tag0

@@ -64,7 +64,7 @@ class Demo
   end
 
   def starting_files
-    make_manifest['visible_files'].dup
+    make_manifest['visible_files']
   end
 
   # - - - - - - - - - - - - - - - - -
