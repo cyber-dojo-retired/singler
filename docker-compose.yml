@@ -23,7 +23,7 @@ services:
       context: server
       args:
         - SHA
-    user: nobody #singler
+    user: singler
     image: cyberdojo/singler
     init: true
     container_name: test-singler-server
@@ -31,12 +31,12 @@ services:
     tmpfs: /tmp
     restart: 'no'
     volumes:
-      - /tmp:/persistent-dir
+      - /tmp/persistent-dir:/persistent-dir
     depends_on:
       - starter
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # starter is handy in tests for creating kata-manifests
+  # starter is handy in tests for creating start-point manifests
 
   starter:
     user: nobody
