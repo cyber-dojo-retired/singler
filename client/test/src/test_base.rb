@@ -1,49 +1,66 @@
-require_relative 'external_disk'
-require_relative 'external_sheller'
 require_relative 'hex_mini_test'
-require_relative 'storer_service'
-require_relative '../../src/zipper_service'
+require_relative '../../src/singler_service'
 
 class TestBase < HexMiniTest
 
-  def zipper
-    @zipper ||= ZipperService.new
+  def singler
+    SinglerService.new
   end
 
-  def storer
-    @storer ||= StorerService.new(self)
+=begin
+  def sha
+    singler.sha
   end
 
-  def shell
-    @shell ||= ExternalSheller.new(self)
+  # - - - - - - - - - - - -
+
+  def create(manifest)
+    singler.create(manifest)
   end
 
-  def disk
-    @disk ||= ExternalDisk.new(self)
+  def manifest(id)
+    singler.manifest(id)
   end
 
-  # - - - - - - - - - - - - - - - - - - -
+  # - - - - - - - - - - - -
 
-  def zip(kata_id)
-    zipper.zip(kata_id)
+  def id?(id)
+    singler.ids?(id)
   end
 
-  def unstarted_kata_id
-    'DADD67B4EF' # C (gcc), assert [no progress_regexs]
+  def id_completed(partial_id)
+    singler.completed(partial_id)
   end
 
-  def started_kata_args
-    [
-      # C (gcc), assert [no progress_regexs]
-      ['F6986222F0', 'spider',    0],
-      ['697C14EDF4', 'turtle',    3],
-      ['7AF23949B7', 'alligator', 3],
-      ['7AF23949B7', 'heron',     3],
-      ['7AF23949B7', 'squid',     3],
-      # C (gcc), CppUTest [has progress_regexs]
-      ['9EEBD21136', 'turtle',    3],
-      ['3FAFDE61E4', 'lion',      7]
-    ]
+  def id_completions(outer_id)
+    singler.completions(outer_id)
   end
+
+  # - - - - - - - - - - - -
+
+  def ran_tests(id, files, now, stdout, stderr, colour)
+    singler.ran_tests(id, files, now, stdout, stderr, colour)
+  end
+
+  def increments(id)
+    singler.increments(id)
+  end
+
+  # - - - - - - - - - - - -
+
+  def visible_files(id)
+    singler.visible_files(id)
+  end
+
+  def tag_visible_files(id, tag)
+    singler.tag_visible_files(id, tag)
+  end
+
+  def tags_visible_files(id, was_tag, now_tag)
+    singler.tags_visible_files(id, was_tag, now_tag)
+  end
+=end
+
+  private
 
 end
