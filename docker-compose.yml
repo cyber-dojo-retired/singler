@@ -31,7 +31,7 @@ services:
     tmpfs: /tmp
     restart: 'no'
     volumes:
-      - /tmp/persistent-dir:/persistent-dir
+      - /tmp/persistent-dir/ids:/persistent-dir/ids
     depends_on:
       - starter
 

@@ -11,7 +11,7 @@ RUN adduser \
   -u 19662 `# user-id`     \
   singler  `# user-name`
 
-ARG                   SINGLER_HOME=/app
+ARG                     SINGLER_HOME=/app
 COPY .                ${SINGLER_HOME}
 RUN  chown -R singler ${SINGLER_HOME}
 

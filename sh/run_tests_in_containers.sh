@@ -3,10 +3,10 @@
 readonly ROOT_DIR="$( cd "$( dirname "${0}" )" && cd .. && pwd )"
 readonly MY_NAME="${ROOT_DIR##*/}"
 
-readonly SINGLER_COVERAGE_ROOT=/tmp/coverage
-
 readonly SERVER_CID=`docker ps --all --quiet --filter "name=${MY_NAME}-server"`
 readonly CLIENT_CID=`docker ps --all --quiet --filter "name=${MY_NAME}-client"`
+
+readonly SINGLER_COVERAGE_ROOT=/tmp/coverage
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -15,7 +15,7 @@ run_server_tests()
   docker exec \
     --user root \
     "${SERVER_CID}" \
-      sh -c 'chown -R singler /persistent-dir'
+      sh -c 'chown -R singler /persistent-dir/ids'
 
   docker exec \
     --env SINGLER_COVERAGE_ROOT=${SINGLER_COVERAGE_ROOT} \
