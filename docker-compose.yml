@@ -14,7 +14,10 @@ services:
     tmpfs: /tmp
     restart: 'no'
     depends_on:
+      - starter
       - singler
+    ports:
+      - 4518:4518
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
