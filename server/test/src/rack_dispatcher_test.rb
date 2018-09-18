@@ -168,8 +168,7 @@ class RackDispatcherTest < TestBase
   test 'E68',
   'dispatch to tag_fork' do
     assert_dispatch('tag_fork',
-      { kata_id:well_formed_kata_id,
-        avatar_name:well_formed_avatar_name,
+      { id:well_formed_id,
         tag:well_formed_tag,
         now:well_formed_now
       },

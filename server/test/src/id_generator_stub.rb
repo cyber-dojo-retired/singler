@@ -5,8 +5,8 @@ class IdGeneratorStub
     @stubbed = []
   end
 
-  def stub(*kata_ids)
-    @stubbed = kata_ids
+  def stub(*ids)
+    @stubbed = ids
   end
 
   def generate

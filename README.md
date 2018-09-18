@@ -7,6 +7,7 @@ alt="cyber-dojo yin/yang logo" width="50px" height="50px"/>
 # cyberdojo/singler docker image
 
 - A docker-containerized micro-service for [cyber-dojo](http://cyber-dojo.org).
+- Creates individual practice sessions.
 - Stores the visible files, output, and traffic-light status of every test event.
 - Work in progress - not yet used
 
@@ -66,7 +67,7 @@ Creates a practice-session from the given json manifest.
       }
     }
 ```
-- returns the id of the kata created from the given manifest, eg
+- returns the id of the practice session created from the given manifest, eg
 ```
   { "create": "A551C528C3"
   }
