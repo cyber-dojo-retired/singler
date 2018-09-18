@@ -1,6 +1,6 @@
 require_relative 'http_json_service'
 
-class StarterService
+class ExternalStarter
 
   def language_manifest(display_name, exercise_name)
     json = get([display_name, exercise_name], __method__)

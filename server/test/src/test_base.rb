@@ -1,5 +1,5 @@
 require_relative 'hex_mini_test'
-require_relative 'starter_service'
+require_relative 'external_starter'
 require_relative '../../src/externals'
 
 class TestBase < HexMiniTest
@@ -59,7 +59,7 @@ class TestBase < HexMiniTest
   #- - - - - - - - - - - - - - -
 
   def create_manifest
-    starter = StarterService.new
+    starter = ExternalStarter.new
     manifest = starter.language_manifest('C (gcc), assert', 'Fizz_Buzz')
     manifest['created'] = creation_time
     manifest
