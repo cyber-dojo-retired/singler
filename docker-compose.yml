@@ -35,6 +35,7 @@ services:
     restart: 'no'
     volumes:
       - /tmp/persistent-dir/ids:/persistent-dir/ids
+    # for tests
     depends_on:
       - starter
 
