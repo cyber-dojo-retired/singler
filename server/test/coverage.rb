@@ -10,4 +10,4 @@ SimpleCov.start do
 end
 
 SimpleCov.root cov_root
-SimpleCov.coverage_dir ENV['SINGLER_COVERAGE_ROOT']
+SimpleCov.coverage_dir ENV['COVERAGE_ROOT']
