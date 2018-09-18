@@ -121,7 +121,7 @@ Asks whether the practice-session with the given id exists.
 - - - -
 
 ## GET id_completed
-If it exists, returns the 10-digit pratice-session id which uniquely
+If it exists, returns the 10-digit practice-session id which uniquely
 completes the given partial_id, otherwise returns the empty string.
 - parameter, the partial-id to complete, eg
 ```
