@@ -27,7 +27,7 @@ class Singler
         'number' => 0
       }
     write_increments(id, [tag0])
-    write_tag_files(id, tag=0, manifest['visible_files'])
+    write_tag_files(id, 0, manifest['visible_files'])
     id
   end
 
