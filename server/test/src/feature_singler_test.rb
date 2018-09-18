@@ -1,7 +1,7 @@
 require_relative 'test_base'
 require_relative 'id_generator_stub'
 
-class ExistsTest < TestBase
+class FeatureSinglerTest < TestBase
 
   def self.hex_prefix
     '97431'
@@ -89,7 +89,7 @@ class ExistsTest < TestBase
   #- - - - - - - - - - - - - - - - - - - - - -
 
   test '394',
-  'id_completed return empty-string when no completion' do
+  'id_completed returns empty-string when no completion' do
     partial_id = 'AC9A0215C9'
     assert_equal '', id_completed(partial_id)
   end
