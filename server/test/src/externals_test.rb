@@ -16,7 +16,6 @@ class ExternalsTest < TestBase
     assert_equal 'ExternalStdoutLogger', externals.logger.class.name
     assert_equal 'ExternalBashSheller',  externals.shell.class.name
     assert_equal 'ExternalIdGenerator',  externals.id_generator.class.name
-
   end
 
 end
