@@ -1,6 +1,6 @@
 require_relative 'test_base'
 require_relative 'rack_request_stub'
-require_relative 'storer_stub'
+require_relative 'singler_stub'
 require_relative '../../src/rack_dispatcher'
 
 class RackDispatcherTest < TestBase
@@ -14,7 +14,7 @@ class RackDispatcherTest < TestBase
   test 'E41',
   'dispatch to sha' do
     assert_dispatch('sha', {},
-      'hello from StorerStub.sha'
+      'hello from SinglerStub.sha'
     )
   end
 
@@ -56,7 +56,7 @@ class RackDispatcherTest < TestBase
   'dispatch to create' do
     assert_dispatch('create',
       { manifest: create_manifest },
-      'hello from StorerStub.create'
+      'hello from SinglerStub.create'
     )
   end
 
@@ -66,7 +66,7 @@ class RackDispatcherTest < TestBase
   'dispatch to manifest' do
     assert_dispatch('manifest',
       { id: well_formed_id },
-      'hello from StorerStub.manifest'
+      'hello from SinglerStub.manifest'
     )
   end
 
@@ -77,7 +77,7 @@ class RackDispatcherTest < TestBase
   'dispatch to id' do
     assert_dispatch('id',
       { id: well_formed_id },
-      'hello from StorerStub.id?'
+      'hello from SinglerStub.id?'
     )
   end
 
@@ -87,7 +87,7 @@ class RackDispatcherTest < TestBase
   'dispatch to id_completed' do
     assert_dispatch('id_completed',
       { partial_id: well_formed_partial_id},
-      'hello from StorerStub.id_completed'
+      'hello from SinglerStub.id_completed'
     )
   end
 
@@ -97,7 +97,7 @@ class RackDispatcherTest < TestBase
   'dispatch to id_completions' do
     assert_dispatch('id_completions',
       { outer_id: well_formed_outer_id},
-      'hello from StorerStub.id_completions'
+      'hello from SinglerStub.id_completions'
     )
   end
 
@@ -114,7 +114,7 @@ class RackDispatcherTest < TestBase
         stderr: well_formed_stderr,
         colour: well_formed_colour
       },
-      'hello from StorerStub.ran_tests'
+      'hello from SinglerStub.ran_tests'
     )
   end
 
@@ -124,7 +124,7 @@ class RackDispatcherTest < TestBase
   'dispatch to increments' do
     assert_dispatch('increments',
       { id: well_formed_id},
-      'hello from StorerStub.increments'
+      'hello from SinglerStub.increments'
     )
   end
 
@@ -135,7 +135,7 @@ class RackDispatcherTest < TestBase
   'dispatch to visible_files' do
     assert_dispatch('visible_files',
       { id: well_formed_id },
-      'hello from StorerStub.visible_files'
+      'hello from SinglerStub.visible_files'
     )
   end
 
@@ -147,7 +147,7 @@ class RackDispatcherTest < TestBase
       {  id: well_formed_id,
         tag: well_formed_tag
       },
-      'hello from StorerStub.tag_visible_files'
+      'hello from SinglerStub.tag_visible_files'
     )
   end
 
@@ -160,7 +160,7 @@ class RackDispatcherTest < TestBase
         was_tag: well_formed_was_tag,
         now_tag: well_formed_now_tag
       },
-      'hello from StorerStub.tags_visible_files'
+      'hello from SinglerStub.tags_visible_files'
     )
   end
 
@@ -172,7 +172,7 @@ class RackDispatcherTest < TestBase
         tag:well_formed_tag,
         now:well_formed_now
       },
-      'hello from StorerStub.tag_fork'
+      'hello from SinglerStub.tag_fork'
     )
   end
 =end
@@ -271,7 +271,7 @@ class RackDispatcherTest < TestBase
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   def rack_call(name, args)
-    rack = RackDispatcher.new(StorerStub.new, RackRequestStub)
+    rack = RackDispatcher.new(SinglerStub.new, RackRequestStub)
     env = { path_info:name, body:args.to_json }
     rack.call(env)
   end

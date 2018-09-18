@@ -1,5 +1,5 @@
 
-class StorerStub
+class SinglerStub
 
   def sha
     "hello from #{self.class.name}.#{__method__}"
