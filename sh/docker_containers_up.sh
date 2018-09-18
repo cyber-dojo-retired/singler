@@ -28,3 +28,4 @@ wait_till_up()
 
 wait_till_up 'test-singler-server'
 wait_till_up 'test-singler-client'
+wait_till_up 'test-singler-starter-server'
