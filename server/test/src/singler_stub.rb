@@ -1,60 +1,22 @@
+require_relative '../../src/singler'
 
 class SinglerStub
 
-  def sha
-    "hello from #{self.class.name}.#{__method__}"
+  def self.define_stubs(*names)
+    names.each do |name|
+      if Singler.new(nil).respond_to?(name)
+        define_method name do |*_args|
+          "hello from SinglerStub.#{name}"
+        end
+      end
+    end
   end
 
-  # - - - - - - - - - - - - - - - -
-
-  def create(_)
-    "hello from #{self.class.name}.#{__method__}"
-  end
-
-  def manifest(_)
-    "hello from #{self.class.name}.#{__method__}"
-  end
-
-  # - - - - - - - - - - - - - - - -
-
-  def id?(_)
-    "hello from #{self.class.name}.#{__method__}"
-  end
-
-  def id_completed(_)
-    "hello from #{self.class.name}.#{__method__}"
-  end
-
-  def id_completions(_)
-    "hello from #{self.class.name}.#{__method__}"
-  end
-
-  # - - - - - - - - - - - - - - - -
-
-  def ran_tests(_,_,_,_,_,_)
-    "hello from #{self.class.name}.#{__method__}"
-  end
-
-  def increments(_)
-    "hello from #{self.class.name}.#{__method__}"
-  end
-
-  # - - - - - - - - - - - - - - - -
-
-  def visible_files(_)
-    "hello from #{self.class.name}.#{__method__}"
-  end
-
-  def tag_visible_files(_,_)
-    "hello from #{self.class.name}.#{__method__}"
-  end
-
-  def tags_visible_files(_,_,_)
-    "hello from #{self.class.name}.#{__method__}"
-  end
-
-  #def tag_fork(_,_,_,_)
-  #  "hello from #{self.class.name}.#{__method__}"
-  #end
+  define_stubs :sha
+  define_stubs :create, :manifest
+  define_stubs :id?, :id_completed, :id_completions
+  define_stubs :ran_tests, :increments
+  define_stubs :visible_file, :visible_files
+  define_stubs :tag_visible_files, :tags_visible_files
 
 end
