@@ -35,8 +35,7 @@ class Singler
 
   def manifest(id)
     assert_id_exists(id)
-    dir = id_dir(id)
-    json_parse(dir.read(manifest_filename))
+    json_parse(id_dir(id).read(manifest_filename))
   end
 
   # - - - - - - - - - - - - - - - - - - -
@@ -48,29 +47,32 @@ class Singler
   # - - - - - - - - - - - - - - - - - - -
 
   def id_completed(partial_id)
-    outer_dir = disk[dir_join(path, outer(partial_id))]
+    outer_id = outer(partial_id)
+    inner_id = inner(partial_id)
+    outer_dir = disk[dir_join(path, outer_id)]
     unless outer_dir.exists?
       return ''
     end
     # Slower with more inner dirs.
     dirs = outer_dir.each_dir.select { |inner_dir|
-      inner_dir.start_with?(inner(partial_id))
+      inner_dir.start_with?(inner_id)
     }
     unless dirs.length == 1
       return ''
     end
-    outer(partial_id) + dirs[0] # success!
+    outer_id + dirs[0] # success!
   end
 
   # - - - - - - - - - - - - - - - - - - -
 
   def id_completions(outer_id)
     # for Batch-Method iteration over large number of practice-sessions...
-    unless disk[dir_join(path, outer_id)].exists?
+    outer_dir = disk[dir_join(path, outer_id)]
+    unless outer_dir.exists?
       return []
     end
-    disk[dir_join(path, outer_id)].each_dir.collect { |dir|
-      outer_id + dir
+    outer_dir.each_dir.collect { |inner_dir|
+      outer_id + inner_dir
     }
   end
 
@@ -79,11 +81,11 @@ class Singler
   def ran_tests(id, files, now, stdout, stderr, colour)
     assert_id_exists(id)
     increments = read_increments(id)
-    tag = most_recent_tag(id, increments) + 1
-    increments << { 'colour' => colour, 'time' => now, 'number' => tag }
+    next_tag = most_recent_tag(id, increments) + 1
+    increments << { 'colour' => colour, 'time' => now, 'number' => next_tag }
     write_increments(id, increments)
     files['output'] = stdout + stderr
-    write_tag_files(id, tag, files)
+    write_tag_files(id, next_tag, files)
     increments
   end
 
