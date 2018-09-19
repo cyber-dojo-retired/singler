@@ -6,7 +6,7 @@ class SinglerStub
     names.each do |name|
       if Singler.new(nil).respond_to?(name)
         define_method name do |*_args|
-          "hello from SinglerStub.#{name}"
+          "hello from #{self.class.name}.#{name}"
         end
       end
     end
