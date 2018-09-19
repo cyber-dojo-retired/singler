@@ -23,7 +23,7 @@ class SinglerTest < TestBase
   # sha
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  test '190', %w( sha is exposed via API ) do
+  test '190', %w( sha of image's git commit ) do
     assert_equal 40, sha.size
     sha.each_char do |ch|
       assert "0123456789abcdef".include?(ch)
@@ -35,7 +35,7 @@ class SinglerTest < TestBase
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '218',
-  'singler.path is set but in test there is no volume-mount so its emphemeral' do
+  %w( singler's path is set but in test there its volume-mounted to /tmp so its emphemeral ) do
     assert_equal '/persistent-dir/ids', singler.path
   end
 
@@ -54,7 +54,7 @@ class SinglerTest < TestBase
   #- - - - - - - - - - - - - - - - - - - - - -
 
   test '42E',
-  'manifest round-trip' do
+  'create-manifest round-trip' do
     stub_id = '0ADDE7572A'
     stub_id_generator.stub(stub_id)
     expected = create_manifest
