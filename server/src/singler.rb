@@ -156,8 +156,7 @@ class Singler
   end
 
   def read_tag_files(id, tag)
-    dir = tag_dir(id, tag)
-    json_parse(dir.read(manifest_filename))
+    json_parse(tag_dir(id, tag).read(manifest_filename))
   end
 
   def most_recent_tag(id, increments = nil)
@@ -205,12 +204,10 @@ class Singler
     dir_join(id_path(id), tag.to_s)
   end
 
+  # - - - - - - - - - - - - - -
+
   def dir_join(*args)
     File.join(*args)
-  end
-
-  def invalid(name)
-    fail ArgumentError.new("#{name}:invalid")
   end
 
   # - - - - - - - - - - - - - -
@@ -231,6 +228,12 @@ class Singler
 
   def id_generator
     @externals.id_generator
+  end
+
+  # - - - - - - - - - - - - - -
+
+  def invalid(name)
+    fail ArgumentError.new("#{name}:invalid")
   end
 
 end
