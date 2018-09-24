@@ -54,7 +54,7 @@ class SinglerTest < TestBase
   #- - - - - - - - - - - - - - - - - - - - - -
 
   test '42E',
-  'create-manifest round-trip' do
+  'create/manifest round-trip' do
     stub_id = '0ADDE7572A'
     stub_id_generator.stub(stub_id)
     expected = create_manifest

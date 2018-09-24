@@ -23,6 +23,8 @@ class WellFormedArgs
     arg.keys.each do |key|
       value = arg[key]
       case key
+      when 'group'
+        malformed unless is_base58?(value)
       when 'display_name', 'image_name', 'runner_choice', 'exercise'
         malformed unless value.is_a?(String)
       when 'visible_files'
@@ -70,8 +72,12 @@ class WellFormedArgs
 
   def id
     @arg_name = __method__.to_s
-    malformed unless Base58.string?(arg) && arg.length == 10
+    malformed unless is_base58?(arg)
     arg
+  end
+
+  def is_base58?(value)
+    Base58.string?(value) && value.length == 10
   end
 
   # - - - - - - - - - - - - - - - -
@@ -174,6 +180,7 @@ class WellFormedArgs
   end
 
   KNOWN_KEYS = REQUIRED_KEYS + %w(
+    group
     exercise
     filename_extension
     highlight_filenames

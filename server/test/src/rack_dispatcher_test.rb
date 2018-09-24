@@ -62,6 +62,18 @@ class RackDispatcherTest < TestBase
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  test 'E5D',
+  'create(manifest) can include group which holds group-id' do
+    manifest = create_manifest
+    manifest['group'] = '18Q67AFf62'
+    args = { manifest: manifest }
+    assert_dispatch('create', args,
+      'hello from SinglerStub.create'
+    )
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   test 'E5E',
   'dispatch to manifest' do
     assert_dispatch('manifest',
