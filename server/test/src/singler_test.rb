@@ -293,15 +293,6 @@ class SinglerTest < TestBase
 
   private
 
-  def stub_create(stub_id)
-    stub_id_generator.stub(stub_id)
-    id = create(create_manifest)
-    assert_equal stub_id, id
-    id
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - -
-
   def assert_visible_files(expected, actual, output, diagnostic)
     assert actual.keys.include?('output'), diagnostic + ' [output]'
     assert_equal output, actual['output']

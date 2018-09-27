@@ -58,6 +58,13 @@ class TestBase < HexMiniTest
 
   #- - - - - - - - - - - - - - -
 
+  def stub_create(stub_id)
+    stub_id_generator.stub(stub_id)
+    id = create(create_manifest)
+    assert_equal stub_id, id
+    id
+  end
+
   def create_manifest
     starter = ExternalStarter.new
     manifest = starter.language_manifest('C (gcc), assert', 'Fizz_Buzz')

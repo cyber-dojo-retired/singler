@@ -15,4 +15,32 @@ class ExternalIdGeneratorTest < TestBase
     assert_equal 10, id.size
   end
 
+  test '927',
+  'skips Base56 ids that the validator rejects' do
+    real_validator = externals.id_validator
+    externals.id_validator = stub = IdValidatorStub.new(3)
+    begin
+      id = externals.id_generator.generate
+      assert_equal 3, stub.count
+    ensure
+      externals.id_validator = real_validator
+    end
+  end
+
+  # - - - - - - - - - - - - - - - -
+
+  class IdValidatorStub
+    def initialize(n)
+      @n = n
+      @count = 0
+    end
+
+    attr_reader :count
+
+    def valid?(id)
+      @count += 1
+      @count >= @n
+    end
+  end
+
 end

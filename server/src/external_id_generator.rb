@@ -24,11 +24,11 @@ class ExternalIdGenerator
   private
 
   def valid?(id)
-    !singler.id?(id)
+    id_validator.valid?(id)
   end
 
-  def singler
-    @externals.singler
+  def id_validator
+    @externals.id_validator
   end
 
 end
