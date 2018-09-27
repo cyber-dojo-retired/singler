@@ -40,7 +40,7 @@ class SinglerTest < TestBase
   end
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # create(manifest) manifest(id)
+  # create() manifest()
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '42D',
@@ -57,8 +57,8 @@ class SinglerTest < TestBase
   'create/manifest round-trip' do
     stub_id = '0ADDE7572A'
     stub_id_generator.stub(stub_id)
-    expected = create_manifest
-    id = create(expected)
+    expected = starter.manifest
+    id = create(expected, starter.files)
     assert_equal stub_id, id
     expected['id'] = id
     actual = manifest(id)
@@ -191,7 +191,7 @@ class SinglerTest < TestBase
     actual = visible_files(id)
     diagnostic = "#0 visible_files(#{id})"
     output = ''
-    assert_visible_files(starting_files, actual, output, diagnostic)
+    assert_visible_files(starter.files, actual, output, diagnostic)
 
     ran_tests(*make_args(id, edited_files))
 
@@ -210,7 +210,7 @@ class SinglerTest < TestBase
     actual = tag_visible_files(id, 0)
     diagnostic = "tag_visible_files(#{id},0)"
     output = ''
-    assert_visible_files(starting_files, actual, output, diagnostic)
+    assert_visible_files(starter.files, actual, output, diagnostic)
 
     ran_tests(*make_args(id, edited_files))
 
@@ -229,7 +229,7 @@ class SinglerTest < TestBase
     actual = tag_visible_files(id, -1)
     diagnostic = "#0 tag_visible_files(#{id},-1)"
     output = ''
-    assert_visible_files(starting_files, actual, output, diagnostic)
+    assert_visible_files(starter.files, actual, output, diagnostic)
 
     ran_tests(*make_args(id, edited_files))
 
@@ -251,7 +251,7 @@ class SinglerTest < TestBase
     actual = hash['was_tag']
     diagnostic = "tags_visible_files(#{id},0,1)['was_tag']"
     output = ''
-    assert_visible_files(starting_files, actual, output, diagnostic)
+    assert_visible_files(starter.files, actual, output, diagnostic)
 
     actual = hash['now_tag']
     diagnostic = "tags_visible_files(#{id},0,1)['now_tag']"
@@ -305,11 +305,6 @@ class SinglerTest < TestBase
 
   def make_args(id, files)
     [ id, files, time_now, stdout, stderr, red ]
-  end
-
-  def starting_files
-    manifest = create_manifest
-    manifest['visible_files']
   end
 
   def edited_files

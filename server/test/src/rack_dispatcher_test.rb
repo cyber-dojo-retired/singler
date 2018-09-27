@@ -54,8 +54,11 @@ class RackDispatcherTest < TestBase
 
   test 'E5C',
   'dispatch to create' do
-    assert_dispatch('create',
-      { manifest: create_manifest },
+    args = {
+      manifest: starter.manifest,
+      files: starter.files
+    }
+    assert_dispatch('create', args,
       'hello from SinglerStub.create'
     )
   end
@@ -64,9 +67,12 @@ class RackDispatcherTest < TestBase
 
   test 'E5D',
   'create(manifest) can include group which holds group-id' do
-    manifest = create_manifest
+    manifest = starter.manifest
     manifest['group'] = '18Q67AFf62'
-    args = { manifest: manifest }
+    args = {
+      manifest: manifest,
+      files: starter.files
+    }
     assert_dispatch('create', args,
       'hello from SinglerStub.create'
     )

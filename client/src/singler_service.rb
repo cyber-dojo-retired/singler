@@ -8,8 +8,8 @@ class SinglerService
 
   # - - - - - - - - - - - -
 
-  def create(manifest)
-    post(__method__, manifest)
+  def create(manifest, files)
+    post(__method__, manifest, files)
   end
 
   def manifest(id)

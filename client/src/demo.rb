@@ -23,8 +23,11 @@ class Demo
 
   def create
     manifest = make_manifest
+    files = starting_files
     manifest['created'] = [2016,12,2, 6,13,23]
-    result,duration = *timed { @id = singler.create(manifest) }
+    result,duration = *timed {
+      @id = singler.create(manifest, files)
+    }
     @html += pre(__method__, result, duration)
   end
 

@@ -27,9 +27,6 @@ class WellFormedArgs
         malformed unless is_base56?(value)
       when 'display_name', 'image_name', 'runner_choice', 'exercise'
         malformed unless value.is_a?(String)
-      when 'visible_files'
-        malformed unless value.is_a?(Hash)
-        value.each { |_filename,content| malformed unless content.is_a?(String) }
       when 'highlight_filenames','progress_regexs','hidden_filenames'
         malformed unless value.is_a?(Array)
         value.each { |val|  malformed unless val.is_a?(String) }
@@ -43,6 +40,18 @@ class WellFormedArgs
         value.each { |val| malformed unless val.is_a?(String) }
       end
     end
+    arg
+  end
+
+  # - - - - - - - - - - - - - - - -
+
+  def files
+    @arg_name = __method__.to_s
+    malformed unless arg.is_a?(Hash)
+    arg.each { |filename,content|
+      malformed unless filename.is_a?(String)
+      malformed unless content.is_a?(String)
+    }
     arg
   end
 
@@ -78,18 +87,6 @@ class WellFormedArgs
 
   def is_base56?(value)
     Base56.string?(value) && value.length == 10
-  end
-
-  # - - - - - - - - - - - - - - - -
-
-  def files
-    @arg_name = __method__.to_s
-    malformed unless arg.is_a?(Hash)
-    arg.each do |key,value|
-      malformed unless key.is_a?(String)
-      malformed unless value.is_a?(String)
-    end
-    arg
   end
 
   # - - - - - - - - - - - - - - - -
@@ -167,7 +164,6 @@ class WellFormedArgs
 
   REQUIRED_KEYS = %w(
     display_name
-    visible_files
     image_name
     runner_choice
     created

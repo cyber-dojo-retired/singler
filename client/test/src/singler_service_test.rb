@@ -37,7 +37,8 @@ class SinglerServiceTest < TestBase
   test '6E7',
   %w( retrieved manifest contains id ) do
     manifest = make_manifest
-    id = singler.create(manifest)
+    files = starting_files
+    id = singler.create(manifest, files)
     manifest['id'] = id
     assert_equal manifest, singler.manifest(id)
   end
@@ -50,7 +51,9 @@ class SinglerServiceTest < TestBase
   and id?() is true
   and the increments has tag0
   and the manifest can be retrieved ) do
-    id = singler.create(make_manifest)
+    manifest = make_manifest
+    files = starting_files
+    id = singler.create(manifest, files)
     assert singler.id?(id)
     assert_equal([tag0], singler.increments(id))
     assert_equal id, singler.id_completed(id[0..5])
@@ -67,7 +70,9 @@ class SinglerServiceTest < TestBase
     # This is an optimization to avoid web service
     # having to make a call back to storer to get the
     # tag numbers for the new traffic-light's diff handler.
-    id = singler.create(make_manifest)
+    manifest = make_manifest
+    files = starting_files
+    id = singler.create(manifest, files)
 
     tag1_files = starting_files
     tag1_files.delete('hiker.h')
@@ -98,7 +103,9 @@ class SinglerServiceTest < TestBase
   test 'A21',
   'after ran_tests()',
   'visible_files can be retrieved for any tag' do
-    id = singler.create(make_manifest)
+    manifest = make_manifest
+    files = starting_files
+    id = singler.create(manifest, files)
     tag0_files = starting_files
 
     assert_equal tag0_files, singler.visible_files(id)
@@ -150,7 +157,9 @@ class SinglerServiceTest < TestBase
     # This test fails if docker-compose.yml uses
     # [read_only:true] without also using
     # [tmpfs: /tmp]
-    id = singler.create(make_manifest)
+    manifest = make_manifest
+    files = starting_files
+    id = singler.create(manifest, files)
 
     files = starting_files
     files['very_large'] = 'X'*1024*500
@@ -165,24 +174,21 @@ class SinglerServiceTest < TestBase
 
   def make_manifest
     manifest = starter.language_manifest('C (gcc), assert', 'Fizz_Buzz')
-    manifest['created'] = creation_time
+    manifest.delete('visible_files')
     manifest
   end
 
   def starting_files
-    make_manifest['visible_files']
+    manifest = starter.language_manifest('C (gcc), assert', 'Fizz_Buzz')
+    manifest['visible_files']
   end
 
   def tag0
     {
       'event'  => 'created',
-      'time'   => creation_time,
-      'number' => (tag=0)
+      'time'   => starter.creation_time,
+      'number' => 0
     }
-  end
-
-  def creation_time
-    [ 2016,12,15, 17,26,34 ]
   end
 
 end

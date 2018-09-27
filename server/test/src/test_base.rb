@@ -10,8 +10,8 @@ class TestBase < HexMiniTest
 
   # - - - - - - - - - - - - - - - - -
 
-  def create(manifest)
-    singler.create(manifest)
+  def create(manifest, files)
+    singler.create(manifest, files)
   end
 
   def manifest(id)
@@ -60,20 +60,19 @@ class TestBase < HexMiniTest
 
   def stub_create(stub_id)
     stub_id_generator.stub(stub_id)
-    id = create(create_manifest)
+    id = create(starter.manifest, starter.files)
     assert_equal stub_id, id
     id
   end
 
-  def create_manifest
-    starter = ExternalStarter.new
-    manifest = starter.language_manifest('C (gcc), assert', 'Fizz_Buzz')
-    manifest['created'] = creation_time
-    manifest
+  #- - - - - - - - - - - - - - -
+
+  def starter
+    ExternalStarter.new
   end
 
   def creation_time
-    [2016,12,2, 6,13,23]
+    starter.creation_time
   end
 
   def externals

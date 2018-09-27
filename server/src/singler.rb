@@ -15,7 +15,7 @@ class Singler
 
   # - - - - - - - - - - - - - - - - - - -
 
-  def create(manifest)
+  def create(manifest, files)
     id = id_generator.generate
     manifest['id'] = id
     dir = id_dir(id)
@@ -23,11 +23,11 @@ class Singler
     dir.write(manifest_filename, json_unparse(manifest))
     tag0 = {
          'event' => 'created',
-          'time' => manifest(id)['created'],
+          'time' => manifest['created'],
         'number' => 0
       }
     write_increments(id, [tag0])
-    write_tag_files(id, 0, manifest['visible_files'])
+    write_tag_files(id, 0, files)
     id
   end
 
