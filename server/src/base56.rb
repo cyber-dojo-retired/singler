@@ -1,6 +1,6 @@
 require 'securerandom'
 
-# Similar to https://en.wikipedia.org/wiki/Base58
+# Similar to https://en.wikipedia.org/wiki/Base58 but...
 # o) includes the digits zero and one
 #    (to be backwards compatible as hex)
 # o) excludes the letters IOL
