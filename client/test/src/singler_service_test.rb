@@ -36,9 +36,8 @@ class SinglerServiceTest < TestBase
 
   test '6E7',
   %w( retrieved manifest contains id ) do
-    manifest = make_manifest
-    files = starting_files
-    id = singler.create(manifest, files)
+    manifest = starter.manifest
+    id = singler.create(manifest, starter.files)
     manifest['id'] = id
     assert_equal manifest, singler.manifest(id)
   end
@@ -51,9 +50,7 @@ class SinglerServiceTest < TestBase
   and id?() is true
   and the increments has tag0
   and the manifest can be retrieved ) do
-    manifest = make_manifest
-    files = starting_files
-    id = singler.create(manifest, files)
+    id = singler.create(starter.manifest, starter.files)
     assert singler.id?(id)
     assert_equal([tag0], singler.increments(id))
     assert_equal id, singler.id_completed(id[0..5])
@@ -70,11 +67,9 @@ class SinglerServiceTest < TestBase
     # This is an optimization to avoid web service
     # having to make a call back to storer to get the
     # tag numbers for the new traffic-light's diff handler.
-    manifest = make_manifest
-    files = starting_files
-    id = singler.create(manifest, files)
+    id = singler.create(starter.manifest, starter.files)
 
-    tag1_files = starting_files
+    tag1_files = starter.files
     tag1_files.delete('hiker.h')
     now = [2016,12,5, 21,1,34]
     stdout = 'missing include'
@@ -103,15 +98,13 @@ class SinglerServiceTest < TestBase
   test 'A21',
   'after ran_tests()',
   'visible_files can be retrieved for any tag' do
-    manifest = make_manifest
-    files = starting_files
-    id = singler.create(manifest, files)
-    tag0_files = starting_files
+    id = singler.create(starter.manifest, starter.files)
 
+    tag0_files = starter.files
     assert_equal tag0_files, singler.visible_files(id)
     assert_equal tag0_files, singler.tag_visible_files(id,-1)
 
-    tag1_files = starting_files
+    tag1_files = starter.files
     tag1_files.delete('output')
     tag1_files.delete('hiker.h')
     now = [2016,12,5, 21,1,34]
@@ -157,11 +150,9 @@ class SinglerServiceTest < TestBase
     # This test fails if docker-compose.yml uses
     # [read_only:true] without also using
     # [tmpfs: /tmp]
-    manifest = make_manifest
-    files = starting_files
-    id = singler.create(manifest, files)
+    id = singler.create(starter.manifest, starter.files)
 
-    files = starting_files
+    files = starter.files
     files['very_large'] = 'X'*1024*500
     now = [2016,12,5, 21,1,34]
     stdout = 'missing include'
@@ -171,17 +162,6 @@ class SinglerServiceTest < TestBase
   end
 
   private
-
-  def make_manifest
-    manifest = starter.language_manifest('C (gcc), assert', 'Fizz_Buzz')
-    manifest.delete('visible_files')
-    manifest
-  end
-
-  def starting_files
-    manifest = starter.language_manifest('C (gcc), assert', 'Fizz_Buzz')
-    manifest['visible_files']
-  end
 
   def tag0
     {

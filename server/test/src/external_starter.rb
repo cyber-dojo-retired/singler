@@ -3,16 +3,16 @@ require_relative '../../src/http_json_service'
 class ExternalStarter
 
   def manifest
-    json = language_manifest(default_display_name, default_exercise_name)
+    json = language_manifest(display_name, exercise_name)
     manifest = json['manifest']
     manifest['created'] = creation_time
-    manifest['exercise'] = default_exercise_name
+    manifest['exercise'] = exercise_name
     manifest.delete('visible_files')
     manifest
   end
 
   def files
-    json = language_manifest(default_display_name, default_exercise_name)
+    json = language_manifest(display_name, exercise_name)
     manifest = json['manifest']
     files = manifest['visible_files']
     files['instructions'] = json['exercise']
@@ -31,11 +31,11 @@ class ExternalStarter
     get(__method__, display_name, exercise_name)
   end
 
-  def default_display_name
+  def display_name
     'C (gcc), assert'
   end
 
-  def default_exercise_name
+  def exercise_name
     'Fizz_Buzz'
   end
 
