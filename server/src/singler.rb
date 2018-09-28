@@ -181,6 +181,22 @@ class Singler
 
   # - - - - - - - - - - - - - -
 
+=begin
+  def lined(files)
+    Hash[files.map{ |filename,content|
+      [filename,content.lines]
+    }]
+  end
+
+  def unlined(files)
+    Hash[files.map{|filename,lines|
+      [filename,lines.join]
+    }]
+  end
+=end
+
+  # - - - - - - - - - - - - - -
+
   def assert_id_exists(id)
     unless id_dir(id).exists?
       invalid('id')
