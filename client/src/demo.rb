@@ -11,48 +11,26 @@ class Demo
 
   def inner_call
     html = [
-      create,
-      manifest,
-      ran_tests,
-      visible_files,
-      increments
+      pre('create') {
+        @id = singler.create(starter.manifest, starter.files)
+      },
+      pre('manifest') {
+        singler.manifest(@id)
+      },
+      pre('ran_tests') {
+        singler.ran_tests(@id, edited_files, now, stdout, stderr, colour)
+      },
+      pre('visible_files') {
+        singler.visible_files(@id)
+      },
+      pre('increments') {
+        singler.increments(@id)
+      }
     ].join
     [ 200, { 'Content-Type' => 'text/html' }, [ html ] ]
   end
 
   private
-
-  def create
-    pre {
-      @id = singler.create(starter.manifest, starter.files)
-    }
-  end
-
-  def manifest
-    pre {
-      singler.manifest(@id)
-    }
-  end
-
-  def ran_tests
-    pre {
-      singler.ran_tests(@id, edited_files, now, stdout, stderr, colour)
-    }
-  end
-
-  def visible_files
-    pre {
-      singler.visible_files(@id)
-    }
-  end
-
-  def increments
-    pre {
-      singler.increments(@id)
-    }
-  end
-
-  # - - - - - - - - - - - - - - - - -
 
   def edited_files
     files = starter.files
@@ -79,10 +57,10 @@ class Demo
 
   # - - - - - - - - - - - - - - - - -
 
-  def pre(&block)
+  def pre(name,&block)
     result,duration = *timed { block.call }
     [
-      "<pre>/#{name_of(caller)}(#{duration}s)</pre>",
+      "<pre>/#{name}(#{duration}s)</pre>",
       "<pre style='#{style}'>",
         "#{JSON.pretty_unparse(result)}",
       '</pre>'
@@ -111,13 +89,6 @@ class Demo
 
   def whitespace
     'white-space: pre-wrap;'
-  end
-
-  # - - - - - - - - - - - - - - - - -
-
-  def name_of(caller)
-    # eg caller[0] == "demo.rb:50:in `increments'"
-    /`(?<name>[^']*)/ =~ caller[0] && name
   end
 
   # - - - - - - - - - - - - - - - - -
