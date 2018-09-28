@@ -34,7 +34,7 @@ services:
     tmpfs: /tmp
     restart: 'no'
     volumes:
-      - /tmp/singler/ids:/singler/ids
+      - /tmp/singler/ids:/singler/ids:rw
     # for tests
     depends_on:
       - starter
