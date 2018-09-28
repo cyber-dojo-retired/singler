@@ -19,7 +19,7 @@ class Singler
 
   def initialize(externals)
     @externals = externals
-    @path = '/persistent-dir/ids'
+    @path = '/singler/ids'
   end
 
   attr_reader :path

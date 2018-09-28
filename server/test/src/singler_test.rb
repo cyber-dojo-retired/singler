@@ -34,9 +34,11 @@ class SinglerTest < TestBase
   # path
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  test '218',
-  %w( singler's path is set but in test there its volume-mounted to /tmp so its emphemeral ) do
-    assert_equal '/persistent-dir/ids', singler.path
+  test '218', %w(
+  singler's path is set
+  but in test its volume-mounted to /tmp
+  so its emphemeral ) do
+    assert_equal '/singler/ids', singler.path
   end
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
