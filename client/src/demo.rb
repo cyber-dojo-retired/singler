@@ -6,8 +6,10 @@ class Demo
   def call(_env)
     inner_call
   rescue => error
-    [ 200, { 'Content-Type' => 'text/html' }, [ error.message ] ]
+    [ 400, { 'Content-Type' => 'text/html' }, [ error.message ] ]
   end
+
+  private
 
   def inner_call
     html = [
@@ -30,7 +32,7 @@ class Demo
     [ 200, { 'Content-Type' => 'text/html' }, [ html ] ]
   end
 
-  private
+  # - - - - - - - - - - - - - - - - -
 
   def edited_files
     files = starter.files
@@ -57,7 +59,7 @@ class Demo
 
   # - - - - - - - - - - - - - - - - -
 
-  def pre(name,&block)
+  def pre(name, &block)
     result,duration = *timed { block.call }
     [
       "<pre>/#{name}(#{duration}s)</pre>",
