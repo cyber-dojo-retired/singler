@@ -1,4 +1,4 @@
-require_relative 'base56'
+require_relative 'base58'
 require 'json'
 
 # Checks for arguments synactic correctness
@@ -24,7 +24,7 @@ class WellFormedArgs
       value = arg[key]
       case key
       when 'group'
-        malformed unless is_base56?(value)
+        malformed unless is_base58?(value)
       when 'display_name', 'image_name', 'runner_choice', 'exercise'
         malformed unless value.is_a?(String)
       when 'highlight_filenames','progress_regexs','hidden_filenames'
@@ -59,7 +59,7 @@ class WellFormedArgs
 
   def outer_id
     @arg_name = __method__.to_s
-    malformed unless Base56.string?(arg) && arg.length == 2
+    malformed unless Base58.string?(arg) && arg.length == 2
     arg
   end
 
@@ -73,7 +73,7 @@ class WellFormedArgs
     # the full id of a cyber-dojo and potentially interfere
     # with a live session.
     @arg_name = __method__.to_s
-    malformed unless Base56.string?(arg) && (6..10).include?(arg.length)
+    malformed unless Base58.string?(arg) && (6..10).include?(arg.length)
     arg
   end
 
@@ -81,12 +81,12 @@ class WellFormedArgs
 
   def id
     @arg_name = __method__.to_s
-    malformed unless is_base56?(arg)
+    malformed unless is_base58?(arg)
     arg
   end
 
-  def is_base56?(value)
-    Base56.string?(value) && value.length == 10
+  def is_base58?(value)
+    Base58.string?(value) && value.length == 10
   end
 
   # - - - - - - - - - - - - - - - -

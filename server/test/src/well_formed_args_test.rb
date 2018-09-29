@@ -135,7 +135,7 @@ class WellFormedArgsTest < TestBase
       '34',         # ! 10 chars
       '345',        # ! 10 chars
       '123456789',  # ! 10 chars
-      'ABCDEF123='  # ! Base56 chars
+      'ABCDEF123='  # ! Base58 chars
     ]
   end
 
@@ -164,7 +164,7 @@ class WellFormedArgsTest < TestBase
   def malformed_outer_ids
     [
       true,  # ! String
-      '=',   # ! Base56 String
+      '=',   # ! Base58 String
       '123', # ! length 2
     ]
   end
@@ -194,7 +194,7 @@ class WellFormedArgsTest < TestBase
   def malformed_partial_ids
     [
       false,    # ! String
-      '=',      # ! Base56 String
+      '=',      # ! Base58 String
       'abc'     # ! length 6..10
     ]
   end

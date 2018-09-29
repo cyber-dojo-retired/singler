@@ -198,7 +198,7 @@ class RackDispatcherTest < TestBase
   private
 
   def malformed_id
-    '==' # ! Base56 String
+    '==' # ! Base58 String
   end
 
   def malformed_tag
