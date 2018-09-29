@@ -4,13 +4,13 @@ require 'json'
 
 class RackDispatcher
 
-  def initialize(singler, request)
+  def initialize(singler, request_class)
     @singler = singler
-    @request = request
+    @request_class = request_class
   end
 
   def call(env)
-    request = @request.new(env)
+    request = @request_class.new(env)
     path = request.path_info[1..-1] # lose leading /
     body = request.body.read
     name, args = validated_name_args(path, body)
@@ -54,7 +54,10 @@ class RackDispatcher
   end
 
   def json_response(status, body)
-    [ status, { 'Content-Type' => 'application/json' }, [ pretty(body) ] ]
+    [ status,
+      { 'Content-Type' => 'application/json' },
+      [ pretty(body) ]
+    ]
   end
 
   def pretty(o)
@@ -67,7 +70,9 @@ class RackDispatcher
 
   def self.well_formed_args(*names)
     names.each do |name|
-      define_method name, &lambda { @well_formed_args.send(name) }
+      define_method name, &lambda {
+        @well_formed_args.send(name)
+      }
     end
   end
 
