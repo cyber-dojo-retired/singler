@@ -69,7 +69,11 @@ class RackDispatcher
   end
 
   def status(error)
-    error.is_a?(ClientError) ? 400 : 500
+    if error.is_a?(ClientError)
+      400 # client_error
+    else
+      500 # server_error
+    end
   end
 
   def self.well_formed_args(*names)
