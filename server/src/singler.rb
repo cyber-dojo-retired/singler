@@ -183,7 +183,7 @@ class Singler
 
   def assert_id_exists(id)
     unless id_dir(id).exists?
-      invalid('id')
+      invalid('id', id)
     end
   end
 
@@ -207,7 +207,7 @@ class Singler
 
   def assert_tag_exists(id, tag)
     unless tag_dir(id, tag).exists?
-      invalid('tag')
+      invalid('tag', tag)
     end
   end
 
@@ -247,8 +247,8 @@ class Singler
 
   # - - - - - - - - - - - - - -
 
-  def invalid(name)
-    fail ArgumentError.new("#{name}:invalid")
+  def invalid(name, value)
+    fail ArgumentError.new("#{name}:invalid:#{value}")
   end
 
 end

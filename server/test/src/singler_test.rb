@@ -47,10 +47,11 @@ class SinglerTest < TestBase
 
   test '42D',
   'manifest raises when id does not exist' do
+    id = 'B4AB376BE2'
     error = assert_raises(ArgumentError) {
-      manifest('B4AB376BE2')
+      manifest(id)
     }
-    assert_equal 'id:invalid', error.message
+    assert_equal "id:invalid:#{id}", error.message
   end
 
   #- - - - - - - - - - - - - - - - - - - - - -
@@ -142,20 +143,22 @@ class SinglerTest < TestBase
 
   test '822',
   'increments raises when id does not exist' do
+    id = 'B4AB376BE2'
     error = assert_raises(ArgumentError) {
-      increments('B4AB376BE2')
+      increments(id)
     }
-    assert_equal 'id:invalid', error.message
+    assert_equal "id:invalid:#{id}", error.message
   end
 
   # - - - - - - - - - - - - - - - - - - - - -
 
   test '823',
   'ran_tests raises when id does not exist' do
+    id = 'B4AB376BE2'
     error = assert_raises(ArgumentError) {
-      ran_tests(*make_args('B4AB376BE2', edited_files))
+      ran_tests(*make_args(id, edited_files))
     }
-    assert_equal 'id:invalid', error.message
+    assert_equal "id:invalid:#{id}", error.message
   end
 
   # - - - - - - - - - - - - - - - - - - - - -
@@ -265,10 +268,11 @@ class SinglerTest < TestBase
 
   test '926',
   'visible_files raises when id does not exist' do
+    id = 'B4AB376BE2'
     error = assert_raises(ArgumentError) {
-      visible_files('B4AB376BE2')
+      visible_files(id)
     }
-    assert_equal 'id:invalid', error.message
+    assert_equal "id:invalid:#{id}", error.message
   end
 
   # - - - - - - - - - - - - - - - - - - - - -
@@ -279,7 +283,7 @@ class SinglerTest < TestBase
     error = assert_raises(ArgumentError) {
       tag_visible_files(id, 1)
     }
-    assert_equal 'tag:invalid', error.message
+    assert_equal 'tag:invalid:1', error.message
   end
 
   # - - - - - - - - - - - - - - - - - - - - -
@@ -290,7 +294,7 @@ class SinglerTest < TestBase
     error = assert_raises(ArgumentError) {
       tags_visible_files(id, 0, 1)
     }
-    assert_equal 'tag:invalid', error.message
+    assert_equal 'tag:invalid:1', error.message
   end
 
   private

@@ -268,8 +268,8 @@ class RackDispatcherTest < TestBase
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  def assert_exception(s, class_name, message)
-    json = JSON.parse(s)
+  def assert_exception(body, class_name, message)
+    json = JSON.parse(body)
     exception = json['exception']
     refute_nil exception
     assert_equal class_name, exception['class']

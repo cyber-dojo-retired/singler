@@ -11,7 +11,9 @@ class RackDispatcher
 
   def call(env)
     request = @request.new(env)
-    name, args = validated_name_args(request)
+    path = request.path_info[1..-1] # lose leading /
+    body = request.body.read
+    name, args = validated_name_args(path, body)
     result = @singler.public_send(name, *args)
     json_response(200, { name => result })
   rescue => error
@@ -19,6 +21,7 @@ class RackDispatcher
       'exception' => {
         'class' => error.class.name,
         'message' => error.message,
+        'args' => body,
         'backtrace' => error.backtrace
       }
     }
@@ -29,15 +32,14 @@ class RackDispatcher
 
   private # = = = = = = = = = = = = = = = = = = =
 
-  def validated_name_args(request)
-    name = request.path_info[1..-1] # lose leading /
-    @well_formed_args = WellFormedArgs.new(request.body.read)
+  def validated_name_args(name, body)
+    @well_formed_args = WellFormedArgs.new(body)
     args = case name
       when /^sha$/                then []
-      when /^id$/,
-           /^manifest$/,
-           /^increments$/,
-           /^visible_files$/      then [id]
+      when /^id$/                 then [id]
+      when /^manifest$/           then [id]
+      when /^increments$/         then [id]
+      when /^visible_files$/      then [id]
       when /^create$/             then [manifest, files]
       when /^id_completed$/       then [partial_id]
       when /^id_completions$/     then [outer_id]
