@@ -2,11 +2,7 @@
 set -e
 
 readonly ROOT_DIR="$( cd "$( dirname "${0}" )" && cd .. && pwd )"
-
-docker-compose \
-  --file "${ROOT_DIR}/docker-compose.yml" \
-  up -d \
-  --force-recreate
+readonly MY_NAME="${ROOT_DIR##*/}"
 
 # - - - - - - - - - - - - - - - - - - - -
 
@@ -26,6 +22,14 @@ wait_till_up()
   exit 1
 }
 
-wait_till_up 'test-singler-server'
-wait_till_up 'test-singler-client'
-wait_till_up 'test-singler-starter-server'
+# - - - - - - - - - - - - - - - - - - - -
+
+docker-compose \
+  --file "${ROOT_DIR}/docker-compose.yml" \
+  up \
+  --detach \
+  --force-recreate
+
+wait_till_up "test-${MY_NAME}-server"
+wait_till_up "test-${MY_NAME}-client"
+wait_till_up "test-${MY_NAME}-starter-server"
