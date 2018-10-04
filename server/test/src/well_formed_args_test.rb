@@ -304,7 +304,13 @@ class WellFormedArgsTest < TestBase
   end
 
   def malformed_statuses
-    [ nil, true, [1], {} ] # ! String
+    [ nil, true, [1], {}, # ! String
+      '',     # empty
+      'asd',  # ! Integer
+      '-23',  # negative
+      '23x',  # trailing chars
+      'x23'   # leading chars
+    ]
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
