@@ -21,21 +21,39 @@ class ExternalDiskWriterTest < TestBase
   # - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '0DB',
-  'dir.exists? is false before dir.make and true after' do
+  'dir.exists? is false before a successful dir.make, true after' do
     dir = disk['/tmp/0DB']
     refute dir.exists?
-    assert dir.make
+    dir.make
+    assert dir.exists?
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  test 'F59',
+  'dir.make succeeds when making a nested a dir' do
+    dir = disk['/tmp/F59/a/b/c']
+    refute dir.exists?
+    dir.make
+    assert dir.exists?
+
+    dir = disk['/tmp/F59/a/b/d']
+    refute dir.exists?
+    dir.make
     assert dir.exists?
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '1B5',
-  'dir.make is true if the dir is newly made, false if not' do
+  'dir.make raises if it does not make a new directory' do
     dir = disk['/tmp/1B5']
     refute dir.exists?
-    assert dir.make
-    refute dir.make
+    dir.make
+    error = assert_raises(ArgumentError) {
+      dir.make
+    }
+    assert_equal 'mkdir -vp /tmp/1B5', error.message
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - -

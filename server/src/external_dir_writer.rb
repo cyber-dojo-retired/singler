@@ -15,8 +15,10 @@ class ExternalDirWriter
     # So using shell.
     # -p creates intermediate dirs as required.
     # -v verbose mode, output each dir actually made
-    output,_exit_status = shell.exec("mkdir -vp #{name}")
-    output != ''
+    stdout,stderr,status = shell.exec("mkdir -vp #{name}")
+    unless stdout != '' && stderr == '' && status == 0
+      fail ArgumentError.new("mkdir -vp #{name}")
+    end
   end
 
   def exists?(filename = nil)
