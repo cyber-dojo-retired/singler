@@ -6,12 +6,6 @@ class ExternalBashSheller
     @externals = externals
   end
 
-  attr_reader :parent
-
-  def cd_exec(path, command, logging = true)
-    exec("cd #{path} && #{command}", logging)
-  end
-
   def exec(command, logging = true)
     begin
       stdout,stderr,r = Open3.capture3(command)

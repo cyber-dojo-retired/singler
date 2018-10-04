@@ -85,47 +85,6 @@ class ExternalBashShellerTest < TestBase
     ]
   end
 
-  # - - - - - - - - - - - - - - - - -
-  # cd_exec()
-  # - - - - - - - - - - - - - - - - -
-
-  test 'E18',
-  'when the cd_exec command succeeds output is captured and exit-status is zero' do
-    cd_exec('.', 'echo Hello')
-    assert_status 0
-    assert_stdout 'Hello' + "\n"
-    assert_stderr ''
-    assert_log []
-  end
-
-  test '373',
-  'when the cd_exec command fails output is captured and exit-status is non zero' do
-    cd_exec('.', 'zzzz')
-    refute_status 0
-    assert_stdout ''
-    assert_stderr 'sh: zzzz: not found' + "\n"
-    assert_log [
-      'COMMAND:cd . && zzzz',
-      'STATUS:127',
-      'STDOUT:',
-      "STDERR:sh: zzzz: not found" + "\n"
-    ]
-  end
-
-  test '565',
-  "when the cd_exec's cd fails the command is not executed and exit-status is non-zero" do
-    cd_exec('zzzz', 'echo Hello')
-    refute_status 0
-    assert_stdout ''
-    assert_stderr "sh: cd: line 1: can't cd to zzzz" + "\n"
-    assert_log [
-      'COMMAND:cd zzzz && echo Hello',
-      'STATUS:2',
-      'STDOUT:',
-      "STDERR:sh: cd: line 1: can't cd to zzzz" + "\n"
-    ]
-  end
-
   private
 
   def shell
@@ -136,18 +95,10 @@ class ExternalBashShellerTest < TestBase
     @stdout,@stderr,@status = shell.exec(command, logging)
   end
 
-  def cd_exec(path, command, logging = true)
-    @stdout,@stderr,@status = shell.cd_exec(path, command, logging)
-  end
-
   # - - - - - - - - - - - - - - - - -
 
   def assert_status(expected)
     assert_equal expected, @status
-  end
-
-  def refute_status(expected)
-    refute_equal expected, @status
   end
 
   # - - - - - - - - - - - - - - - - -
