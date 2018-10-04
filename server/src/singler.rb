@@ -101,7 +101,6 @@ class Singler
 
     tag = { 'colour' => colour, 'time' => now, 'number' => n }
     append_tags(id, tag)
-    files['output'] = stdout + stderr # TODO:???
     write_tag(id, n, files, stdout, stderr, status)
 
     read_tags(id)
