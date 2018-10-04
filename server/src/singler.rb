@@ -41,8 +41,8 @@ class Singler
           'time' => manifest['created'],
         'number' => 0
       }
-    write_increments(id, [tag0])
-    write_tag_files(id, 0, files)
+    write_tags(id, [tag0])
+    write_tag(id, 0, files, '', '', '0')
     id
   end
 
@@ -95,20 +95,29 @@ class Singler
 
   def ran_tests(id, files, now, stdout, stderr, status, colour)
     assert_id_exists(id)
-    increments = read_increments(id)
-    next_tag = most_recent_tag(id, increments) + 1
-    increments << { 'colour' => colour, 'time' => now, 'number' => next_tag }
-    write_increments(id, increments)
-    files['output'] = stdout + stderr
-    write_tag_files(id, next_tag, files)
-    increments
+    tags = read_tags(id)
+    next_tag = most_recent_tag(id, tags) + 1
+    tags << { 'colour' => colour, 'time' => now, 'number' => next_tag }
+    write_tags(id, tags)
+    files['output'] = stdout + stderr # ???
+    write_tag(id, next_tag, files, stdout, stderr, status)
+    tags
   end
 
   # - - - - - - - - - - - - - - - - - - -
 
+  def tags(id)
+  end
+
+  def tag(id, tag)
+  end
+
+  # - - - - - - - - - - - - - - - - - - -
+  # - - - - - - - - - - - - - - - - - - -
+
   def increments(id)
     assert_id_exists(id)
-    read_increments(id)
+    read_tags(id)
   end
 
   # - - - - - - - - - - - - - - - - - - -
@@ -116,7 +125,7 @@ class Singler
   def visible_files(id)
     assert_id_exists(id)
     tag = most_recent_tag(id)
-    read_tag_files(id, tag)
+    read_tag(id, tag)
   end
 
   # - - - - - - - - - - - - - - - - - - -
@@ -130,7 +139,7 @@ class Singler
     else
       assert_tag_exists(id, tag)
     end
-    read_tag_files(id, tag)
+    read_tag(id, tag)
   end
 
   def tags_visible_files(id, was_tag, now_tag)
@@ -146,37 +155,52 @@ class Singler
     'manifest.json'
   end
 
-  def increments_filename
-    'increments.json'
+  def tags_filename
+    'tags.json'
+  end
+
+  def tag_filename
+    'tag.json'
   end
 
   # - - - - - - - - - - - - - -
 
-  def write_increments(id, increments)
+  def write_tags(id, tags)
     dir = id_dir(id)
-    dir.write(increments_filename, json_unparse(increments))
+    dir.write(tags_filename, json_unparse(tags))
   end
 
-  def read_increments(id)
+  def read_tags(id)
     dir = id_dir(id)
-    json_parse(dir.read(increments_filename))
+    json_parse(dir.read(tags_filename))
   end
 
   # - - - - - - - - - - - - - -
 
-  def write_tag_files(id, tag, files)
+  def write_tag(id, tag, files, stdout, stderr, status)
     dir = tag_dir(id, tag)
     dir.make
-    dir.write(manifest_filename, json_unparse(files))
+    dir.write(tag_filename, json_unparse(files))
+
+=begin
+    json = {
+      'files' => files,
+      'stdout' => stdout,
+      'stderr' => stderr,
+      'status' => status
+    }
+    dir.write(tag_filename, json_unparse(json))
+=end
   end
 
-  def read_tag_files(id, tag)
-    json_parse(tag_dir(id, tag).read(manifest_filename))
+  def read_tag(id, tag)
+    dir = tag_dir(id, tag)
+    json_parse(dir.read(tag_filename))
   end
 
-  def most_recent_tag(id, increments = nil)
-    increments ||= read_increments(id)
-    increments[-1]['number']
+  def most_recent_tag(id, tags = nil)
+    tags ||= read_tags(id)
+    tags[-1]['number']
   end
 
   # - - - - - - - - - - - - - -
