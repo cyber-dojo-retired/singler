@@ -125,7 +125,7 @@ class Singler
   def visible_files(id)
     assert_id_exists(id)
     tag = most_recent_tag(id)
-    read_tag(id, tag)
+    read_tag(id, tag)['files']
   end
 
   # - - - - - - - - - - - - - - - - - - -
@@ -139,7 +139,7 @@ class Singler
     else
       assert_tag_exists(id, tag)
     end
-    read_tag(id, tag)
+    read_tag(id, tag)['files']
   end
 
   def tags_visible_files(id, was_tag, now_tag)
@@ -180,9 +180,6 @@ class Singler
   def write_tag(id, tag, files, stdout, stderr, status)
     dir = tag_dir(id, tag)
     dir.make
-    dir.write(tag_filename, json_unparse(files))
-
-=begin
     json = {
       'files' => files,
       'stdout' => stdout,
@@ -190,7 +187,6 @@ class Singler
       'status' => status
     }
     dir.write(tag_filename, json_unparse(json))
-=end
   end
 
   def read_tag(id, tag)
