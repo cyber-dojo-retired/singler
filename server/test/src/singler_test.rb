@@ -174,7 +174,53 @@ class SinglerTest < TestBase
 
   # - - - - - - - - - - - - - - - - - - - - -
 
-  test '825',
+  test '824', %w(
+  ran_tests raises when n is -1
+  because -1 can only be used on tag()
+  ) do
+    id = stub_create('FCF211235B')
+    error = assert_raises(ArgumentError) {
+      ran_tests(*make_args(id, -1, edited_files))
+    }
+    assert_equal 'n:invalid:-1', error.message
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - -
+
+  test '825', %w(
+  ran_tests raises when n is 0
+  because 0 is used for create()
+  ) do
+    id = stub_create('08739D07A3')
+    error = assert_raises(ArgumentError) {
+      ran_tests(*make_args(id, 0, edited_files))
+    }
+    assert_equal 'n:invalid:0', error.message
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - -
+
+  test '826',
+  'ran_tests raises unless n-1 exists and n does not exist' do
+    id = stub_create('710145D963')
+    ran_tests(*make_args(id, 1, edited_files))
+
+    error = assert_raises(ArgumentError) {
+      ran_tests(*make_args(id, 1, edited_files))
+    }
+    assert_equal 'n:invalid:1', error.message
+
+    error = assert_raises(ArgumentError) {
+      ran_tests(*make_args(id, 3, edited_files))
+    }
+    assert_equal 'n:invalid:3', error.message
+
+    ran_tests(*make_args(id, 2, edited_files))
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - -
+
+  test '829',
   'after ran_tests() there is one more tag' do
     id = stub_create('9DD618D263')
 
