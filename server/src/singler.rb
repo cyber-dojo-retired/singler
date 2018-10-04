@@ -107,19 +107,14 @@ class Singler
   # - - - - - - - - - - - - - - - - - - -
 
   def tags(id)
+    assert_id_exists(id)
+    read_tags(id)
   end
 
   def tag(id, tag)
   end
 
   # - - - - - - - - - - - - - - - - - - -
-  # - - - - - - - - - - - - - - - - - - -
-
-  def increments(id)
-    assert_id_exists(id)
-    read_tags(id)
-  end
-
   # - - - - - - - - - - - - - - - - - - -
 
   def visible_files(id)

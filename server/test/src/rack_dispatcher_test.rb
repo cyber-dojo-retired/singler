@@ -33,7 +33,7 @@ class RackDispatcherTest < TestBase
 
   test 'E5B',
   'dispatch raises when any argument is malformed' do
-    assert_dispatch_raises('increments',
+    assert_dispatch_raises('tags',
       { id: malformed_id },
       500,
       'ArgumentError',
@@ -140,10 +140,10 @@ class RackDispatcherTest < TestBase
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test 'E71',
-  'dispatch to increments' do
-    assert_dispatch('increments',
+  'dispatch to tags' do
+    assert_dispatch('tags',
       { id: well_formed_id},
-      'hello from SinglerStub.increments'
+      'hello from SinglerStub.tags'
     )
   end
 

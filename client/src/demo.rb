@@ -25,8 +25,8 @@ class Demo
       pre('visible_files') {
         singler.visible_files(@id)
       },
-      pre('increments') {
-        singler.increments(@id)
+      pre('tags') {
+        singler.tags(@id)
       }
     ].join
     [ 200, { 'Content-Type' => 'text/html' }, [ html ] ]

@@ -38,8 +38,8 @@ class TestBase < HexMiniTest
     singler.ran_tests(id, files, now, stdout, stderr, status, colour)
   end
 
-  def increments(id)
-    singler.increments(id)
+  def tags(id)
+    singler.tags(id)
   end
 
   # - - - - - - - - - - - - - - - - -

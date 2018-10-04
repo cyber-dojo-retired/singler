@@ -24,7 +24,7 @@ API:
 - [GET id_completed](#get-id_completed)
 - [GET id_completions](#get-id_completions)
 - [POST ran_tests](#post-ran_tests)
-- [GET increments](#get-increments)
+- [GET tags](#get-tags)
 - [GET visible_files](#get-visible_files)
 - [GET tag_visible_files](#get-tag_visible_files)
 - [GET tags_visible_files](#get-tags_visible_files)
@@ -169,7 +169,7 @@ which produced the given stdout, stderr, with the given traffic-light colour.
      "colour": "red"
   }
 ```
-Returns increments, eg
+Returns tags, eg
 ```
   { "ran_tests": [
       {  "event": "created", "time": [2016,12,5, 11,15,18], "number": 0 },
@@ -180,7 +180,7 @@ Returns increments, eg
 
 - - - -
 
-## GET increments
+## GET tags
 Returns details of all traffic-lights, for the practice-session
 with the given id.
 - parameters, eg
@@ -189,7 +189,7 @@ with the given id.
 ```
 - returns, eg
 ```
-  { "increments": [
+  { "tags": [
       {  "event": "created", "time": [2016,12,5, 11,15,18], "number": 0 },
       { "colour": "red,      "time": [2016,12,6, 12,31,15], "number": 1 },
       { "colour": "green",   "time": [2016,12,6, 12,32,56], "number": 2 },

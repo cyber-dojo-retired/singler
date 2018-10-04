@@ -36,7 +36,7 @@ class SinglerService
     post(__method__, id, files, now, stdout, stderr, status, colour)
   end
 
-  def increments(id)
+  def tags(id)
     get(__method__, id)
   end
 

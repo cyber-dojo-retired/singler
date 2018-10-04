@@ -138,14 +138,14 @@ class SinglerTest < TestBase
   end
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # ran_tests(id,...), increments(id), visible_files(id)
+  # ran_tests(id,...), tags(id), visible_files(id)
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '822',
-  'increments raises when id does not exist' do
+  'tags raises when id does not exist' do
     id = 'B4AB376BE2'
     error = assert_raises(ArgumentError) {
-      increments(id)
+      tags(id)
     }
     assert_equal "id:invalid:#{id}", error.message
   end
@@ -164,7 +164,7 @@ class SinglerTest < TestBase
   # - - - - - - - - - - - - - - - - - - - - -
 
   test '825',
-  'after ran_tests() there is one more tag and one more traffic-light' do
+  'after ran_tests() there is one more tag' do
     id = stub_create('9DD618D263')
 
     lights = [
@@ -174,7 +174,7 @@ class SinglerTest < TestBase
       }
     ]
     diagnostic = '#0 increments(id)'
-    assert_equal lights, increments(id), diagnostic
+    assert_equal lights, tags(id), diagnostic
 
     ran_tests(*make_args(id, edited_files))
 
@@ -183,8 +183,8 @@ class SinglerTest < TestBase
       'time'   => time_now,
       'number' => (now_tag=1)
     }
-    diagnostic = '#1 increments(id)'
-    assert_equal lights, increments(id), diagnostic
+    diagnostic = '#1 tags(id)'
+    assert_equal lights, tags(id), diagnostic
   end
 
   # - - - - - - - - - - - - - - - - - - - - -

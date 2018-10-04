@@ -52,7 +52,7 @@ class SinglerServiceTest < TestBase
   and the manifest can be retrieved ) do
     id = singler.create(starter.manifest, starter.files)
     assert singler.id?(id)
-    assert_equal([tag0], singler.increments(id))
+    assert_equal([tag0], singler.tags(id))
     assert_equal id, singler.id_completed(id[0..5])
     outer = id[0..1]
     inner = id[2..-1]

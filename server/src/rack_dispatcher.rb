@@ -38,7 +38,7 @@ class RackDispatcher
       when /^sha$/                then []
       when /^id$/                 then [id]
       when /^manifest$/           then [id]
-      when /^increments$/         then [id]
+      when /^tags$/               then [id]
       when /^visible_files$/      then [id]
       when /^create$/             then [manifest, files]
       when /^id_completed$/       then [partial_id]
