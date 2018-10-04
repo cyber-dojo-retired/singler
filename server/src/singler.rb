@@ -99,7 +99,7 @@ class Singler
     next_tag = most_recent_tag(id, tags) + 1
     tags << { 'colour' => colour, 'time' => now, 'number' => next_tag }
     write_tags(id, tags)
-    files['output'] = stdout + stderr # ???
+    files['output'] = stdout + stderr # TODO:???
     write_tag(id, next_tag, files, stdout, stderr, status)
     tags
   end
@@ -149,8 +149,8 @@ class Singler
 
   # - - - - - - - - - - - - - -
 
-  def write_tag(id, tag, files, stdout, stderr, status)
-    dir = tag_dir(id, tag)
+  def write_tag(id, n, files, stdout, stderr, status)
+    dir = tag_dir(id, n)
     dir.make
     json = {
       'files' => files,
@@ -161,8 +161,8 @@ class Singler
     dir.write(tag_filename, json_unparse(json))
   end
 
-  def read_tag(id, tag)
-    dir = tag_dir(id, tag)
+  def read_tag(id, n)
+    dir = tag_dir(id, n)
     json_parse(dir.read(tag_filename))
   end
 
@@ -203,12 +203,12 @@ class Singler
     end
   end
 
-  def tag_dir(id, tag)
-    disk[tag_path(id, tag)]
+  def tag_dir(id, n)
+    disk[tag_path(id, n)]
   end
 
-  def tag_path(id, tag)
-    dir_join(id_path(id), tag.to_s)
+  def tag_path(id, n)
+    dir_join(id_path(id), n.to_s)
   end
 
   # - - - - - - - - - - - - - -
