@@ -26,6 +26,15 @@ class ExternalDiskWriterTest < TestBase
     refute dir.exists?
     assert dir.make
     assert dir.exists?
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  test '1B5',
+  'dir.make is true if the dir is newly made, false if not' do
+    dir = disk['/tmp/1B5']
+    refute dir.exists?
+    assert dir.make
     refute dir.make
   end
 
