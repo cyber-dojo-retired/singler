@@ -130,6 +130,7 @@ class RackDispatcherTest < TestBase
            now: well_formed_now,
         stdout: well_formed_stdout,
         stderr: well_formed_stderr,
+        status: well_formed_status,
         colour: well_formed_colour
       },
       'hello from SinglerStub.ran_tests'
@@ -231,6 +232,10 @@ class RackDispatcherTest < TestBase
 
   def well_formed_stderr
     'tweedle-dum'
+  end
+
+  def well_formed_status
+    23
   end
 
   def well_formed_colour

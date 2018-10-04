@@ -165,6 +165,7 @@ which produced the given stdout, stderr, with the given traffic-light colour.
         "now": [2016,12,6, 12,31,15],
      "stdout": "",
      "stderr": "Assert failed: answer() == 42",
+     "status": 23,
      "colour": "red"
   }
 ```

@@ -310,7 +310,7 @@ class SinglerTest < TestBase
   # - - - - - - - - - - - - - - - - - - - - -
 
   def make_args(id, files)
-    [ id, files, time_now, stdout, stderr, red ]
+    [ id, files, time_now, stdout, stderr, status, red ]
   end
 
   def edited_files
@@ -331,6 +331,10 @@ class SinglerTest < TestBase
 
   def stderr
     'Assertion failed: answer() == 42'
+  end
+
+  def status
+    23
   end
 
   def red

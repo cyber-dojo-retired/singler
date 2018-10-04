@@ -32,8 +32,8 @@ class SinglerService
 
   # - - - - - - - - - - - -
 
-  def ran_tests(id, files, now, stdout, stderr, colour)
-    post(__method__, id, files, now, stdout, stderr, colour)
+  def ran_tests(id, files, now, stdout, stderr, status, colour)
+    post(__method__, id, files, now, stdout, stderr, status, colour)
   end
 
   def increments(id)

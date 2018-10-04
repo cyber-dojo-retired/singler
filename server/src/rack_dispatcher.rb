@@ -27,7 +27,7 @@ class RackDispatcher
     })
     $stderr.puts(diagnostic)
     $stderr.flush
-    json_response(status(error), diagnostic)
+    json_response(code(error), diagnostic)
   end
 
   private # = = = = = = = = = = = = = = = = = = =
@@ -43,7 +43,7 @@ class RackDispatcher
       when /^create$/             then [manifest, files]
       when /^id_completed$/       then [partial_id]
       when /^id_completions$/     then [outer_id]
-      when /^ran_tests$/          then [id, files, now, stdout, stderr, colour]
+      when /^ran_tests$/          then [id, files, now, stdout, stderr, status, colour]
       when /^tag_visible_files$/  then [id, tag]
       when /^tags_visible_files$/ then [id, was_tag, now_tag]
       else
@@ -68,7 +68,7 @@ class RackDispatcher
     JSON.pretty_generate(body)
   end
 
-  def status(error)
+  def code(error)
     if error.is_a?(ClientError)
       400 # client_error
     else
@@ -86,7 +86,7 @@ class RackDispatcher
 
   well_formed_args :manifest, :files
   well_formed_args :id, :partial_id, :outer_id
-  well_formed_args :now, :stdout, :stderr, :colour
+  well_formed_args :now, :stdout, :stderr, :status, :colour
   well_formed_args :tag, :was_tag, :now_tag
 
   # - - - - - - - - - - - - - - - -

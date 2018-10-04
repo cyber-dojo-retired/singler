@@ -93,7 +93,7 @@ class Singler
 
   # - - - - - - - - - - - - - - - - - - -
 
-  def ran_tests(id, files, now, stdout, stderr, colour)
+  def ran_tests(id, files, now, stdout, stderr, status, colour)
     assert_id_exists(id)
     increments = read_increments(id)
     next_tag = most_recent_tag(id, increments) + 1

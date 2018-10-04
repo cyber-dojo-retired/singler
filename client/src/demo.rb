@@ -20,7 +20,7 @@ class Demo
         singler.manifest(@id)
       },
       pre('ran_tests') {
-        singler.ran_tests(@id, edited_files, now, stdout, stderr, colour)
+        singler.ran_tests(@id, edited_files, now, stdout, stderr, status, colour)
       },
       pre('visible_files') {
         singler.visible_files(@id)
@@ -51,6 +51,10 @@ class Demo
 
   def stderr
     ''
+  end
+
+  def status
+    0
   end
 
   def colour

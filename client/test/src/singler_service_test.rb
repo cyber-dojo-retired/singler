@@ -74,8 +74,9 @@ class SinglerServiceTest < TestBase
     now = [2016,12,5, 21,1,34]
     stdout = 'missing include'
     stderr = 'assert failed'
+    status = 6
     colour = 'amber'
-    tags = singler.ran_tests(id, tag1_files, now, stdout, stderr, colour)
+    tags = singler.ran_tests(id, tag1_files, now, stdout, stderr, status, colour)
 
     expected = [
       tag0,
@@ -84,7 +85,7 @@ class SinglerServiceTest < TestBase
     assert_equal expected, tags
 
     now = [2016,12,5, 21,2,15]
-    tags = singler.ran_tests(id, tag1_files, now, stdout, stderr, colour)
+    tags = singler.ran_tests(id, tag1_files, now, stdout, stderr, status, colour)
     expected = [
       tag0,
       {"colour"=>"amber", "time"=>[2016,12,5, 21,1,34], "number"=>1},
@@ -110,8 +111,9 @@ class SinglerServiceTest < TestBase
     now = [2016,12,5, 21,1,34]
     stdout = 'missing include'
     stderr = 'assert failed'
+    status = 3
     colour = 'amber'
-    singler.ran_tests(id,tag1_files, now, stdout, stderr, colour)
+    singler.ran_tests(id,tag1_files, now, stdout, stderr, status, colour)
     tag1_files['output'] = stdout + stderr
 
     assert_equal tag1_files, singler.visible_files(id)
@@ -123,8 +125,9 @@ class SinglerServiceTest < TestBase
     now = [2016,12,6, 9,31,56]
     stdout = 'All tests passed'
     stderr = ''
+    status = 0
     colour = 'green'
-    singler.ran_tests(id, tag2_files, now, stdout, stderr, colour)
+    singler.ran_tests(id, tag2_files, now, stdout, stderr, status, colour)
     tag2_files['output'] = stdout + stderr
 
     assert_equal tag2_files, singler.visible_files(id)
@@ -157,8 +160,9 @@ class SinglerServiceTest < TestBase
     now = [2016,12,5, 21,1,34]
     stdout = 'missing include'
     stderr = 'assertion failed'
+    status = 41
     colour = 'amber'
-    singler.ran_tests(id, files, now, stdout, stderr, colour)
+    singler.ran_tests(id, files, now, stdout, stderr, status, colour)
   end
 
   private

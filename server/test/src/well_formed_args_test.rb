@@ -217,7 +217,7 @@ class WellFormedArgsTest < TestBase
       json = { now:malformed }.to_json
       wfa = WellFormedArgs.new(json)
       error = assert_raises { wfa.now }
-      assert_equal expected, error.message, malformed
+      assert_equal expected, error.message, malformed.to_s
     end
   end
 
@@ -247,7 +247,7 @@ class WellFormedArgsTest < TestBase
       json = { stdout:malformed }.to_json
       wfa = WellFormedArgs.new(json)
       error = assert_raises { wfa.stdout }
-      assert_equal expected, error.message, malformed
+      assert_equal expected, error.message, malformed.to_s
     end
   end
 
@@ -273,11 +273,37 @@ class WellFormedArgsTest < TestBase
       json = { stderr:malformed }.to_json
       wfa = WellFormedArgs.new(json)
       error = assert_raises { wfa.stderr }
-      assert_equal expected, error.message, malformed
+      assert_equal expected, error.message, malformed.to_s
     end
   end
 
   def malformed_stderrs
+    [ nil, true, [1], {} ] # ! String
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # status
+  # - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  test 'CD3',
+  'status does not raise when well-formed' do
+    status = '24'
+    json = { status:status }.to_json
+    assert_equal status, WellFormedArgs.new(json).status
+  end
+
+  test 'CD4',
+  'status raises when malformed' do
+    expected = 'status:malformed'
+    malformed_statuses.each do |malformed|
+      json = { status:malformed }.to_json
+      wfa = WellFormedArgs.new(json)
+      error = assert_raises { wfa.status }
+      assert_equal expected, error.message, malformed.to_s
+    end
+  end
+
+  def malformed_statuses
     [ nil, true, [1], {} ] # ! String
   end
 

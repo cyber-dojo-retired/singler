@@ -120,6 +120,14 @@ class WellFormedArgs
 
   # - - - - - - - - - - - - - - - -
 
+  def status
+    @arg_name = __method__.to_s
+    malformed unless /\A\d+\z/.match(arg.to_s)
+    arg
+  end
+
+  # - - - - - - - - - - - - - - - -
+
   def colour
     @arg_name = __method__.to_s
     unless ['red','amber','green','timed_out'].include?(arg)
