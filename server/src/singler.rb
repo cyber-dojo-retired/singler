@@ -111,30 +111,29 @@ class Singler
     read_tags(id)
   end
 
-  def tag(id, tag)
+  def tag(id, n)
+    if n == -1
+      assert_id_exists(id)
+      n = most_recent_tag(id)
+    else
+      assert_tag_exists(id, n)
+    end
+    read_tag(id, n)
   end
 
   # - - - - - - - - - - - - - - - - - - -
   # - - - - - - - - - - - - - - - - - - -
 
   def visible_files(id)
-    assert_id_exists(id)
-    tag = most_recent_tag(id)
-    read_tag(id, tag)['files']
+    tag(id, -1)['files']
   end
 
   # - - - - - - - - - - - - - - - - - - -
   # tag
   # - - - - - - - - - - - - - - - - - - -
 
-  def tag_visible_files(id, tag)
-    if tag == -1
-      assert_id_exists(id)
-      tag = most_recent_tag(id)
-    else
-      assert_tag_exists(id, tag)
-    end
-    read_tag(id, tag)['files']
+  def tag_visible_files(id, n)
+    tag(id, n)['files']
   end
 
   def tags_visible_files(id, was_tag, now_tag)
