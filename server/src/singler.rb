@@ -35,7 +35,7 @@ class Singler
     manifest['id'] = id
     dir = id_dir(id)
     dir.make
-    dir.write(manifest_filename, json_unparse(manifest))
+    dir.write(manifest_filename, json_pretty(manifest))
     tag0 = {
          'event' => 'created',
           'time' => manifest['created'],
@@ -139,12 +139,14 @@ class Singler
 
   def write_tags(id, tags)
     dir = id_dir(id)
-    dir.write(tags_filename, json_unparse(tags))
+    lined = tags.map{ |tag| json_plain(tag) }.join("\n")
+    dir.write(tags_filename, lined)
   end
 
   def read_tags(id)
     dir = id_dir(id)
-    json_parse(dir.read(tags_filename))
+    lined = dir.read(tags_filename)
+    lined.lines.map{ |line| json_parse(line) }
   end
 
   # - - - - - - - - - - - - - -
@@ -158,7 +160,7 @@ class Singler
       'stderr' => stderr,
       'status' => status
     }
-    dir.write(tag_filename, json_unparse(json))
+    dir.write(tag_filename, json_pretty(json))
   end
 
   def read_tag(id, n)
@@ -219,7 +221,11 @@ class Singler
 
   # - - - - - - - - - - - - - -
 
-  def json_unparse(o)
+  def json_plain(o)
+    JSON.generate(o)
+  end
+
+  def json_pretty(o)
     JSON.pretty_generate(o)
   end
 
