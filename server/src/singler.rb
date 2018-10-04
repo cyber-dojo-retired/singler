@@ -197,9 +197,9 @@ class Singler
 
   # - - - - - - - - - - - - - -
 
-  def assert_tag_exists(id, tag)
-    unless tag_dir(id, tag).exists?
-      invalid('tag', tag)
+  def assert_tag_exists(id, n)
+    unless tag_dir(id, n).exists?
+      invalid('tag', n)
     end
   end
 

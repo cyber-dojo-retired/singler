@@ -141,13 +141,24 @@ class SinglerTest < TestBase
   # ran_tests(id,...), tags(id), tag(id,n)
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  test '822',
+  test '821',
   'tags raises when id does not exist' do
     id = 'B4AB376BE2'
     error = assert_raises(ArgumentError) {
       tags(id)
     }
     assert_equal "id:invalid:#{id}", error.message
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - -
+
+  test '822',
+  'tag raises when n does not exist' do
+    id = stub_create('AB5AEEF6BD')
+    error = assert_raises(ArgumentError) {
+      tag(id, 1)
+    }
+    assert_equal 'tag:invalid:1', error.message
   end
 
   # - - - - - - - - - - - - - - - - - - - - -
