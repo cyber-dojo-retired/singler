@@ -20,7 +20,7 @@ class Demo
         singler.manifest(@id)
       },
       pre('ran_tests') {
-        singler.ran_tests(@id, edited_files, now, stdout, stderr, status, colour)
+        singler.ran_tests(@id, 1, edited_files, now, stdout, stderr, status, colour)
       },
       pre('tags') {
         singler.tags(@id)

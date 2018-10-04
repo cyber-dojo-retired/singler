@@ -41,7 +41,7 @@ class RackDispatcher
       when /^manifest$/           then [id]
       when /^id_completed$/       then [partial_id]
       when /^id_completions$/     then [outer_id]
-      when /^ran_tests$/          then [id, files, now, stdout, stderr, status, colour]
+      when /^ran_tests$/          then [id, n, files, now, stdout, stderr, status, colour]
       when /^tags$/               then [id]
       when /^tag$/                then [id,n]
       else

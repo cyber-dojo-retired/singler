@@ -104,7 +104,7 @@ class RackDispatcherTest < TestBase
   test 'E61',
   'dispatch to id_completed' do
     assert_dispatch('id_completed',
-      { partial_id: well_formed_partial_id},
+      { partial_id: well_formed_partial_id },
       'hello from SinglerStub.id_completed'
     )
   end
@@ -114,7 +114,7 @@ class RackDispatcherTest < TestBase
   test 'E62',
   'dispatch to id_completions' do
     assert_dispatch('id_completions',
-      { outer_id: well_formed_outer_id},
+      { outer_id: well_formed_outer_id },
       'hello from SinglerStub.id_completions'
     )
   end
@@ -126,6 +126,7 @@ class RackDispatcherTest < TestBase
   'dispatch to ran_tests' do
     assert_dispatch('ran_tests',
       {     id: well_formed_id,
+             n: well_formed_n,
          files: well_formed_files,
            now: well_formed_now,
         stdout: well_formed_stdout,
@@ -142,7 +143,7 @@ class RackDispatcherTest < TestBase
   test 'E71',
   'dispatch to tags' do
     assert_dispatch('tags',
-      { id: well_formed_id},
+      { id: well_formed_id },
       'hello from SinglerStub.tags'
     )
   end

@@ -167,7 +167,7 @@ class SinglerTest < TestBase
   'ran_tests raises when id does not exist' do
     id = 'B4AB376BE2'
     error = assert_raises(ArgumentError) {
-      ran_tests(*make_args(id, edited_files))
+      ran_tests(*make_args(id, 1, edited_files))
     }
     assert_equal "id:invalid:#{id}", error.message
   end
@@ -196,7 +196,7 @@ class SinglerTest < TestBase
     assert_equal expected, tag(id, 0), 'tag(id,0)'
     assert_equal expected, tag(id, -1), 'tag(id,-1)'
 
-    ran_tests(*make_args(id, edited_files))
+    ran_tests(*make_args(id, 1, edited_files))
 
     lights << {
       'colour' => red,
@@ -218,8 +218,8 @@ class SinglerTest < TestBase
 
   private
 
-  def make_args(id, files)
-    [ id, files, time_now, stdout, stderr, status, red ]
+  def make_args(id, n, files)
+    [ id, n, files, time_now, stdout, stderr, status, red ]
   end
 
   def edited_files

@@ -93,15 +93,18 @@ class Singler
 
   # - - - - - - - - - - - - - - - - - - -
 
-  def ran_tests(id, files, now, stdout, stderr, status, colour)
+  def ran_tests(id, n, files, now, stdout, stderr, status, colour)
     assert_id_exists(id)
-    tags = read_tags(id)
-    n = most_recent_tag(id, tags) + 1
+    #assert n >= 1
+    #assert_tag_exists(id, n-1)
+    #refute_tag_exists(id, n)
+
     tag = { 'colour' => colour, 'time' => now, 'number' => n }
     append_tags(id, tag)
     files['output'] = stdout + stderr # TODO:???
     write_tag(id, n, files, stdout, stderr, status)
-    tags << tag
+
+    read_tags(id)
   end
 
   # - - - - - - - - - - - - - - - - - - -

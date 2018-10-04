@@ -34,8 +34,8 @@ class TestBase < HexMiniTest
 
   # - - - - - - - - - - - - - - - - -
 
-  def ran_tests(id, files, now, stdout, stderr, status, colour)
-    singler.ran_tests(id, files, now, stdout, stderr, status, colour)
+  def ran_tests(id, n, files, now, stdout, stderr, status, colour)
+    singler.ran_tests(id, n, files, now, stdout, stderr, status, colour)
   end
 
   def tags(id)

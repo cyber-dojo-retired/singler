@@ -84,7 +84,7 @@ class SinglerServiceTest < TestBase
     stderr = 'assert failed'
     status = 6
     colour = 'amber'
-    tags = singler.ran_tests(id, tag1_files, now, stdout, stderr, status, colour)
+    tags = singler.ran_tests(id, 1, tag1_files, now, stdout, stderr, status, colour)
 
     expected = [
       tag0,
@@ -93,7 +93,7 @@ class SinglerServiceTest < TestBase
     assert_equal expected, tags
 
     now = [2016,12,5, 21,2,15]
-    tags = singler.ran_tests(id, tag1_files, now, stdout, stderr, status, colour)
+    tags = singler.ran_tests(id, 2, tag1_files, now, stdout, stderr, status, colour)
     expected = [
       tag0,
       {"colour"=>"amber", "time"=>[2016,12,5, 21,1,34], "number"=>1},
@@ -118,7 +118,7 @@ class SinglerServiceTest < TestBase
     stderr = 'assertion failed'
     status = 41
     colour = 'amber'
-    singler.ran_tests(id, files, now, stdout, stderr, status, colour)
+    singler.ran_tests(id, 1, files, now, stdout, stderr, status, colour)
   end
 
   private
