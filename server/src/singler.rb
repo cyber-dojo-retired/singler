@@ -176,7 +176,7 @@ class Singler
 
   def most_recent_tag(id, increments = nil)
     increments ||= read_increments(id)
-    increments.size - 1
+    increments[-1]['number']
   end
 
   # - - - - - - - - - - - - - -
