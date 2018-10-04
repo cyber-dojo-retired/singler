@@ -29,6 +29,10 @@ class ExternalDirWriter
 
   # - - - - - - - - - - - - - - - - - - - - - - - -
 
+  def append(filename, content)
+    File.open(pathed(filename), 'a') { |fd| fd.write(content) }
+  end
+
   def write(filename, content)
     File.open(pathed(filename), 'w') { |fd| fd.write(content) }
   end

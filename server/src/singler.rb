@@ -41,7 +41,7 @@ class Singler
           'time' => manifest['created'],
         'number' => 0
       }
-    write_tags(id, [tag0])
+    append_tags(id, tag0)
     write_tag(id, 0, files, '', '', 0)
     id
   end
@@ -96,12 +96,12 @@ class Singler
   def ran_tests(id, files, now, stdout, stderr, status, colour)
     assert_id_exists(id)
     tags = read_tags(id)
-    next_tag = most_recent_tag(id, tags) + 1
-    tags << { 'colour' => colour, 'time' => now, 'number' => next_tag }
-    write_tags(id, tags)
+    n = most_recent_tag(id, tags) + 1
+    tag = { 'colour' => colour, 'time' => now, 'number' => n }
+    append_tags(id, tag)
     files['output'] = stdout + stderr # TODO:???
-    write_tag(id, next_tag, files, stdout, stderr, status)
-    tags
+    write_tag(id, n, files, stdout, stderr, status)
+    tags << tag
   end
 
   # - - - - - - - - - - - - - - - - - - -
@@ -137,10 +137,9 @@ class Singler
 
   # - - - - - - - - - - - - - -
 
-  def write_tags(id, tags)
+  def append_tags(id, tag)
     dir = id_dir(id)
-    lined = tags.map{ |tag| json_plain(tag) }.join("\n")
-    dir.write(tags_filename, lined)
+    dir.append(tags_filename, json_plain(tag) + "\n")
   end
 
   def read_tags(id)

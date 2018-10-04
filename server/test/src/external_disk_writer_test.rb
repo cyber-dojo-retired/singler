@@ -52,6 +52,18 @@ class ExternalDiskWriterTest < TestBase
 
   # - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  test 'D4D',
+  'dir.append() appends!' do
+    dir = disk['/tmp/D4D']
+    dir.make
+    dir.append(filename, "A\n")
+    dir.append(filename, "B\n")
+    dir.append(filename, "C\n")
+    assert_equal "A\nB\nC\n", dir.read(filename)
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - -
+
   test '0CC',
   'dir.each_dir() returns dir names but not . or ..' do
     dir = disk['/tmp/0CC']
