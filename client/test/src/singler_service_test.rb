@@ -104,58 +104,6 @@ class SinglerServiceTest < TestBase
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  test 'A21',
-  'after ran_tests()',
-  'visible_files can be retrieved for any tag' do
-    id = singler.create(starter.manifest, starter.files)
-
-    tag0_files = starter.files
-    assert_equal tag0_files, singler.visible_files(id)
-    assert_equal tag0_files, singler.tag_visible_files(id,-1)
-
-    tag1_files = starter.files
-    tag1_files.delete('output')
-    tag1_files.delete('hiker.h')
-    now = [2016,12,5, 21,1,34]
-    stdout = 'missing include'
-    stderr = 'assert failed'
-    status = 3
-    colour = 'amber'
-    singler.ran_tests(id,tag1_files, now, stdout, stderr, status, colour)
-    tag1_files['output'] = stdout + stderr
-
-    assert_equal tag1_files, singler.visible_files(id)
-    assert_equal tag1_files, singler.tag_visible_files(id, -1)
-
-    tag2_files = tag1_files.clone
-    tag2_files.delete('output')
-    tag2_files['readme.txt'] = 'Your task is to print...'
-    now = [2016,12,6, 9,31,56]
-    stdout = 'All tests passed'
-    stderr = ''
-    status = 0
-    colour = 'green'
-    singler.ran_tests(id, tag2_files, now, stdout, stderr, status, colour)
-    tag2_files['output'] = stdout + stderr
-
-    assert_equal tag2_files, singler.visible_files(id)
-    assert_equal tag2_files, singler.tag_visible_files(id, -1)
-
-    assert_equal tag0_files, singler.tag_visible_files(id,0)
-    assert_equal tag1_files, singler.tag_visible_files(id, 1)
-    assert_equal tag2_files, singler.tag_visible_files(id, 2)
-
-    hash = singler.tags_visible_files(id, was_tag=0, now_tag=1)
-    assert_equal tag0_files, hash['was_tag']
-    assert_equal tag1_files, hash['now_tag']
-
-    hash = singler.tags_visible_files(id, was_tag=1, now_tag=2)
-    assert_equal tag1_files, hash['was_tag']
-    assert_equal tag2_files, hash['now_tag']
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   test '722',
   'ran_tests() with very large file does not raise' do
     # This test fails if docker-compose.yml uses

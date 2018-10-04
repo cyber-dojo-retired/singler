@@ -37,16 +37,13 @@ class RackDispatcher
     args = case name
       when /^sha$/                then []
       when /^id$/                 then [id]
-      when /^manifest$/           then [id]
-      when /^tags$/               then [id]
-      when /^tag$/                then [id,n]
-      when /^visible_files$/      then [id]
       when /^create$/             then [manifest, files]
+      when /^manifest$/           then [id]
       when /^id_completed$/       then [partial_id]
       when /^id_completions$/     then [outer_id]
       when /^ran_tests$/          then [id, files, now, stdout, stderr, status, colour]
-      when /^tag_visible_files$/  then [id, tag]
-      when /^tags_visible_files$/ then [id, was_tag, now_tag]
+      when /^tags$/               then [id]
+      when /^tag$/                then [id,n]
       else
         raise ClientError, 'json:malformed'
     end
@@ -88,7 +85,6 @@ class RackDispatcher
   well_formed_args :manifest, :files
   well_formed_args :id, :partial_id, :outer_id, :n
   well_formed_args :now, :stdout, :stderr, :status, :colour
-  well_formed_args :tag, :was_tag, :now_tag
 
   # - - - - - - - - - - - - - - - -
 

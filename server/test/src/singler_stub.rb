@@ -16,7 +16,5 @@ class SinglerStub
   define_stubs :create, :manifest
   define_stubs :id?, :id_completed, :id_completions
   define_stubs :ran_tests, :tags, :tag
-  define_stubs :visible_file, :visible_files
-  define_stubs :tag_visible_files, :tags_visible_files
 
 end

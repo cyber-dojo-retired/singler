@@ -44,20 +44,6 @@ class SinglerService
     get(__method__, id, n)
   end
 
-  # - - - - - - - - - - - -
-
-  def visible_files(id)
-    get(__method__, id)
-  end
-
-  def tag_visible_files(id, tag)
-    get(__method__, id, tag)
-  end
-
-  def tags_visible_files(id, was_tag, now_tag)
-    get(__method__, id, was_tag, now_tag)
-  end
-
   private
 
   include HttpJsonService

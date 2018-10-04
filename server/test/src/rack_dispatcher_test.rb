@@ -39,13 +39,13 @@ class RackDispatcherTest < TestBase
       'ArgumentError',
       'id:malformed'
     )
-    assert_dispatch_raises('tag_visible_files',
+    assert_dispatch_raises('tag',
       {  id: well_formed_id,
-        tag: malformed_tag
+          n: malformed_n
       },
       500,
       'ArgumentError',
-      'tag:malformed'
+      'n:malformed'
     )
   end
 
@@ -159,50 +159,14 @@ class RackDispatcherTest < TestBase
     )
   end
 
-  # - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test 'E80',
-  'dispatch to visible_files' do
-    assert_dispatch('visible_files',
-      { id: well_formed_id },
-      'hello from SinglerStub.visible_files'
-    )
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test 'E81',
-  'dispatch to tag_visible_files' do
-    assert_dispatch('tag_visible_files',
-      {  id: well_formed_id,
-        tag: well_formed_tag
-      },
-      'hello from SinglerStub.tag_visible_files'
-    )
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test 'E82',
-  'dispatch to tags_visible_files' do
-    assert_dispatch('tags_visible_files',
-      {      id: well_formed_id,
-        was_tag: well_formed_was_tag,
-        now_tag: well_formed_now_tag
-      },
-      'hello from SinglerStub.tags_visible_files'
-    )
-  end
-
   private
 
   def malformed_id
     '==' # ! Base58 String
   end
 
-  def malformed_tag
-    'sdsd' # !Integer
+  def malformed_n
+    '23' # !Integer
   end
 
   def well_formed_id
@@ -243,18 +207,6 @@ class RackDispatcherTest < TestBase
 
   def well_formed_colour
     'red'
-  end
-
-  def well_formed_tag
-    4
-  end
-
-  def well_formed_was_tag
-    7
-  end
-
-  def well_formed_now_tag
-    8
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - -

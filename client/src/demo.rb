@@ -22,9 +22,6 @@ class Demo
       pre('ran_tests') {
         singler.ran_tests(@id, edited_files, now, stdout, stderr, status, colour)
       },
-      pre('visible_files') {
-        singler.visible_files(@id)
-      },
       pre('tags') {
         singler.tags(@id)
       },

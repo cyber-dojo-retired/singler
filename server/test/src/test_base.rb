@@ -46,20 +46,6 @@ class TestBase < HexMiniTest
     singler.tag(id, n)
   end
 
-  # - - - - - - - - - - - - - - - - -
-
-  def visible_files(id)
-    singler.visible_files(id)
-  end
-
-  def tag_visible_files(id, tag)
-    singler.tag_visible_files(id, tag)
-  end
-
-  def tags_visible_files(id, was_tag, now_tag)
-    singler.tags_visible_files(id, was_tag, now_tag)
-  end
-
   #- - - - - - - - - - - - - - -
 
   def stub_create(stub_id)

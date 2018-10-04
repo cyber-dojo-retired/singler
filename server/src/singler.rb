@@ -121,28 +121,6 @@ class Singler
     read_tag(id, n)
   end
 
-  # - - - - - - - - - - - - - - - - - - -
-  # - - - - - - - - - - - - - - - - - - -
-
-  def visible_files(id)
-    tag(id, -1)['files']
-  end
-
-  # - - - - - - - - - - - - - - - - - - -
-  # tag
-  # - - - - - - - - - - - - - - - - - - -
-
-  def tag_visible_files(id, n)
-    tag(id, n)['files']
-  end
-
-  def tags_visible_files(id, was_tag, now_tag)
-    {
-      'was_tag' => tag_visible_files(id, was_tag),
-      'now_tag' => tag_visible_files(id, now_tag)
-    }
-  end
-
   private
 
   def manifest_filename
