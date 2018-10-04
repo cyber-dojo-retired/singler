@@ -95,9 +95,10 @@ class Singler
 
   def ran_tests(id, n, files, now, stdout, stderr, status, colour)
     assert_id_exists(id)
-    #assert n >= 1
+    #unless n >= 1 invalid('n', n)
     #assert_tag_exists(id, n-1)
-    #refute_tag_exists(id, n)
+
+    #refute_tag_exists(id, n) # TODO make write_tag()'s dir.make assert
 
     tag = { 'colour' => colour, 'time' => now, 'number' => n }
     append_tags(id, tag)
@@ -112,6 +113,8 @@ class Singler
     assert_id_exists(id)
     read_tags(id)
   end
+
+  # - - - - - - - - - - - - - - - - - - -
 
   def tag(id, n)
     if n == -1
@@ -202,7 +205,7 @@ class Singler
 
   def assert_tag_exists(id, n)
     unless tag_dir(id, n).exists?
-      invalid('tag', n)
+      invalid('n', n)
     end
   end
 

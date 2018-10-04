@@ -158,7 +158,7 @@ class SinglerTest < TestBase
     error = assert_raises(ArgumentError) {
       tag(id, 1)
     }
-    assert_equal 'tag:invalid:1', error.message
+    assert_equal 'n:invalid:1', error.message
   end
 
   # - - - - - - - - - - - - - - - - - - - - -
