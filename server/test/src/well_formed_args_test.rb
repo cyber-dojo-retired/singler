@@ -287,9 +287,11 @@ class WellFormedArgsTest < TestBase
 
   test 'CD3',
   'status does not raise when well-formed' do
-    status = 24
-    json = { status:status }.to_json
-    assert_equal status, WellFormedArgs.new(json).status
+    oks = [ 0, 24, 255 ]
+    oks.each do |status|
+      json = { status:status }.to_json
+      assert_equal status, WellFormedArgs.new(json).status
+    end
   end
 
   test 'CD4',
@@ -311,9 +313,11 @@ class WellFormedArgsTest < TestBase
 
   test '237',
   'n does not raise when well-formed' do
-    n = 5
-    json = { n:n }.to_json
-    assert_equal n, WellFormedArgs.new(json).n
+    oks = [ -1, 0, 104 ]
+    oks.each do |n|
+      json = { n:n }.to_json
+      assert_equal n, WellFormedArgs.new(json).n
+    end
   end
 
   test '238',

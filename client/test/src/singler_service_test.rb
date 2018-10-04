@@ -48,11 +48,19 @@ class SinglerServiceTest < TestBase
   after create() then
   the id can be completed
   and id?() is true
-  and the increments has tag0
+  and the tags has tag0
   and the manifest can be retrieved ) do
     id = singler.create(starter.manifest, starter.files)
     assert singler.id?(id)
     assert_equal([tag0], singler.tags(id))
+    expected = {
+      'files' => starter.files,
+      'stdout' => '',
+      'stderr' => '',
+      'status' => 0
+    }
+    assert_equal expected, singler.tag(id, 0)
+    assert_equal expected, singler.tag(id, -1)
     assert_equal id, singler.id_completed(id[0..5])
     outer = id[0..1]
     inner = id[2..-1]
@@ -63,7 +71,7 @@ class SinglerServiceTest < TestBase
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test 'A20',
-  'ran_tests() returns increments' do
+  'ran_tests() returns tags' do
     # This is an optimization to avoid web service
     # having to make a call back to storer to get the
     # tag numbers for the new traffic-light's diff handler.
