@@ -42,6 +42,10 @@ class TestBase < HexMiniTest
     singler.tags(id)
   end
 
+  def tag(id, n)
+    singler.tag(id, n)
+  end
+
   # - - - - - - - - - - - - - - - - -
 
   def visible_files(id)

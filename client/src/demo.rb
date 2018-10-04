@@ -27,6 +27,9 @@ class Demo
       },
       pre('tags') {
         singler.tags(@id)
+      },
+      pre('tag') {
+        singler.tag(@id, 1)
       }
     ].join
     [ 200, { 'Content-Type' => 'text/html' }, [ html ] ]

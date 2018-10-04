@@ -148,6 +148,18 @@ class RackDispatcherTest < TestBase
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  test 'E72',
+  'dispatch to tag' do
+    assert_dispatch('tag',
+      { id: well_formed_id,
+         n: well_formed_n
+      },
+      'hello from SinglerStub.tag'
+    )
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - -
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test 'E80',
@@ -183,19 +195,6 @@ class RackDispatcherTest < TestBase
     )
   end
 
-=begin
-  test 'E68',
-  'dispatch to tag_fork' do
-    assert_dispatch('tag_fork',
-      { id:well_formed_id,
-        tag:well_formed_tag,
-        now:well_formed_now
-      },
-      'hello from SinglerStub.tag_fork'
-    )
-  end
-=end
-
   private
 
   def malformed_id
@@ -216,6 +215,10 @@ class RackDispatcherTest < TestBase
 
   def well_formed_outer_id
     '12'
+  end
+
+  def well_formed_n
+    2
   end
 
   def well_formed_files

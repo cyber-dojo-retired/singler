@@ -138,7 +138,7 @@ class SinglerTest < TestBase
   end
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # ran_tests(id,...), tags(id), visible_files(id)
+  # ran_tests(id,...), tags(id), tag(id,n)
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '822',
@@ -167,14 +167,23 @@ class SinglerTest < TestBase
   'after ran_tests() there is one more tag' do
     id = stub_create('9DD618D263')
 
-    lights = [
-      { 'event'  => 'created',
-        'time'   => creation_time,
-        'number' => (was_tag=0)
-      }
-    ]
-    diagnostic = '#0 increments(id)'
+    tag0 = {
+      'event'  => 'created',
+      'time'   => creation_time,
+      'number' => (was_tag=0)
+    }
+    lights = [tag0]
+    diagnostic = '#0 tags(id)'
     assert_equal lights, tags(id), diagnostic
+
+    expected = {
+      'files' => starter.files,
+      'stdout' => '',
+      'stderr' => '',
+      'status' => 0
+    }
+    assert_equal expected, tag(id, 0), 'tag(id,0)'
+    assert_equal expected, tag(id, -1), 'tag(id,-1)'
 
     ran_tests(*make_args(id, edited_files))
 
@@ -185,6 +194,15 @@ class SinglerTest < TestBase
     }
     diagnostic = '#1 tags(id)'
     assert_equal lights, tags(id), diagnostic
+
+    #expected = {
+    #  'files' => edited_files,
+    #  'stdout' => stdout,
+    #  'stderr' => stderr,
+    #  'status' => status
+    #}
+    #assert_equal expected, tag(id, 0), 'tag(id,0)'
+    #assert_equal expected, tag(id, -1), 'tag(id,-1)'
   end
 
   # - - - - - - - - - - - - - - - - - - - - -

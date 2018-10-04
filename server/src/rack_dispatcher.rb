@@ -39,6 +39,7 @@ class RackDispatcher
       when /^id$/                 then [id]
       when /^manifest$/           then [id]
       when /^tags$/               then [id]
+      when /^tag$/                then [id,n]
       when /^visible_files$/      then [id]
       when /^create$/             then [manifest, files]
       when /^id_completed$/       then [partial_id]
@@ -85,7 +86,7 @@ class RackDispatcher
   end
 
   well_formed_args :manifest, :files
-  well_formed_args :id, :partial_id, :outer_id
+  well_formed_args :id, :partial_id, :outer_id, :n
   well_formed_args :now, :stdout, :stderr, :status, :colour
   well_formed_args :tag, :was_tag, :now_tag
 

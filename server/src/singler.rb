@@ -42,7 +42,7 @@ class Singler
         'number' => 0
       }
     write_tags(id, [tag0])
-    write_tag(id, 0, files, '', '', '0')
+    write_tag(id, 0, files, '', '', 0)
     id
   end
 

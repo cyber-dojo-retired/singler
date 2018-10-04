@@ -91,6 +91,15 @@ class WellFormedArgs
 
   # - - - - - - - - - - - - - - - -
 
+  def n
+    @arg_name = __method__.to_s
+    malformed unless arg.is_a?(Integer)
+    malformed unless arg >= -1
+    arg
+  end
+
+  # - - - - - - - - - - - - - - - -
+
   def now
     @arg_name = __method__.to_s
     malformed unless arg.is_a?(Array)
@@ -122,7 +131,8 @@ class WellFormedArgs
 
   def status
     @arg_name = __method__.to_s
-    malformed unless /\A\d+\z/.match(arg.to_s)
+    malformed unless arg.is_a?(Integer)
+    malformed unless (0..255).include?(arg)
     arg
   end
 
