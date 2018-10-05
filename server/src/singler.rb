@@ -1,3 +1,4 @@
+require_relative 'id_splitter'
 require 'json'
 
 # If all ids came from a single server I could use
@@ -192,13 +193,7 @@ class Singler
     dir_join(path, outer(id), inner(id))
   end
 
-  def outer(id)
-    id[0..1]  # 2-chars long. eg 'e5'
-  end
-
-  def inner(id)
-    id[2..-1] # 8-chars long. eg '6aM327PE'
-  end
+  include IdSplitter
 
   # - - - - - - - - - - - - - -
 
