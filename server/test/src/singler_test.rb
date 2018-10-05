@@ -200,19 +200,32 @@ class SinglerTest < TestBase
 
   # - - - - - - - - - - - - - - - - - - - - -
 
-  test '826',
-  'ran_tests raises when n already exists' do
+  test '826', %w(
+  ran_tests raises when n already exists
+  and does not add a new tag ) do
     id = stub_create('C7112B4C22')
+    expected = []
+    expected << {
+      'event' => 'created',
+       'time' => creation_time,
+     'number' => 0
+    }
+    assert_equal expected, tags(id)
+
     ran_tests(*make_args(id, 1, edited_files))
+    expected << {
+      'colour' => red,
+      'time' => time_now,
+      'number' => 1
+    }
+    assert_equal expected, tags(id)
+
     error = assert_raises(ArgumentError) {
       ran_tests(*make_args(id, 1, edited_files))
     }
     assert_equal 'n:invalid:1', error.message
 
-    #TODO: add check that tags is consistent
-    # in ran_tests() these two lines are in the wrong order
-    #append_tags(id, tag)
-    #write_tag(id, n, files, stdout, stderr, status)
+    assert_equal expected, tags(id)
   end
 
   # - - - - - - - - - - - - - - - - - - - - -

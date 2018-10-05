@@ -42,8 +42,8 @@ class Singler
           'time' => manifest['created'],
         'number' => 0
       }
-    append_tags(id, tag0)
     write_tag(id, 0, files, '', '', 0)
+    append_tags(id, tag0)
     id
   end
 
@@ -98,9 +98,9 @@ class Singler
     assert_id_exists(id)
     invalid('n', n) unless n >= 1
 
+    write_tag(id, n, files, stdout, stderr, status)
     tag = { 'colour' => colour, 'time' => now, 'number' => n }
     append_tags(id, tag)
-    write_tag(id, n, files, stdout, stderr, status)
 
     read_tags(id)
   end
