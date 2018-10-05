@@ -2,7 +2,6 @@
 version: '2.2'
 
 volumes:
-  # monitoring
   grafana_data: {}
 
 services:
