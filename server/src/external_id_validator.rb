@@ -9,9 +9,9 @@ class ExternalIdValidator
     return false if id.upcase.include?('L')
     args = []
     args << singler.path
-    args << outer(id)              # eg '01
+    args << outer(id)              # eg '02'
     args << inner(id)[0..3] + '**' # eg '15AF**'
-    path = File.join(*args)        # eg .../01/15AF**
+    path = File.join(*args)        # eg .../02/15AF**
     matched = Dir.glob(path).select{ |name|
       File.directory?(name)
     }
