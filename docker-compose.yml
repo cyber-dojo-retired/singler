@@ -17,7 +17,6 @@ services:
     tmpfs: /tmp
     restart: 'no'
     depends_on:
-      - prometheus
       - starter
       - singler
     ports:
@@ -42,6 +41,7 @@ services:
     # for tests
     depends_on:
       - starter
+      - prometheus
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # monitoring
