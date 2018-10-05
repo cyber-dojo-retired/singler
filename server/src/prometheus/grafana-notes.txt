@@ -1,6 +1,6 @@
 
 To load this into grafana...
-o) go to http://...:3000
+o) go to http://...:3001
 o) login: user=admin, password=(as set in grafana.env)
 
 - - - - - - - - - - - - - - - - - - - - - - - -
@@ -9,7 +9,7 @@ Add new Data-Source
 
   Name: Prometheus
   Type: Prometheus
-   Url: http://test-singler-prometheus:9090
+   Url: http://prometheus:9090
 Access: Server
 
 - - - - - - - - - - - - - - - - - - - - - - - -
