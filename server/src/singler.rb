@@ -172,8 +172,8 @@ class Singler
     json_parse(dir.read(tag_filename))
   end
 
-  def most_recent_tag(id, tags = nil)
-    tags ||= read_tags(id)
+  def most_recent_tag(id)
+    tags = read_tags(id)
     tags[-1]['number']
   end
 
