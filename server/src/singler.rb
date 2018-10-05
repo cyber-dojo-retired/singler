@@ -134,14 +134,6 @@ class Singler
     'manifest.json'
   end
 
-  def tags_filename
-    'tags.json'
-  end
-
-  def tag_filename
-    'tag.json'
-  end
-
   # - - - - - - - - - - - - - -
 
   def append_tags(id, tag)
@@ -158,6 +150,10 @@ class Singler
   def read_lined_tags(id)
     dir = id_dir(id)
     dir.read(tags_filename)
+  end
+
+  def tags_filename
+    'tags.json'
   end
 
   # - - - - - - - - - - - - - -
@@ -181,6 +177,10 @@ class Singler
 
   def most_recent_tag(id)
     read_lined_tags(id).count("\n") - 1
+  end
+
+  def tag_filename
+    'tag.json'
   end
 
   # - - - - - - - - - - - - - -
