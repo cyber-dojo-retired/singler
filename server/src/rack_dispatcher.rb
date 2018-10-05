@@ -21,7 +21,8 @@ class RackDispatcher
       'exception' => {
         'class' => error.class.name,
         'message' => error.message,
-        'args' => body,
+        'path' => path,
+        'body' => body,
         'backtrace' => error.backtrace
       }
     })
