@@ -232,11 +232,11 @@ class SinglerTest < TestBase
 
   test '827', %w(
   ran_tests does NOT raise when n-1 does not exist
-  and the reason for this is partly for speed
-  and partly for robustness against temporary singler failure ) do
+  and the reason for this is partly speed
+  and partly robustness against temporary singler failure ) do
     id = stub_create('710145D963')
     ran_tests(*make_args(id, 1, edited_files))
-    # ran_tests(*make_args(id, 2, ...)) failed
+    # ran_tests(*make_args(id, 2, ...)) assume failed
     ran_tests(*make_args(id, 3, edited_files)) # <====
   end
 
@@ -274,14 +274,14 @@ class SinglerTest < TestBase
     diagnostic = '#1 tags(id)'
     assert_equal lights, tags(id), diagnostic
 
-    #expected = {
-    #  'files' => edited_files,
-    #  'stdout' => stdout,
-    #  'stderr' => stderr,
-    #  'status' => status
-    #}
-    #assert_equal expected, tag(id, 0), 'tag(id,0)'
-    #assert_equal expected, tag(id, -1), 'tag(id,-1)'
+    expected = {
+      'files' => edited_files,
+      'stdout' => stdout,
+      'stderr' => stderr,
+      'status' => status
+    }
+    assert_equal expected, tag(id, 1), 'tag(id,1)'
+    assert_equal expected, tag(id, -1), 'tag(id,-1)'
   end
 
   private
