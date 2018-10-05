@@ -205,11 +205,7 @@ class SinglerTest < TestBase
   and does not add a new tag ) do
     id = stub_create('C7112B4C22')
     expected = []
-    expected << {
-      'event' => 'created',
-       'time' => creation_time,
-     'number' => 0
-    }
+    expected << tags0
     assert_equal expected, tags(id)
 
     ran_tests(*make_args(id, 1, edited_files))
@@ -246,45 +242,47 @@ class SinglerTest < TestBase
   'after ran_tests() there is one more tag' do
     id = stub_create('9DD618D263')
 
-    tag0 = {
-      'event'  => 'created',
-      'time'   => creation_time,
-      'number' => (was_tag=0)
-    }
-    lights = [tag0]
+    expected_tags = [tags0]
     diagnostic = '#0 tags(id)'
-    assert_equal lights, tags(id), diagnostic
+    assert_equal expected_tags, tags(id), diagnostic
 
-    expected = {
-      'files' => starter.files,
-      'stdout' => '',
-      'stderr' => '',
-      'status' => 0
-    }
+    expected = rag_tag(starter.files, '', '', 0)
     assert_equal expected, tag(id, 0), 'tag(id,0)'
     assert_equal expected, tag(id, -1), 'tag(id,-1)'
 
     ran_tests(*make_args(id, 1, edited_files))
 
-    lights << {
+    expected_tags << {
       'colour' => red,
       'time'   => time_now,
       'number' => (now_tag=1)
     }
     diagnostic = '#1 tags(id)'
-    assert_equal lights, tags(id), diagnostic
+    assert_equal expected_tags, tags(id), diagnostic
 
-    expected = {
-      'files' => edited_files,
-      'stdout' => stdout,
-      'stderr' => stderr,
-      'status' => status
-    }
+    expected = rag_tag(edited_files, stdout, stderr, status)
     assert_equal expected, tag(id, 1), 'tag(id,1)'
     assert_equal expected, tag(id, -1), 'tag(id,-1)'
   end
 
   private
+
+  def tags0
+    {
+      'event'  => 'created',
+      'time'   => creation_time,
+      'number' => 0
+    }
+  end
+
+  def rag_tag(files, stdout, stderr, status)
+    {
+      'files' => files,
+      'stdout' => stdout,
+      'stderr' => stderr,
+      'status' => status
+    }
+  end
 
   def make_args(id, n, files)
     [ id, n, files, time_now, stdout, stderr, status, red ]
