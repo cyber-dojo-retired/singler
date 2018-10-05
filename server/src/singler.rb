@@ -37,12 +37,12 @@ class Singler
     dir = id_dir(id)
     dir.make
     dir.write(manifest_filename, json_pretty(manifest))
+    write_tag(id, 0, files, '', '', 0)
     tag0 = {
          'event' => 'created',
           'time' => manifest['created'],
         'number' => 0
       }
-    write_tag(id, 0, files, '', '', 0)
     append_tags(id, tag0)
     id
   end
