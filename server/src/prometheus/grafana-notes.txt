@@ -18,7 +18,7 @@ If there is no existing dashboard...
 o) hover over the + on the top-left
 o) click Import in the drop-down
 o) click [Upload .json File]
-o) choose the singler.json file in this dir
+o) choose the singler-grafana-dashboard.json file in this dir
 
 - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -28,6 +28,6 @@ o) Top right: total number of tests
 o) Bottom left: create events
 o) Bottom right: total number of creates
 
-Sometimes the 4 graphs display their axis but with no green
+Sometimes the graphs display their axis but with no green
 graph content inside. If you resize a graph by dragging its
 bottom right corner the graph will appear!
