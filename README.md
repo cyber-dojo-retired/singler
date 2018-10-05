@@ -25,9 +25,7 @@ API:
 - [GET id_completions](#get-id_completions)
 - [POST ran_tests](#post-ran_tests)
 - [GET tags](#get-tags)
-- [GET visible_files](#get-visible_files)
-- [GET tag_visible_files](#get-tag_visible_files)
-- [GET tags_visible_files](#get-tags_visible_files)
+- [GET tag](#get-tag)
 
 - - - -
 
@@ -150,11 +148,13 @@ Returns all the practice-session id's starting with the given outer_id.
 
 ## POST ran_tests
 In the practice-session with the given id,
-the given visible files were submitted, at the given time,
-which produced the given stdout, stderr, with the given traffic-light colour.
+the given visible files were submitted as tag number n,
+at the given time, which produced the given stdout, stderr, status,
+with the given traffic-light colour.
 - parameters, eg
 ```
   {      "id": "A551C528C3",
+          "n": 3,
       "files": {       "hiker.h" : "ifndef HIKER_INCLUDED\n...",
                        "hiker.c" : "#include \"hiker.h\"...",
                  "hiker.tests.c" : "#include <assert.h>\n...",
@@ -200,80 +200,29 @@ with the given id.
 
 - - - -
 
-## GET visible_files
-Returns the most recent set of visible files, for the practice-session
-with the given id.
+## GET tag
+Returns the files, stdout, stderr, status,
+for the practice-session with the given id,
+and the given tag number n.
 - parameters, eg
 ```
-  { "id": "A551C528C3" }
+  { "id": "A551C528C3",
+     "n": 3
+  }
 ```
 - returns, eg
 ```
-  { "visible_files": {
+  { "files": {
             "hiker.h" : "ifndef HIKER_INCLUDED\n...",
             "hiker.c" : "#include \"hiker.h\"...",
       "hiker.tests.c" : "#include <assert.h>...",
        "instructions" : "Write a program that...",
            "makefile" : "CFLAGS += -I. -Wall...",
       "cyber-dojo.sh" : "make"
-    }
-  }
-```
-
-- - - -
-
-## GET tag_visible_files
-Returns the set of visible files, for the practice-session with the given id,
-with the given tag number.
-- parameters, eg
-```
-  {  "id": "A551C528C3",
-    "tag": 2
-  }
-```
-- returns, eg
-```
-  { "tag_visible_files": {
-             "hiker.h" : "#ifndef HIKER_INCLUDED\n...",
-             "hiker.c" : "#include \"hiker.h\"\n...",
-       "hiker.tests.c" : "#include <assert.h>\n...",
-        "instructions" : "Write a program that...",
-            "makefile" : "CFLAGS += -I. -Wall...",
-       "cyber-dojo.sh" : "make"
-    }
-  }
-```
-
-- - - -
-
-## GET tags_visible_files
-Returns the paired set of visible files for the practice-session
-with the given id, with the given tag numbers.
-- parameters, eg
-```
-  {      "id": "A551C528C3",
-    "was_tag": 2,
-    "now_tag": 3
-  }
-```
-- returns, eg
-```
-  { "tags_visible_files": {
-      "was_files": {
-                  "hiker.h" : "#ifndef HIKER_INCLUDED\n...",
-                  "hiker.c" : "#include \"hiker.h\"\n...",
-            "hiker.tests.c" : "#include <assert.h>\n...",
-            "cyber-dojo.sh" : "make",
-         ...
-      },
-      "now_files": {
-               "fizzbuzz.h" : "#ifndef FIZZBUZZ_INCLUDED\n...",
-               "fizzbuzz.c" : "#include \"fizzbuzz.h\"\n...",
-         "fizzbuzz.tests.c" : "#include <assert.h>\n...",
-            "cyber-dojo.sh" : "make",
-         ...
-      }
-    }
+    },
+    "stdout": "",
+    "stderr": "Assert failed: answer() == 42",
+    "status": 23,
   }
 ```
 
