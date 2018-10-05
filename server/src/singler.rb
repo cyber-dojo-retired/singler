@@ -97,10 +97,6 @@ class Singler
   def ran_tests(id, n, files, now, stdout, stderr, status, colour)
     assert_id_exists(id)
     invalid('n', n) unless n >= 1
-    # TODO: do I want to be this strict checking n?
-    # consider if there was a temporary singler failure?
-    invalid('n', n) unless tag_exists?(id, n-1)
-    invalid('n', n) if tag_exists?(id, n)
 
     tag = { 'colour' => colour, 'time' => now, 'number' => n }
     append_tags(id, tag)
@@ -160,7 +156,13 @@ class Singler
 
   def write_tag(id, n, files, stdout, stderr, status)
     dir = tag_dir(id, n)
-    dir.make
+
+    begin
+      dir.make
+    rescue
+      invalid('n', n)
+    end
+
     json = {
       'files' => files,
       'stdout' => stdout,

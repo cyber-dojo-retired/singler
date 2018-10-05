@@ -201,21 +201,30 @@ class SinglerTest < TestBase
   # - - - - - - - - - - - - - - - - - - - - -
 
   test '826',
-  'ran_tests raises unless n-1 exists and n does not exist' do
-    id = stub_create('710145D963')
+  'ran_tests raises when n already exists' do
+    id = stub_create('C7112B4C22')
     ran_tests(*make_args(id, 1, edited_files))
-
     error = assert_raises(ArgumentError) {
       ran_tests(*make_args(id, 1, edited_files))
     }
     assert_equal 'n:invalid:1', error.message
 
-    error = assert_raises(ArgumentError) {
-      ran_tests(*make_args(id, 3, edited_files))
-    }
-    assert_equal 'n:invalid:3', error.message
+    #TODO: add check that tags is consistent
+    # in ran_tests() these two lines are in the wrong order
+    #append_tags(id, tag)
+    #write_tag(id, n, files, stdout, stderr, status)
+  end
 
-    ran_tests(*make_args(id, 2, edited_files))
+  # - - - - - - - - - - - - - - - - - - - - -
+
+  test '827', %w(
+  ran_tests does NOT raise when n-1 does not exist
+  and the reason for this is partly for speed
+  and partly for robustness against temporary singler failure ) do
+    id = stub_create('710145D963')
+    ran_tests(*make_args(id, 1, edited_files))
+    # ran_tests(*make_args(id, 2, ...)) failed
+    ran_tests(*make_args(id, 3, edited_files)) # <====
   end
 
   # - - - - - - - - - - - - - - - - - - - - -
