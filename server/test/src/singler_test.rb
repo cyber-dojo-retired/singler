@@ -30,8 +30,31 @@ class SinglerTest < TestBase
   end
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # create() manifest()
+  # create(), manifest()
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  test '421',
+  'create() generates id if one is not supplied' do
+    manifest = starter.manifest
+    refute manifest.key?('id')
+    id = create(manifest, starter.files)
+    assert manifest.key?('id')
+    assert_equal id, manifest['id']
+  end
+
+  #- - - - - - - - - - - - - - - - - - - - - -
+
+  test '42C',
+  'create() raises when provided id is invalid' do
+    m = starter.manifest
+    m['id'] = '12345L'
+    error = assert_raises(ArgumentError) {
+      create(m, starter.files)
+    }
+    assert_equal 'id:invalid:12345L', error.message
+  end
+
+  #- - - - - - - - - - - - - - - - - - - - - -
 
   test '42D',
   'manifest raises when id does not exist' do
