@@ -30,7 +30,7 @@ class WellFormedArgs
       value = arg[key]
       case key
       when 'group'
-        unless is_base58?(value)
+        unless base58?(value)
           malformed
         end
       when 'display_name', 'image_name', 'runner_choice', 'exercise'
@@ -91,7 +91,7 @@ class WellFormedArgs
 
   def id
     @arg_name = __method__.to_s
-    unless is_base58?(arg)
+    unless base58?(arg)
       malformed
     end
     arg
@@ -213,7 +213,7 @@ class WellFormedArgs
 
   # - - - - - - - - - - - - - - - -
 
-  def is_base58?(s)
+  def base58?(s)
     Base58.string?(s) && s.length == 6
   end
 
