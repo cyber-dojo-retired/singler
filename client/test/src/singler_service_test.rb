@@ -9,6 +9,17 @@ class SinglerServiceTest < TestBase
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  test '190',
+  %w( sha ) do
+    sha = singler.sha
+    assert_equal 40, sha.size
+    sha.each_char do |ch|
+      assert "0123456789abcdef".include?(ch)
+    end
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   test '966',
   %w( malformed id on any method raises ) do
     error = assert_raises { singler.manifest(nil) }
@@ -19,17 +30,6 @@ class SinglerServiceTest < TestBase
     assert_equal 'ArgumentError', json['class']
     assert_equal 'id:malformed', json['message']
     assert_equal 'Array', json['backtrace'].class.name
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test '190',
-  %w( sha ) do
-    sha = singler.sha
-    assert_equal 40, sha.size
-    sha.each_char do |ch|
-      assert "0123456789abcdef".include?(ch)
-    end
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -46,7 +46,6 @@ class SinglerServiceTest < TestBase
 
   test '5F9', %w(
   after create() then
-  the id can be completed
   and id?() is true
   and the tags has tag0
   and the manifest can be retrieved ) do
@@ -61,11 +60,6 @@ class SinglerServiceTest < TestBase
     }
     assert_equal expected, singler.tag(id, 0)
     assert_equal expected, singler.tag(id, -1)
-    assert_equal id, singler.id_completed(id[0..5])
-    outer = id[0..1]
-    inner = id[2..-1]
-    id_completions = singler.id_completions(outer)
-    assert id_completions.include?(outer+inner)
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - -

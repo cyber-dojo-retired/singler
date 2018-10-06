@@ -101,27 +101,6 @@ class RackDispatcherTest < TestBase
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  test 'E61',
-  'dispatch to id_completed' do
-    assert_dispatch('id_completed',
-      { partial_id: well_formed_partial_id },
-      'hello from SinglerStub.id_completed'
-    )
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test 'E62',
-  'dispatch to id_completions' do
-    assert_dispatch('id_completions',
-      { outer_id: well_formed_outer_id },
-      'hello from SinglerStub.id_completions'
-    )
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   test 'E70',
   'dispatch to ran_tests' do
     assert_dispatch('ran_tests',
@@ -162,29 +141,25 @@ class RackDispatcherTest < TestBase
 
   private
 
+  def well_formed_id
+    '1234567890'
+  end
+
   def malformed_id
     '==' # ! Base58 String
+  end
+
+  # - - - - - - -
+
+  def well_formed_n
+    2
   end
 
   def malformed_n
     '23' # !Integer
   end
 
-  def well_formed_id
-    '1234567890'
-  end
-
-  def well_formed_partial_id
-    '123456'
-  end
-
-  def well_formed_outer_id
-    '12'
-  end
-
-  def well_formed_n
-    2
-  end
+  # - - - - - - -
 
   def well_formed_files
     { 'cyber-dojo.sh' => 'make' }

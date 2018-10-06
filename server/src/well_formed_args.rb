@@ -57,28 +57,6 @@ class WellFormedArgs
 
   # - - - - - - - - - - - - - - - -
 
-  def outer_id
-    @arg_name = __method__.to_s
-    malformed unless Base58.string?(arg) && arg.length == 2
-    arg
-  end
-
-  # - - - - - - - - - - - - - - - -
-
-  def partial_id
-    # Doing completion with fewer than 6 characters would likely result
-    # in a lot of disk activity and no unique outcome. Also, if
-    # completion was attempted for a very short id (say 3
-    # characters) it would provide a way for anyone to find
-    # the full id of a cyber-dojo and potentially interfere
-    # with a live session.
-    @arg_name = __method__.to_s
-    malformed unless Base58.string?(arg) && (6..10).include?(arg.length)
-    arg
-  end
-
-  # - - - - - - - - - - - - - - - -
-
   def id
     @arg_name = __method__.to_s
     malformed unless is_base58?(arg)

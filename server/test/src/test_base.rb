@@ -10,26 +10,16 @@ class TestBase < HexMiniTest
 
   # - - - - - - - - - - - - - - - - -
 
+  def id?(id)
+    singler.id?(id)
+  end
+
   def create(manifest, files)
     singler.create(manifest, files)
   end
 
   def manifest(id)
     singler.manifest(id)
-  end
-
-  # - - - - - - - - - - - - - - - - -
-
-  def id?(id)
-    singler.id?(id)
-  end
-
-  def id_completed(partial_id)
-    singler.id_completed(partial_id)
-  end
-
-  def id_completions(outer_id)
-    singler.id_completions(outer_id)
   end
 
   # - - - - - - - - - - - - - - - - -

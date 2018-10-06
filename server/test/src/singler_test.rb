@@ -69,7 +69,7 @@ class SinglerTest < TestBase
   end
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # id?(id), id_completed(partial_id), id_completions(outer_id)
+  # id?(id)
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '392',
@@ -78,63 +78,6 @@ class SinglerTest < TestBase
     refute id?(stub_id)
     stub_create(stub_id)
     assert id?(stub_id)
-  end
-
-  #- - - - - - - - - - - - - - - - - - - - - -
-
-  test '393',
-  'id_completed returns id when unique completion' do
-    id = stub_create('E4ABB48CA4')
-    partial_id = id[0...6]
-    assert_equal id, id_completed(partial_id)
-  end
-
-  #- - - - - - - - - - - - - - - - - - - - - -
-
-  test '394',
-  'id_completed returns empty-string when no completion' do
-    partial_id = 'AC9A0215C9'
-    assert_equal '', id_completed(partial_id)
-  end
-
-  #- - - - - - - - - - - - - - - - - - - - - -
-
-  test '395',
-  'id_completed returns empty-string when no unique completion' do
-    stub_id = '9504E6559'
-    stub_create(stub_id + '0')
-    stub_create(stub_id + '1')
-    partial_id = stub_id[0...6]
-    assert_equal '', id_completed(partial_id)
-  end
-
-  #- - - - - - - - - - - - - - - - - - - - - -
-
-  test '396',
-  'id_completions when no completions' do
-    outer_id = '28'
-    assert_equal [], id_completions(outer_id)
-  end
-
-  #- - - - - - - - - - - - - - - - - - - - - -
-
-  test '397',
-  'id_completions when a single completion' do
-    id = stub_create('7CA8A87A2B')
-    outer_id = id[0...2]
-    assert_equal [id], id_completions(outer_id)
-  end
-
-  #- - - - - - - - - - - - - - - - - - - - - -
-
-  test '398',
-  'id_completions when two completions' do
-    outer_id = '22'
-    id0 = outer_id + '0' + '3D2DF43'
-    id1 = outer_id + '1' + '3D2DF43'
-    stub_create(id0)
-    stub_create(id1)
-    assert_equal [id0,id1].sort, id_completions(outer_id).sort
   end
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -202,7 +145,8 @@ class SinglerTest < TestBase
 
   test '826', %w(
   ran_tests raises when n already exists
-  and does not add a new tag ) do
+  and does not add a new tag,
+  in other words it fails atomically ) do
     id = stub_create('C7112B4C22')
     expected = []
     expected << tags0

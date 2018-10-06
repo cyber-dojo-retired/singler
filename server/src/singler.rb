@@ -62,38 +62,6 @@ class Singler
 
   # - - - - - - - - - - - - - - - - - - -
 
-  def id_completed(partial_id)
-    outer_id = outer(partial_id)
-    inner_id = inner(partial_id)
-    outer_dir = disk[dir_join(path, outer_id)]
-    unless outer_dir.exists?
-      return ''
-    end
-    # Slower with more inner dirs.
-    dirs = outer_dir.each_dir.select { |inner_dir|
-      inner_dir.start_with?(inner_id)
-    }
-    unless dirs.length == 1
-      return ''
-    end
-    outer_id + dirs[0] # success!
-  end
-
-  # - - - - - - - - - - - - - - - - - - -
-
-  def id_completions(outer_id)
-    # for Batch-Method iteration over large number of practice-sessions...
-    outer_dir = disk[dir_join(path, outer_id)]
-    unless outer_dir.exists?
-      return []
-    end
-    outer_dir.each_dir.collect { |inner_dir|
-      outer_id + inner_dir
-    }
-  end
-
-  # - - - - - - - - - - - - - - - - - - -
-
   def ran_tests(id, n, files, now, stdout, stderr, status, colour)
     assert_id_exists(id)
     invalid('n', n) unless n >= 1
