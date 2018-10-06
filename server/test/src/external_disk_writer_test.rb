@@ -12,18 +12,6 @@ class ExternalDiskWriterTest < TestBase
 
   # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  test '436', %w(
-  dir.name is based on /singler/ids/
-  reveals id is split 2-4
-  and can optionally take avatar-index ) do
-    dir = disk['6BD45B']
-    assert_equal '/singler/ids/6B/D45B', dir.name
-    dir = disk['2FA591',13]
-    assert_equal '/singler/ids/2F/A591/13', dir.name
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - -
-
   test '437',
   'dir.exists? is false before dir.make and true after' do
     dir = disk['FCFDC8']

@@ -7,17 +7,6 @@ class ExternalDirWriter
     @index = index
   end
 
-  def name
-    # How to split the 6-char ID across nested dir?
-    # Currently using 2/4
-    # TODO: investigate the time trade-offs.
-    args = ['', 'singler', 'ids', @id[0..1], @id[2..-1]]
-    unless @index.nil?
-      args << @index.to_s
-    end
-    File.join(*args)
-  end
-
   def exists?
     File.directory?(name)
   end
@@ -49,6 +38,17 @@ class ExternalDirWriter
   end
 
   private
+
+  def name
+    # How to split the 6-char ID across nested dir?
+    # Currently using 2/4
+    # TODO: investigate the time trade-offs.
+    args = ['', 'singler', 'ids', @id[0..1], @id[2..-1]]
+    unless @index.nil?
+      args << @index.to_s
+    end
+    File.join(*args)
+  end
 
   def pathed(filename)
     File.join(name, filename)
