@@ -56,6 +56,37 @@ class SinglerTest < TestBase
 
   #- - - - - - - - - - - - - - - - - - - - - -
 
+  test '422', %w(
+  create(manifest) can be passed the id
+  and its used when that id does not already exist ) do
+    explicit_id = 'CE2BD6'
+    manifest = starter.manifest
+    manifest['id'] = explicit_id
+    id = create(manifest, starter.files)
+    assert_equal explicit_id, id
+  end
+
+  #- - - - - - - - - - - - - - - - - - - - - -
+
+  test '423', %w(
+  create(manifest) can be passed the id
+  and raises when that id already exists ) do
+    explicit_id = 'A01DE8'
+    manifest = starter.manifest
+    manifest['id'] = explicit_id
+    id = create(manifest, starter.files)
+    assert_equal explicit_id, id
+
+    manifest = starter.manifest
+    manifest['id'] = id
+    error = assert_raises(ArgumentError) {
+      create(manifest, starter.files)
+    }
+    assert_equal "id:invalid:#{id}", error.message
+  end
+
+  #- - - - - - - - - - - - - - - - - - - - - -
+
   test '42D',
   'manifest raises when id does not exist' do
     id = 'B4AB37'
