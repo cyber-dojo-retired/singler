@@ -19,10 +19,10 @@ class RackDispatcher
   rescue => error
     diagnostic = pretty({
       'exception' => {
-        'class' => error.class.name,
-        'message' => error.message,
         'path' => path,
         'body' => body,
+        'class' => error.class.name,
+        'message' => error.message,
         'backtrace' => error.backtrace
       }
     })
