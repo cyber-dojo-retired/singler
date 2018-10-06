@@ -200,6 +200,7 @@ class WellFormedArgs
   end
 
   KNOWN_KEYS = REQUIRED_KEYS + %w(
+    id
     group
     exercise
     filename_extension
