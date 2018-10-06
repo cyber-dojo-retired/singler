@@ -10,8 +10,8 @@ class TestBase < HexMiniTest
 
   # - - - - - - - - - - - - - - - - -
 
-  def id?(id)
-    singler.id?(id)
+  def exists?(id)
+    singler.exists?(id)
   end
 
   def create(manifest, files)

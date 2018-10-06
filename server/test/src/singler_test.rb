@@ -18,6 +18,18 @@ class SinglerTest < TestBase
   end
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # exists?(id)
+  #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  test '392',
+  'exists? is false before creation, true after creation' do
+    id = '50C8C6'
+    refute exists?(id)
+    stub_create(id)
+    assert exists?(id)
+  end
+
+  #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # create() manifest()
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -39,18 +51,6 @@ class SinglerTest < TestBase
     id = create(m, starter.files)
     assert_equal '0ADDE7', id
     assert_equal m, manifest(id)
-  end
-
-  #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # id?(id)
-  #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test '392',
-  'id? is false before creation, true after creation' do
-    id = '50C8C6'
-    refute id?(id)
-    stub_create(id)
-    assert id?(id)
   end
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

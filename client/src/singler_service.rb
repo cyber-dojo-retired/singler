@@ -8,7 +8,7 @@ class SinglerService
 
   # - - - - - - - - - - - -
 
-  def id?(id)
+  def exists?(id)
     get(__method__, id)
   end
 

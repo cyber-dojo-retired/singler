@@ -52,6 +52,16 @@ class RackDispatcherTest < TestBase
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  test 'E60',
+  'dispatch to exists' do
+    assert_dispatch('exists',
+      { id: well_formed_id },
+      'hello from SinglerStub.exists?'
+    )
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   test 'E5C',
   'dispatch to create' do
     args = {
@@ -85,17 +95,6 @@ class RackDispatcherTest < TestBase
     assert_dispatch('manifest',
       { id: well_formed_id },
       'hello from SinglerStub.manifest'
-    )
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test 'E60',
-  'dispatch to id' do
-    assert_dispatch('id',
-      { id: well_formed_id },
-      'hello from SinglerStub.id?'
     )
   end
 
@@ -188,7 +187,7 @@ class RackDispatcherTest < TestBase
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   def assert_dispatch(name, args, stubbed)
-    qname = (name == 'id') ? 'id?' : name
+    qname = (name == 'exists') ? 'exists?' : name
     assert_rack_call(name, args, { qname => stubbed })
   end
 

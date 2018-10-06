@@ -27,7 +27,7 @@ class Singler
 
   # - - - - - - - - - - - - - - - - - - -
 
-  def id?(id)
+  def exists?(id)
     dir[id].exists?
   end
 

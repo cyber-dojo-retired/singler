@@ -13,8 +13,7 @@ class SinglerStub
   end
 
   define_stubs :sha
-  define_stubs :create, :manifest
-  define_stubs :id?, :id_completed, :id_completions
+  define_stubs :exists?, :create, :manifest
   define_stubs :ran_tests, :tags, :tag
 
 end

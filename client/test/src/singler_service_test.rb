@@ -46,11 +46,11 @@ class SinglerServiceTest < TestBase
 
   test '5F9', %w(
   after create() then
-  and id?() is true
+  and exists?() is true
   and the tags has tag0
   and the manifest can be retrieved ) do
     id = singler.create(starter.manifest, starter.files)
-    assert singler.id?(id)
+    assert singler.exists?(id)
     assert_equal([tag0], singler.tags(id))
     expected = {
       'files' => starter.files,
