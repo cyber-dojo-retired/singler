@@ -44,7 +44,9 @@ class Singler
       end
     end
 
-    dir[id].make # TODO: check this with unless
+    unless dir[id].make
+      invalid('id', id)
+    end
 
     dir[id].write(manifest_filename, json_pretty(manifest))
     write_tag(id, 0, files, '', '', 0)
