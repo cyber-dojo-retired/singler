@@ -16,28 +16,54 @@ class WellFormedArgs
   def manifest
     @arg_name = __method__.to_s
 
-    malformed unless arg.is_a?(Hash)
-    malformed unless all_required_keys?
-    malformed if     any_unknown_key?
+    unless arg.is_a?(Hash)
+      malformed
+    end
+    unless all_required_keys?
+      malformed
+    end
+    if any_unknown_key?
+      malformed
+    end
 
     arg.keys.each do |key|
       value = arg[key]
       case key
       when 'group'
-        malformed unless is_base58?(value)
+        unless is_base58?(value)
+          malformed
+        end
       when 'display_name', 'image_name', 'runner_choice', 'exercise'
-        malformed unless value.is_a?(String)
+        unless value.is_a?(String)
+          malformed
+        end
       when 'highlight_filenames','progress_regexs','hidden_filenames'
-        malformed unless value.is_a?(Array)
-        value.each { |val|  malformed unless val.is_a?(String) }
+        unless value.is_a?(Array)
+          malformed
+        end
+        value.each { |val|
+          unless val.is_a?(String)
+            malformed
+          end
+        }
       when 'tab_size', 'max_seconds'
-        malformed unless value.is_a?(Integer)
+        unless value.is_a?(Integer)
+          malformed
+        end
       when 'created'
-        malformed unless is_time?(value)
+        unless is_time?(value)
+          malformed
+        end
       when 'filename_extension'
         value = [ value ] if value.is_a?(String)
-        malformed unless value.is_a?(Array)
-        value.each { |val| malformed unless val.is_a?(String) }
+        unless value.is_a?(Array)
+          malformed
+        end
+        value.each { |val|
+          unless val.is_a?(String)
+            malformed
+          end
+        }
       end
     end
     arg
@@ -47,10 +73,16 @@ class WellFormedArgs
 
   def files
     @arg_name = __method__.to_s
-    malformed unless arg.is_a?(Hash)
+    unless arg.is_a?(Hash)
+      malformed
+    end
     arg.each { |filename,content|
-      malformed unless filename.is_a?(String)
-      malformed unless content.is_a?(String)
+      unless filename.is_a?(String)
+        malformed
+      end
+      unless content.is_a?(String)
+        malformed
+      end
     }
     arg
   end
@@ -65,16 +97,16 @@ class WellFormedArgs
     arg
   end
 
-  def is_base58?(value)
-    Base58.string?(value) && value.length == 6
-  end
-
   # - - - - - - - - - - - - - - - -
 
   def n
     @arg_name = __method__.to_s
-    malformed unless arg.is_a?(Integer)
-    malformed unless arg >= -1
+    unless arg.is_a?(Integer)
+      malformed
+    end
+    unless arg >= -1
+      malformed
+    end
     arg
   end
 
@@ -82,9 +114,15 @@ class WellFormedArgs
 
   def now
     @arg_name = __method__.to_s
-    malformed unless arg.is_a?(Array)
-    malformed unless arg.length == 6
-    malformed unless arg.all?{ |n| n.is_a?(Integer) }
+    unless arg.is_a?(Array)
+      malformed
+    end
+    unless arg.length == 6
+      malformed
+    end
+    unless arg.all?{ |n| n.is_a?(Integer) }
+      malformed
+    end
     Time.mktime(*arg)
     arg
   rescue ArgumentError
@@ -95,7 +133,9 @@ class WellFormedArgs
 
   def stdout
     @arg_name = __method__.to_s
-    malformed unless arg.is_a?(String)
+    unless arg.is_a?(String)
+      malformed
+    end
     arg
   end
 
@@ -103,7 +143,9 @@ class WellFormedArgs
 
   def stderr
     @arg_name = __method__.to_s
-    malformed unless arg.is_a?(String)
+    unless arg.is_a?(String)
+      malformed
+    end
     arg
   end
 
@@ -111,8 +153,12 @@ class WellFormedArgs
 
   def status
     @arg_name = __method__.to_s
-    malformed unless arg.is_a?(Integer)
-    malformed unless (0..255).include?(arg)
+    unless arg.is_a?(Integer)
+      malformed
+    end
+    unless (0..255).include?(arg)
+      malformed
+    end
     arg
   end
 
@@ -163,6 +209,12 @@ class WellFormedArgs
     tab_size
     max_seconds
   )
+
+  # - - - - - - - - - - - - - - - -
+
+  def is_base58?(s)
+    Base58.string?(s) && s.length == 6
+  end
 
   # - - - - - - - - - - - - - - - -
 
