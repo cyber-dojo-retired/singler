@@ -10,6 +10,14 @@ require 'securerandom'
 # (both lowercase and uppercase). Base58 must
 # keep L because previously created katas may
 # have IDs containing L.
+#
+# Within a single server it is easy to guarantee
+# there are no ID clashes. However, the larger
+# the alphabet the less you have to worry about
+# ID clashes when copying sessions from one
+# server to another.
+#
+# 56^6 == 30,840,979,456 == 30 billion
 
 class Base58
 
