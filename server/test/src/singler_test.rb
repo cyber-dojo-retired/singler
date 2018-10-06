@@ -46,10 +46,10 @@ class SinglerTest < TestBase
 
   test '42C',
   'create() raises when provided id is invalid' do
-    m = starter.manifest
-    m['id'] = '12345L'
+    manifest = starter.manifest
+    manifest['id'] = '12345L'
     error = assert_raises(ArgumentError) {
-      create(m, starter.files)
+      create(manifest, starter.files)
     }
     assert_equal 'id:invalid:12345L', error.message
   end
