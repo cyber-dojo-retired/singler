@@ -7,12 +7,11 @@ class ExternalIdValidatorTest < TestBase
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # valid?(id)
-  # - - - - - - - - - - - - - - - - - - - - - - -
 
   test '921',
-  'false when group with id already exists' do
+  'true when no group with the id exists, false it does already exists' do
     id = '828754'
+    assert_valid(id)
     stub_create(id)
     refute_valid(id)
   end
@@ -24,14 +23,6 @@ class ExternalIdValidatorTest < TestBase
     ell = 'L'
     refute_valid('2466F' + ell.upcase)
     refute_valid('2466F' + ell.downcase)
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - - - -
-
-  test '923',
-  'true when group with id does not already exist' do
-    id = 'D9A3DC'
-    assert_valid(id)
   end
 
   private
