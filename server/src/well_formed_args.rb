@@ -219,9 +219,15 @@ class WellFormedArgs
   # - - - - - - - - - - - - - - - -
 
   def is_time?(arg)
-    return false unless arg.is_a?(Array)
-    return false unless arg.size == 6
-    return false unless arg.all? { |n| n.is_a?(Integer) }
+    unless arg.is_a?(Array)
+      return false
+    end
+    unless arg.size == 6
+      return false
+    end
+    unless arg.all? { |n| n.is_a?(Integer) }
+      return false
+    end
     Time.mktime(*arg)
     true
   rescue
