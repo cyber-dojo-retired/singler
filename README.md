@@ -18,7 +18,7 @@ API:
     * If the method raises an exception, the key equals "exception".
 
 - [GET sha](#get-sha)
-- [GET id?](#get-id)
+- [GET exists?](#get-exist)
 - [POST create](#post-create)
 - [GET manifest](#get-manifest)
 - [POST ran_tests](#post-ran_tests)
@@ -97,16 +97,16 @@ Returns the manifest used to create the practice-session with the given id.
 
 - - - -
 
-## GET id?
+## GET exists?
 Asks whether the practice-session with the given id exists.
 - parameters, eg
 ```
-  { "id": "15B9AD" }
+  { "exist": "15B9AD" }
 ```
 - returns true if it does, false if it doesn't, eg
 ```
-  { "id?": true   }
-  { "id?": false  }
+  { "exist?": true   }
+  { "exist?": false  }
 ```
 
 - - - -
