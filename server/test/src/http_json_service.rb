@@ -1,5 +1,3 @@
-require_relative 'service_error'
-require 'json'
 require 'net/http'
 
 module HttpJsonService # mix-in
@@ -9,7 +7,7 @@ module HttpJsonService # mix-in
     json = http(name, args_hash(name, *args)) { |uri|
       Net::HTTP::Get.new(uri)
     }
-    result(json, name)
+    json[name]
   end
 
   def http(method, args)
@@ -27,23 +25,6 @@ module HttpJsonService # mix-in
     Hash[parameters.map.with_index { |parameter,index|
       [parameter[1], args[index]]
     }]
-  end
-
-  def result(json, name)
-    fail_if(name, 'bad json') { json.class.name == 'Hash' }
-    exception = json['exception']
-    fail_if(name, pretty(exception)) { exception.nil? }
-    fail_if(name, 'no key') { json.key?(name) }
-    json[name]
-  end
-
-  def fail_if(name, message, &block)
-    to_raise = ServiceError.new(self.class.name, name, message)
-    fail to_raise unless block.call
-  end
-
-  def pretty(json)
-    JSON.pretty_generate(json)
   end
 
 end

@@ -36,13 +36,13 @@ class RackDispatcher
   def validated_name_args(name, body)
     @well_formed_args = WellFormedArgs.new(body)
     args = case name
-      when /^sha$/                then []
-      when /^exists$/             then [id]
-      when /^create$/             then [manifest, files]
-      when /^manifest$/           then [id]
-      when /^ran_tests$/          then [id, n, files, now, stdout, stderr, status, colour]
-      when /^tags$/               then [id]
-      when /^tag$/                then [id,n]
+      when /^sha$/       then []
+      when /^exists$/    then [id]
+      when /^create$/    then [manifest, files]
+      when /^manifest$/  then [id]
+      when /^ran_tests$/ then [id, n, files, now, stdout, stderr, status, colour]
+      when /^tags$/      then [id]
+      when /^tag$/       then [id,n]
       else
         raise ClientError, 'json:malformed'
     end
