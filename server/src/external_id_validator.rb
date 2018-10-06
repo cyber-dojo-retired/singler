@@ -1,4 +1,3 @@
-require_relative 'id_splitter'
 
 class ExternalIdValidator
 
@@ -6,25 +5,18 @@ class ExternalIdValidator
     @externals = externals
   end
 
-  def valid?(id)                   # eg '0215AFADCB'
-    return false if id.upcase.include?('L')
-    args = []
-    args << singler.path
-    args << outer(id)              # eg '02'
-    args << inner(id)[0..3] + '**' # eg '15AF**'
-    path = File.join(*args)        # eg .../02/15AF**
-    matched = Dir.glob(path).select{ |name|
-      File.directory?(name)
-    }
-    matched == []
+  def valid?(id) # eg '0215AF'
+    if id.upcase.include?('L')
+      false
+    else
+      !dir[id].exists?
+    end
   end
 
   private
 
-  include IdSplitter
-
-  def singler
-    @externals.singler
+  def dir
+    @externals.disk
   end
 
 end

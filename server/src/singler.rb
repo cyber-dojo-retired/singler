@@ -1,4 +1,3 @@
-require_relative 'id_splitter'
 require 'json'
 
 # If all ids came from a single server I could use
@@ -20,10 +19,7 @@ class Singler
 
   def initialize(externals)
     @externals = externals
-    @path = '/singler/ids'
   end
-
-  attr_reader :path
 
   def sha
     IO.read('/app/sha.txt').strip
@@ -31,12 +27,26 @@ class Singler
 
   # - - - - - - - - - - - - - - - - - - -
 
+  def id?(id)
+    dir[id].exists?
+  end
+
+  # - - - - - - - - - - - - - - - - - - -
+
   def create(manifest, files)
-    id = id_generator.generate
-    manifest['id'] = id
-    dir = id_dir(id)
-    dir.make
-    dir.write(manifest_filename, json_pretty(manifest))
+    if manifest['id'].nil?
+      id = id_generator.generate
+      manifest['id'] = id
+    else
+      id = manifest['id']
+      unless id_validator.valid?(id)
+        invalid('id', id)
+      end
+    end
+
+    dir[id].make # TODO: check this with unless
+
+    dir[id].write(manifest_filename, json_pretty(manifest))
     write_tag(id, 0, files, '', '', 0)
     tag0 = {
          'event' => 'created',
@@ -51,20 +61,16 @@ class Singler
 
   def manifest(id)
     assert_id_exists(id)
-    json_parse(id_dir(id).read(manifest_filename))
-  end
-
-  # - - - - - - - - - - - - - - - - - - -
-
-  def id?(id)
-    id_dir(id).exists?
+    json_parse(dir[id].read(manifest_filename))
   end
 
   # - - - - - - - - - - - - - - - - - - -
 
   def ran_tests(id, n, files, now, stdout, stderr, status, colour)
     assert_id_exists(id)
-    invalid('n', n) unless n >= 1
+    unless n >= 1
+      invalid('n', n)
+    end
 
     write_tag(id, n, files, stdout, stderr, status)
     tag = { 'colour' => colour, 'time' => now, 'number' => n }
@@ -87,7 +93,9 @@ class Singler
       assert_id_exists(id)
       n = most_recent_tag(id)
     else
-      invalid('n', n) unless tag_exists?(id, n)
+      unless tag_exists?(id, n)
+        invalid('n', n)
+      end
     end
     read_tag(id, n)
   end
@@ -101,8 +109,7 @@ class Singler
   # - - - - - - - - - - - - - -
 
   def append_tags(id, tag)
-    dir = id_dir(id)
-    dir.append(tags_filename, json_plain(tag) + "\n")
+    dir[id].append(tags_filename, json_plain(tag) + "\n")
   end
 
   def read_tags(id)
@@ -112,8 +119,7 @@ class Singler
   end
 
   def read_lined_tags(id)
-    dir = id_dir(id)
-    dir.read(tags_filename)
+    dir[id].read(tags_filename)
   end
 
   def tags_filename
@@ -123,11 +129,7 @@ class Singler
   # - - - - - - - - - - - - - -
 
   def write_tag(id, n, files, stdout, stderr, status)
-    dir = tag_dir(id, n)
-
-    begin
-      dir.make
-    rescue
+    unless dir[id,n].make
       invalid('n', n)
     end
 
@@ -137,12 +139,11 @@ class Singler
       'stderr' => stderr,
       'status' => status
     }
-    dir.write(tag_filename, json_pretty(json))
+    dir[id,n].write(tag_filename, json_pretty(json))
   end
 
   def read_tag(id, n)
-    dir = tag_dir(id, n)
-    json_parse(dir.read(tag_filename))
+    json_parse(dir[id,n].read(tag_filename))
   end
 
   def most_recent_tag(id)
@@ -156,39 +157,15 @@ class Singler
   # - - - - - - - - - - - - - -
 
   def assert_id_exists(id)
-    unless id_dir(id).exists?
+    unless dir[id].exists?
       invalid('id', id)
     end
   end
 
-  def id_dir(id)
-    disk[id_path(id)]
-  end
-
-  def id_path(id)
-    dir_join(path, outer(id), inner(id))
-  end
-
-  include IdSplitter
-
   # - - - - - - - - - - - - - -
 
   def tag_exists?(id, n)
-    tag_dir(id, n).exists?
-  end
-
-  def tag_dir(id, n)
-    disk[tag_path(id, n)]
-  end
-
-  def tag_path(id, n)
-    dir_join(id_path(id), n.to_s)
-  end
-
-  # - - - - - - - - - - - - - -
-
-  def dir_join(*args)
-    File.join(*args)
+    dir[id, n].exists?
   end
 
   # - - - - - - - - - - - - - -
@@ -207,12 +184,16 @@ class Singler
 
   # - - - - - - - - - - - - - -
 
-  def disk
+  def dir
     @externals.disk
   end
 
   def id_generator
     @externals.id_generator
+  end
+
+  def id_validator
+    @externals.id_validator
   end
 
   # - - - - - - - - - - - - - -

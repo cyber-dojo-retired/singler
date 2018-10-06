@@ -1,23 +1,10 @@
 require_relative 'test_base'
-require_relative 'id_generator_stub'
 
 class SinglerTest < TestBase
 
   def self.hex_prefix
     '97431'
   end
-
-  def hex_setup
-    @real_id_generator = externals.id_generator
-    @stub_id_generator = IdGeneratorStub.new
-    externals.id_generator = @stub_id_generator
-  end
-
-  def hex_teardown
-    externals.id_generator = @real_id_generator
-  end
-
-  attr_reader :stub_id_generator
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
   # sha
@@ -30,24 +17,13 @@ class SinglerTest < TestBase
     end
   end
 
-  # - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # path
-  # - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test '218', %w(
-  singler's path is set
-  but in test its volume-mounted to /tmp
-  so its emphemeral ) do
-    assert_equal '/singler/ids', singler.path
-  end
-
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # create() manifest()
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '42D',
   'manifest raises when id does not exist' do
-    id = 'B4AB376BE2'
+    id = 'B4AB37'
     error = assert_raises(ArgumentError) {
       manifest(id)
     }
@@ -58,14 +34,11 @@ class SinglerTest < TestBase
 
   test '42E',
   'create/manifest round-trip' do
-    stub_id = '0ADDE7572A'
-    stub_id_generator.stub(stub_id)
-    expected = starter.manifest
-    id = create(expected, starter.files)
-    assert_equal stub_id, id
-    expected['id'] = id
-    actual = manifest(id)
-    assert_equal expected, actual
+    m = starter.manifest
+    m['id'] = '0ADDE7'
+    id = create(m, starter.files)
+    assert_equal '0ADDE7', id
+    assert_equal m, manifest(id)
   end
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -74,10 +47,10 @@ class SinglerTest < TestBase
 
   test '392',
   'id? is false before creation, true after creation' do
-    stub_id = '50C8C661CD'
-    refute id?(stub_id)
-    stub_create(stub_id)
-    assert id?(stub_id)
+    id = '50C8C6'
+    refute id?(id)
+    stub_create(id)
+    assert id?(id)
   end
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -86,7 +59,7 @@ class SinglerTest < TestBase
 
   test '821',
   'tags raises when id does not exist' do
-    id = 'B4AB376BE2'
+    id = 'B4AB37'
     error = assert_raises(ArgumentError) {
       tags(id)
     }
@@ -97,7 +70,7 @@ class SinglerTest < TestBase
 
   test '822',
   'tag raises when n does not exist' do
-    id = stub_create('AB5AEEF6BD')
+    id = stub_create('AB5AEE')
     error = assert_raises(ArgumentError) {
       tag(id, 1)
     }
@@ -108,7 +81,7 @@ class SinglerTest < TestBase
 
   test '823',
   'ran_tests raises when id does not exist' do
-    id = 'B4AB376BE2'
+    id = 'B4AB37'
     error = assert_raises(ArgumentError) {
       ran_tests(*make_args(id, 1, edited_files))
     }
@@ -121,7 +94,7 @@ class SinglerTest < TestBase
   ran_tests raises when n is -1
   because -1 can only be used on tag()
   ) do
-    id = stub_create('FCF211235B')
+    id = stub_create('FCF211')
     error = assert_raises(ArgumentError) {
       ran_tests(*make_args(id, -1, edited_files))
     }
@@ -134,7 +107,7 @@ class SinglerTest < TestBase
   ran_tests raises when n is 0
   because 0 is used for create()
   ) do
-    id = stub_create('08739D07A3')
+    id = stub_create('08739D')
     error = assert_raises(ArgumentError) {
       ran_tests(*make_args(id, 0, edited_files))
     }
@@ -147,7 +120,7 @@ class SinglerTest < TestBase
   ran_tests raises when n already exists
   and does not add a new tag,
   in other words it fails atomically ) do
-    id = stub_create('C7112B4C22')
+    id = stub_create('C7112B')
     expected = []
     expected << tags0
     assert_equal expected, tags(id)
@@ -174,7 +147,7 @@ class SinglerTest < TestBase
   ran_tests does NOT raise when n-1 does not exist
   and the reason for this is partly speed
   and partly robustness against temporary singler failure ) do
-    id = stub_create('710145D963')
+    id = stub_create('710145')
     ran_tests(*make_args(id, 1, edited_files))
     # ran_tests(*make_args(id, 2, ...)) assume failed
     ran_tests(*make_args(id, 3, edited_files)) # <====
@@ -184,7 +157,7 @@ class SinglerTest < TestBase
 
   test '829',
   'after ran_tests() there is one more tag' do
-    id = stub_create('9DD618D263')
+    id = stub_create('9DD618')
 
     expected_tags = [tags0]
     diagnostic = '#0 tags(id)'

@@ -12,110 +12,50 @@ class ExternalDiskWriterTest < TestBase
 
   # - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  test '436', %w(
+  dir.name is based on /singler/ids/
+  reveals id is split 2-4
+  and can optionally take avatar-index ) do
+    dir = disk['6BD45B']
+    assert_equal '/singler/ids/6B/D45B', dir.name
+    dir = disk['2FA591',13]
+    assert_equal '/singler/ids/2F/A591/13', dir.name
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - -
+
   test '437',
-  'dir.name does not ends in /' do
-    dir = disk['/tmp/437']
-    assert_equal '/tmp/437', dir.name
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test '0DB',
-  'dir.exists? is false before a successful dir.make, true after' do
-    dir = disk['/tmp/0DB']
+  'dir.exists? is false before dir.make and true after' do
+    dir = disk['FCFDC8']
     refute dir.exists?
-    dir.make
+    assert dir.make
     assert dir.exists?
+    refute dir.make
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  test 'F59',
-  'dir.make succeeds when making a nested a dir' do
-    dir = disk['/tmp/F59/a/b/c']
-    refute dir.exists?
-    dir.make
-    assert dir.exists?
-
-    dir = disk['/tmp/F59/a/b/d']
-    refute dir.exists?
-    dir.make
-    assert dir.exists?
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test '1B5',
-  'dir.make raises if it does not make a new directory' do
-    dir = disk['/tmp/1B5']
-    refute dir.exists?
-    dir.make
-    error = assert_raises(ArgumentError) {
-      dir.make
-    }
-    assert_equal 'mkdir -vp /tmp/1B5', error.message
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test '61F',
-  'dir.exists?(filename) false when file does not exist, true when it does' do
-    dir = disk['/tmp/61F']
-    dir.make
-    refute dir.exists?(filename )
-    dir.write(filename, content)
-    assert dir.exists?(filename)
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test 'D4C',
+  test '438',
   'dir.read() reads back what dir.write() wrote' do
-    dir = disk['/tmp/D4C']
+    dir = disk['F7C14D']
     dir.make
+    filename = 'limerick.txt'
+    content = 'the boy stood on the burning deck'
     dir.write(filename, content)
     assert_equal content, dir.read(filename)
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  test 'D4D',
-  'dir.append() appends!' do
-    dir = disk['/tmp/D4D']
+  test '439',
+  'dir.append() appends to the end' do
+    dir = disk['D98AEC']
     dir.make
-    dir.append(filename, "A\n")
-    dir.append(filename, "B\n")
-    dir.append(filename, "C\n")
-    assert_equal "A\nB\nC\n", dir.read(filename)
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test '0CC',
-  'dir.each_dir() returns dir names but not . or ..' do
-    dir = disk['/tmp/0CC']
-    disk['/tmp/0CC/alpha'].make
-    disk['/tmp/0CC/beta' ].make
-    disk['/tmp/0CC/gamma'].make
-    disk['/tmp/0CC/.git' ].make
-    assert_equal %w( .git alpha beta gamma ), dir.each_dir.entries.sort
-  end
-
-  test '7E1',
-  'dir.each_dir() returns [] when there are no sub-dirs' do
-    dir = disk['/tmp/7E1']
-    dir.make
-    assert_equal [], dir.each_dir.entries
-  end
-
-  private # = = = = = = = = = = = = = = = =
-
-  def filename
-    'limerick.txt'
-  end
-
-  def content
-    'the boy stood on the burning deck'
+    filename = 'readme.md'
+    dir.append(filename, "## GET tags\n")
+    assert_equal "## GET tags\n", dir.read(filename)
+    dir.append(filename, "## POST create\n")
+    assert_equal "## GET tags\n## POST create\n", dir.read(filename)
   end
 
 end

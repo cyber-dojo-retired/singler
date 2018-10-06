@@ -18,11 +18,9 @@ API:
     * If the method raises an exception, the key equals "exception".
 
 - [GET sha](#get-sha)
+- [GET id?](#get-id)
 - [POST create](#post-create)
 - [GET manifest](#get-manifest)
-- [GET id?](#get-id)
-- [GET id_completed](#get-id_completed)
-- [GET id_completions](#get-id_completions)
 - [POST ran_tests](#post-ran_tests)
 - [GET tags](#get-tags)
 - [GET tag](#get-tag)
@@ -57,7 +55,7 @@ and visible_files.
         "filename_extension": [ ".c", "*.h" ],
                   "tab_size": 4,
       },
-      "visible_files": {
+      "files": {
                "hiker.h": "#ifndef HIKER_INCLUDED...",
                "hiker.c": "#include \"hiker.h\"...",
         "hiker.tests.c" : "#include <assert.h>\n...",
@@ -69,7 +67,7 @@ and visible_files.
 ```
 - returns the id of the create practice session, eg
 ```
-  { "create": "A551C528C3"
+  { "create": "A551C5"
   }
 ```
 
@@ -79,12 +77,12 @@ and visible_files.
 Returns the manifest used to create the practice-session with the given id.
 - parameter, eg
 ```
-  { "id": "A551C528C3" }
+  { "id": "A551C5" }
 ```
 - returns, eg
 ```
     { "manifest": {
-                        "id": "A551C528C3",
+                        "id": "A551C5",
                    "created": [2017,12,15, 11,13,38],
               "display_name": "C (gcc), assert",
                 "image_name": "cyberdojofoundation/gcc_assert",
@@ -103,45 +101,12 @@ Returns the manifest used to create the practice-session with the given id.
 Asks whether the practice-session with the given id exists.
 - parameters, eg
 ```
-  { "id": "15B9AD6C42" }
+  { "id": "15B9AD" }
 ```
 - returns true if it does, false if it doesn't, eg
 ```
   { "id?": true   }
   { "id?": false  }
-```
-
-- - - -
-
-## GET id_completed
-If it exists, returns the 10-digit practice-session id which uniquely
-completes the given partial_id, otherwise returns the empty string.
-- parameter, the partial-id to complete, eg
-```
-  { "partial_id": "A551C5" } # must be at least 6 characters long.
-```
-- returns, eg
-```
-  { "id_completed": "A551C528C3"  } # completed
-  { "id_completed": ""            } # not completed
-```
-
-- - - -
-
-## GET id_completions
-Returns all the practice-session id's starting with the given outer_id.
-- parameter, eg
-```
-  { "outer_id": "A5" } # must be 2 characters long
-```
-- returns, eg
-```
-  { "id_completions": [
-       "A551C528C3",
-       "A5DA2CDC58",
-       "A5EAFE6E53"
-    ]
-  }
 ```
 
 - - - -
@@ -153,7 +118,7 @@ at the given time, which produced the given stdout, stderr, status,
 with the given traffic-light colour.
 - parameters, eg
 ```
-  {      "id": "A551C528C3",
+  {      "id": "A551C5",
           "n": 3,
       "files": {       "hiker.h" : "ifndef HIKER_INCLUDED\n...",
                        "hiker.c" : "#include \"hiker.h\"...",
@@ -185,7 +150,7 @@ Returns details of all traffic-lights, for the practice-session
 with the given id.
 - parameters, eg
 ```
-  { "id": "A551C528C3" }
+  { "id": "A551C5" }
 ```
 - returns, eg
 ```
@@ -206,7 +171,7 @@ for the practice-session with the given id,
 and the given tag number n.
 - parameters, eg
 ```
-  { "id": "A551C528C3",
+  { "id": "A551C5",
      "n": 3
   }
 ```

@@ -59,12 +59,14 @@ class WellFormedArgs
 
   def id
     @arg_name = __method__.to_s
-    malformed unless is_base58?(arg)
+    unless is_base58?(arg)
+      malformed
+    end
     arg
   end
 
   def is_base58?(value)
-    Base58.string?(value) && value.length == 10
+    Base58.string?(value) && value.length == 6
   end
 
   # - - - - - - - - - - - - - - - -

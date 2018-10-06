@@ -68,7 +68,7 @@ class RackDispatcherTest < TestBase
   test 'E5D',
   'create(manifest) can include group which holds group-id' do
     manifest = starter.manifest
-    manifest['group'] = '18Q67AFf62'
+    manifest['group'] = '18Q67A'
     args = {
       manifest: manifest,
       files: starter.files
@@ -142,7 +142,7 @@ class RackDispatcherTest < TestBase
   private
 
   def well_formed_id
-    '1234567890'
+    '123456'
   end
 
   def malformed_id

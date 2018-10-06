@@ -70,7 +70,6 @@ class SinglerServiceTest < TestBase
     # having to make a call back to storer to get the
     # tag numbers for the new traffic-light's diff handler.
     id = singler.create(starter.manifest, starter.files)
-
     tag1_files = starter.files
     tag1_files.delete('hiker.h')
     now = [2016,12,5, 21,1,34]
@@ -79,7 +78,6 @@ class SinglerServiceTest < TestBase
     status = 6
     colour = 'amber'
     tags = singler.ran_tests(id, 1, tag1_files, now, stdout, stderr, status, colour)
-
     expected = [
       tag0,
       {"colour"=>"amber", "time"=>[2016,12,5, 21,1,34], "number"=>1}

@@ -1,32 +1,36 @@
 
 class ExternalDirWriter
 
-  def initialize(externals, name)
+  def initialize(externals, id, index)
     @externals = externals
-    @name = name
+    @id = id
+    @index = index
   end
 
-  attr_reader :name
+  def name
+    # How to split the 6-char ID across nested dir?
+    # Currently using 2/4
+    # TODO: investigate the time trade-offs.
+    args = ['', 'singler', 'ids', @id[0..1], @id[2..-1]]
+    unless @index.nil?
+      args << @index.to_s
+    end
+    File.join(*args)
+  end
+
+  def exists?
+    File.directory?(name)
+  end
 
   def make
-    # Can't find a Ruby library method allowing you to do a
-    # mkdir_p and-know-if-a-dir-was-created-or-not.
+    # Returns true iff the dir does not already exist
+    # and is made. Can't find a Ruby library method
+    # that does this, so using shell.
     # Note: FileUtils.mkdir_p() does not tell.
-    # So using shell.
     # -p creates intermediate dirs as required.
     # -v verbose mode, output each dir actually made
     stdout,stderr,status = shell.exec("mkdir -vp #{name}")
-    unless stdout != '' && stderr == '' && status == 0
-      fail ArgumentError.new("mkdir -vp #{name}")
-    end
-  end
-
-  def exists?(filename = nil)
-    if filename.nil?
-      File.directory?(name)
-    else
-      File.exist?(pathed(filename))
-    end
+    stdout != '' && stderr == '' && status == 0
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - -
@@ -40,36 +44,17 @@ class ExternalDirWriter
   end
 
   def read(filename)
-    IO.read(pathed(filename))
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - - - - -
-
-  def each_dir
-    return enum_for(:each_dir) unless block_given?
-    Dir.entries(name).each do |entry|
-      if disk[pathed(entry)].exists? && !dot?(pathed(entry))
-        yield entry
-      end
-    end
+    File.open(pathed(filename), 'r') { |fd| fd.read }
   end
 
   private
-
-  def disk
-    @externals.disk
-  end
 
   def shell
     @externals.shell
   end
 
-  def pathed(entry)
-    name + '/' + entry
-  end
-
-  def dot?(name)
-    name.end_with?('/.') || name.end_with?('/..')
+  def pathed(filename)
+    File.join(name, filename)
   end
 
 end

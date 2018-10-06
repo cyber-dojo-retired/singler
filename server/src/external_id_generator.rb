@@ -13,12 +13,12 @@ class ExternalIdGenerator
   end
 
   def generate
-    iid = nil
     loop do
-      iid = Base58.string(10)
-      break if valid?(iid)
+      id = Base58.string(6)
+      if valid?(id)
+        return id
+      end
     end
-    iid
   end
 
   private

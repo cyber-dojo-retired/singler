@@ -111,7 +111,7 @@ class WellFormedArgsTest < TestBase
 
   test '61A',
   'id does not raise when well-formed' do
-    id = 'A1B2F345kn'
+    id = 'A1B2F3'
     json = { id:id }.to_json
     assert_equal id, WellFormedArgs.new(json).id
   end
@@ -131,11 +131,11 @@ class WellFormedArgsTest < TestBase
     [
       nil,          # ! String
       [],           # ! string
-      '',           # ! 10 chars
-      '34',         # ! 10 chars
-      '345',        # ! 10 chars
-      '123456789',  # ! 10 chars
-      'ABCDEF123='  # ! Base58 chars
+      '',           # ! 6 chars
+      '1234',       # ! 6 chars
+      '12345',      # ! 6 chars
+      '1234567',    # ! 6 chars
+      '12345='      # ! Base58 chars
     ]
   end
 
