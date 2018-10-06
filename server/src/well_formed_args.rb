@@ -29,7 +29,7 @@ class WellFormedArgs
     arg.keys.each do |key|
       value = arg[key]
       case key
-      when 'group'
+      when 'id', 'group'
         unless base58?(value)
           malformed
         end
