@@ -53,14 +53,17 @@ class WellFormedArgsTest < TestBase
   def malformed_manifests
     bad_time = [2018,-3,28, 11,33,13]
     [
-      [],                                                # ! Hash
-      {},                                                # required key missing
+      [],                                                 # ! Hash
+      {},                                                 # required key missing
       starter.manifest.merge({x:'unknown'}),              # unknown key
+      starter.manifest.merge({id:42}),                    # ! String
+      starter.manifest.merge({group:42}),                 # ! String
       starter.manifest.merge({display_name:42}),          # ! String
       starter.manifest.merge({image_name:42}),            # ! String
       starter.manifest.merge({runner_choice:42}),         # ! String
       starter.manifest.merge({filename_extension:true}),  # ! String && ! Array
       starter.manifest.merge({filename_extension:{}}),    # ! String && ! Array
+      starter.manifest.merge({filename_extension:[1]}),   # ! Array[String]
       starter.manifest.merge({exercise:true}),            # ! String
       starter.manifest.merge({highlight_filenames:1}),    # ! Array of Strings
       starter.manifest.merge({highlight_filenames:[1]}),  # ! Array of Strings
@@ -163,9 +166,10 @@ class WellFormedArgsTest < TestBase
 
   def malformed_nows
     [
-      [], {}, nil, true, 42,
-      [2018,-3,28, 19,18,45],
-      [2018,3,28, 19,18]
+      [], {}, nil, true, 42,    # ! Arrays
+      ["2018",3,28, 19,18,45],  # ! Array[String]
+      [2018,3,28, 19,18],       # ! Array.length == 6
+      [2018,-3,28,  19,18,45]   # ! Time
     ]
   end
 

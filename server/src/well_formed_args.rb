@@ -55,7 +55,9 @@ class WellFormedArgs
           malformed
         end
       when 'filename_extension'
-        value = [ value ] if value.is_a?(String)
+        if value.is_a?(String)
+          value = [ value ]
+        end
         unless value.is_a?(Array)
           malformed
         end
@@ -113,19 +115,10 @@ class WellFormedArgs
 
   def now
     @arg_name = __method__.to_s
-    unless arg.is_a?(Array)
+    unless is_time?(arg)
       malformed
     end
-    unless arg.length == 6
-      malformed
-    end
-    unless arg.all?{ |n| n.is_a?(Integer) }
-      malformed
-    end
-    Time.mktime(*arg)
     arg
-  rescue ArgumentError
-    malformed
   end
 
   # - - - - - - - - - - - - - - - -
