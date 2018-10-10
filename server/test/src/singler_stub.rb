@@ -13,7 +13,7 @@ class SinglerStub
   end
 
   define_stubs :sha
-  define_stubs :exists?, :create, :manifest
-  define_stubs :ran_tests, :tags, :tag
+  define_stubs :kata_exists?, :kata_create, :kata_manifest
+  define_stubs :kata_ran_tests, :kata_tags, :kata_tag
 
 end

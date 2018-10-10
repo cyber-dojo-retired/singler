@@ -33,13 +33,13 @@ class RackDispatcherTest < TestBase
 
   test 'E5B',
   'dispatch raises when any argument is malformed' do
-    assert_dispatch_raises('tags',
+    assert_dispatch_raises('kata_tags',
       { id: malformed_id },
       500,
       'ArgumentError',
       'id:malformed'
     )
-    assert_dispatch_raises('tag',
+    assert_dispatch_raises('kata_tag',
       {  id: well_formed_id,
           n: malformed_n
       },
@@ -53,56 +53,56 @@ class RackDispatcherTest < TestBase
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test 'E60',
-  'dispatch to exists' do
-    assert_dispatch('exists',
+  'dispatch to kata_exists' do
+    assert_dispatch('kata_exists',
       { id: well_formed_id },
-      'hello from SinglerStub.exists?'
+      'hello from SinglerStub.kata_exists?'
     )
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test 'E5C',
-  'dispatch to create' do
+  'dispatch to kata_create' do
     args = {
       manifest: starter.manifest,
       files: starter.files
     }
-    assert_dispatch('create', args,
-      'hello from SinglerStub.create'
+    assert_dispatch('kata_create', args,
+      'hello from SinglerStub.kata_create'
     )
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test 'E5D',
-  'create(manifest) can include group which holds group-id' do
+  'kata_create(manifest) can include group which holds group-id' do
     manifest = starter.manifest
     manifest['group'] = '18Q67A'
     args = {
       manifest: manifest,
       files: starter.files
     }
-    assert_dispatch('create', args,
-      'hello from SinglerStub.create'
+    assert_dispatch('kata_create', args,
+      'hello from SinglerStub.kata_create'
     )
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test 'E5E',
-  'dispatch to manifest' do
-    assert_dispatch('manifest',
+  'dispatch to kata_manifest' do
+    assert_dispatch('kata_manifest',
       { id: well_formed_id },
-      'hello from SinglerStub.manifest'
+      'hello from SinglerStub.kata_manifest'
     )
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test 'E70',
-  'dispatch to ran_tests' do
-    assert_dispatch('ran_tests',
+  'dispatch to kata_ran_tests' do
+    assert_dispatch('kata_ran_tests',
       {     id: well_formed_id,
              n: well_formed_n,
          files: well_formed_files,
@@ -112,29 +112,29 @@ class RackDispatcherTest < TestBase
         status: well_formed_status,
         colour: well_formed_colour
       },
-      'hello from SinglerStub.ran_tests'
+      'hello from SinglerStub.kata_ran_tests'
     )
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test 'E71',
-  'dispatch to tags' do
-    assert_dispatch('tags',
+  'dispatch to kata_tags' do
+    assert_dispatch('kata_tags',
       { id: well_formed_id },
-      'hello from SinglerStub.tags'
+      'hello from SinglerStub.kata_tags'
     )
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test 'E72',
-  'dispatch to tag' do
-    assert_dispatch('tag',
+  'dispatch to kata_tag' do
+    assert_dispatch('kata_tag',
       { id: well_formed_id,
          n: well_formed_n
       },
-      'hello from SinglerStub.tag'
+      'hello from SinglerStub.kata_tag'
     )
   end
 
@@ -187,7 +187,7 @@ class RackDispatcherTest < TestBase
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   def assert_dispatch(name, args, stubbed)
-    qname = (name == 'exists') ? 'exists?' : name
+    qname = (name == 'kata_exists') ? 'kata_exists?' : name
     assert_rack_call(name, args, { qname => stubbed })
   end
 

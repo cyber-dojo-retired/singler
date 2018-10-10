@@ -18,12 +18,12 @@ API:
     * If the method raises an exception, the key equals "exception".
 
 - [GET sha](#get-sha)
-- [GET exists?](#get-exist)
-- [POST create](#post-create)
-- [GET manifest](#get-manifest)
-- [POST ran_tests](#post-ran_tests)
-- [GET tags](#get-tags)
-- [GET tag](#get-tag)
+- [GET kata_exists?](#get-kata_exists)
+- [POST kata_create](#post-kata_create)
+- [GET kata_manifest](#get-kata_manifest)
+- [POST kata_ran_tests](#post-kata_ran_tests)
+- [GET kata_tags](#get-kata_tags)
+- [GET kata_tag](#get-kata_tag)
 
 - - - -
 
@@ -40,7 +40,7 @@ Returns the git commit sha used to create the docker image.
 
 - - - -
 
-## POST create
+## POST kata_create
 Creates a practice-session from the given manifest
 and visible_files.
 - parameters, eg
@@ -67,13 +67,13 @@ and visible_files.
 ```
 - returns the id of the create practice session, eg
 ```
-  { "create": "A551C5"
+  { "kata_create": "A551C5"
   }
 ```
 
 - - - -
 
-## GET manifest
+## GET kata_manifest
 Returns the manifest used to create the practice-session with the given id.
 - parameter, eg
 ```
@@ -81,7 +81,7 @@ Returns the manifest used to create the practice-session with the given id.
 ```
 - returns, eg
 ```
-    { "manifest": {
+    { "kata_manifest": {
                         "id": "A551C5",
                    "created": [2017,12,15, 11,13,38],
               "display_name": "C (gcc), assert",
@@ -97,21 +97,21 @@ Returns the manifest used to create the practice-session with the given id.
 
 - - - -
 
-## GET exists?
+## GET kata_exists?
 Asks whether the practice-session with the given id exists.
 - parameters, eg
 ```
-  { "exist": "15B9AD" }
+  { "id": "15B9AD" }
 ```
 - returns true if it does, false if it doesn't, eg
 ```
-  { "exist?": true   }
-  { "exist?": false  }
+  { "kata_exist?": true   }
+  { "kata_exist?": false  }
 ```
 
 - - - -
 
-## POST ran_tests
+## POST kata_ran_tests
 In the practice-session with the given id,
 the given visible files were submitted as tag number n,
 at the given time, which produced the given stdout, stderr, status,
@@ -136,7 +136,7 @@ with the given traffic-light colour.
 ```
 Returns tags, eg
 ```
-  { "ran_tests": [
+  { "kata_ran_tests": [
       {  "event": "created", "time": [2016,12,5, 11,15,18], "number": 0 },
       { "colour": "red,      "time": [2016,12,6, 12,31,15], "number": 1 }
     ]
@@ -145,7 +145,7 @@ Returns tags, eg
 
 - - - -
 
-## GET tags
+## GET kata_tags
 Returns details of all traffic-lights, for the practice-session
 with the given id.
 - parameters, eg
@@ -154,7 +154,7 @@ with the given id.
 ```
 - returns, eg
 ```
-  { "tags": [
+  { "kata_tags": [
       {  "event": "created", "time": [2016,12,5, 11,15,18], "number": 0 },
       { "colour": "red,      "time": [2016,12,6, 12,31,15], "number": 1 },
       { "colour": "green",   "time": [2016,12,6, 12,32,56], "number": 2 },
@@ -165,7 +165,7 @@ with the given id.
 
 - - - -
 
-## GET tag
+## GETkata_ tag
 Returns the files, stdout, stderr, status,
 for the practice-session with the given id,
 and the given tag number n.

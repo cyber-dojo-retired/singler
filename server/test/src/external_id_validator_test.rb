@@ -12,7 +12,7 @@ class ExternalIdValidatorTest < TestBase
   'true when no group with the id exists, false it does already exists' do
     id = '828754'
     assert_valid(id)
-    stub_create(id)
+    stub_kata_create(id)
     refute_valid(id)
   end
 

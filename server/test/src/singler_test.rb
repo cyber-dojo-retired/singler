@@ -18,26 +18,26 @@ class SinglerTest < TestBase
   end
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # exists?(id)
+  # kata_exists?(id)
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '392',
-  'exists? is false before creation, true after creation' do
+  'kata_exists? is false before creation, true after creation' do
     id = '50C8C6'
-    refute exists?(id)
-    stub_create(id)
-    assert exists?(id)
+    refute kata_exists?(id)
+    stub_kata_create(id)
+    assert kata_exists?(id)
   end
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # create(), manifest()
+  # kata_create(), kata_manifest()
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '421',
-  'create() generates id if one is not supplied' do
+  'kata_create() generates id if one is not supplied' do
     manifest = starter.manifest
     refute manifest.key?('id')
-    id = create(manifest, starter.files)
+    id = kata_create(manifest, starter.files)
     assert manifest.key?('id')
     assert_equal id, manifest['id']
   end
@@ -45,11 +45,11 @@ class SinglerTest < TestBase
   #- - - - - - - - - - - - - - - - - - - - - -
 
   test '42C',
-  'create() raises when provided id is invalid' do
+  'kata_create() raises when provided id is invalid' do
     manifest = starter.manifest
     manifest['id'] = '12345L'
     error = assert_raises(ArgumentError) {
-      create(manifest, starter.files)
+      kata_create(manifest, starter.files)
     }
     assert_equal 'id:invalid:12345L', error.message
   end
@@ -57,30 +57,30 @@ class SinglerTest < TestBase
   #- - - - - - - - - - - - - - - - - - - - - -
 
   test '422', %w(
-  create(manifest) can be passed the id
+  kata_create(manifest) can be passed the id
   and its used when that id does not already exist ) do
     explicit_id = 'CE2BD6'
     manifest = starter.manifest
     manifest['id'] = explicit_id
-    id = create(manifest, starter.files)
+    id = kata_create(manifest, starter.files)
     assert_equal explicit_id, id
   end
 
   #- - - - - - - - - - - - - - - - - - - - - -
 
   test '423', %w(
-  create(manifest) can be passed the id
+  kata_create(manifest) can be passed the id
   and raises when that id already exists ) do
     explicit_id = 'A01DE8'
     manifest = starter.manifest
     manifest['id'] = explicit_id
-    id = create(manifest, starter.files)
+    id = kata_create(manifest, starter.files)
     assert_equal explicit_id, id
 
     manifest = starter.manifest
     manifest['id'] = id
     error = assert_raises(ArgumentError) {
-      create(manifest, starter.files)
+      kata_create(manifest, starter.files)
     }
     assert_equal "id:invalid:#{id}", error.message
   end
@@ -88,10 +88,10 @@ class SinglerTest < TestBase
   #- - - - - - - - - - - - - - - - - - - - - -
 
   test '42D',
-  'manifest raises when id does not exist' do
+  'kata_manifest raises when id does not exist' do
     id = 'B4AB37'
     error = assert_raises(ArgumentError) {
-      manifest(id)
+      kata_manifest(id)
     }
     assert_equal "id:invalid:#{id}", error.message
   end
@@ -102,20 +102,20 @@ class SinglerTest < TestBase
   'create/manifest round-trip' do
     m = starter.manifest
     m['id'] = '0ADDE7'
-    id = create(m, starter.files)
+    id = kata_create(m, starter.files)
     assert_equal '0ADDE7', id
-    assert_equal m, manifest(id)
+    assert_equal m, kata_manifest(id)
   end
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # ran_tests(id,...), tags(id), tag(id,n)
+  # kata_ran_tests(id,...), kata_tags(id), kata_tag(id,n)
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '821',
-  'tags raises when id does not exist' do
+  'kata_tags raises when id does not exist' do
     id = 'B4AB37'
     error = assert_raises(ArgumentError) {
-      tags(id)
+      kata_tags(id)
     }
     assert_equal "id:invalid:#{id}", error.message
   end
@@ -123,10 +123,10 @@ class SinglerTest < TestBase
   # - - - - - - - - - - - - - - - - - - - - -
 
   test '822',
-  'tag raises when n does not exist' do
-    id = stub_create('AB5AEE')
+  'kata_tag raises when n does not exist' do
+    id = stub_kata_create('AB5AEE')
     error = assert_raises(ArgumentError) {
-      tag(id, 1)
+      kata_tag(id, 1)
     }
     assert_equal 'n:invalid:1', error.message
   end
@@ -137,7 +137,7 @@ class SinglerTest < TestBase
   'ran_tests raises when id does not exist' do
     id = 'B4AB37'
     error = assert_raises(ArgumentError) {
-      ran_tests(*make_args(id, 1, edited_files))
+      kata_ran_tests(*make_args(id, 1, edited_files))
     }
     assert_equal "id:invalid:#{id}", error.message
   end
@@ -145,12 +145,12 @@ class SinglerTest < TestBase
   # - - - - - - - - - - - - - - - - - - - - -
 
   test '824', %w(
-  ran_tests raises when n is -1
+  kata_ran_tests raises when n is -1
   because -1 can only be used on tag()
   ) do
-    id = stub_create('FCF211')
+    id = stub_kata_create('FCF211')
     error = assert_raises(ArgumentError) {
-      ran_tests(*make_args(id, -1, edited_files))
+      kata_ran_tests(*make_args(id, -1, edited_files))
     }
     assert_equal 'n:invalid:-1', error.message
   end
@@ -158,12 +158,12 @@ class SinglerTest < TestBase
   # - - - - - - - - - - - - - - - - - - - - -
 
   test '825', %w(
-  ran_tests raises when n is 0
-  because 0 is used for create()
+  kata_ran_tests raises when n is 0
+  because 0 is used for kata_create()
   ) do
-    id = stub_create('08739D')
+    id = stub_kata_create('08739D')
     error = assert_raises(ArgumentError) {
-      ran_tests(*make_args(id, 0, edited_files))
+      kata_ran_tests(*make_args(id, 0, edited_files))
     }
     assert_equal 'n:invalid:0', error.message
   end
@@ -171,69 +171,69 @@ class SinglerTest < TestBase
   # - - - - - - - - - - - - - - - - - - - - -
 
   test '826', %w(
-  ran_tests raises when n already exists
+  kata_ran_tests raises when n already exists
   and does not add a new tag,
   in other words it fails atomically ) do
-    id = stub_create('C7112B')
+    id = stub_kata_create('C7112B')
     expected = []
     expected << tags0
-    assert_equal expected, tags(id)
+    assert_equal expected, kata_tags(id)
 
-    ran_tests(*make_args(id, 1, edited_files))
+    kata_ran_tests(*make_args(id, 1, edited_files))
     expected << {
       'colour' => red,
       'time' => time_now,
       'number' => 1
     }
-    assert_equal expected, tags(id)
+    assert_equal expected, kata_tags(id)
 
     error = assert_raises(ArgumentError) {
-      ran_tests(*make_args(id, 1, edited_files))
+      kata_ran_tests(*make_args(id, 1, edited_files))
     }
     assert_equal 'n:invalid:1', error.message
 
-    assert_equal expected, tags(id)
+    assert_equal expected, kata_tags(id)
   end
 
   # - - - - - - - - - - - - - - - - - - - - -
 
   test '827', %w(
-  ran_tests does NOT raise when n-1 does not exist
+  kata_ran_tests does NOT raise when n-1 does not exist
   and the reason for this is partly speed
   and partly robustness against temporary singler failure ) do
-    id = stub_create('710145')
-    ran_tests(*make_args(id, 1, edited_files))
+    id = stub_kata_create('710145')
+    kata_ran_tests(*make_args(id, 1, edited_files))
     # ran_tests(*make_args(id, 2, ...)) assume failed
-    ran_tests(*make_args(id, 3, edited_files)) # <====
+    kata_ran_tests(*make_args(id, 3, edited_files)) # <====
   end
 
   # - - - - - - - - - - - - - - - - - - - - -
 
   test '829',
-  'after ran_tests() there is one more tag' do
-    id = stub_create('9DD618')
+  'after kata_ran_tests() there is one more tag' do
+    id = stub_kata_create('9DD618')
 
     expected_tags = [tags0]
-    diagnostic = '#0 tags(id)'
-    assert_equal expected_tags, tags(id), diagnostic
+    diagnostic = '#0 kata_tags(id)'
+    assert_equal expected_tags, kata_tags(id), diagnostic
 
     expected = rag_tag(starter.files, '', '', 0)
-    assert_equal expected, tag(id, 0), 'tag(id,0)'
-    assert_equal expected, tag(id, -1), 'tag(id,-1)'
+    assert_equal expected, kata_tag(id, 0), 'kata_tag(id,0)'
+    assert_equal expected, kata_tag(id, -1), 'kata_tag(id,-1)'
 
-    ran_tests(*make_args(id, 1, edited_files))
+    kata_ran_tests(*make_args(id, 1, edited_files))
 
     expected_tags << {
       'colour' => red,
       'time'   => time_now,
       'number' => (now_tag=1)
     }
-    diagnostic = '#1 tags(id)'
-    assert_equal expected_tags, tags(id), diagnostic
+    diagnostic = '#1 kata_tags(id)'
+    assert_equal expected_tags, kata_tags(id), diagnostic
 
     expected = rag_tag(edited_files, stdout, stderr, status)
-    assert_equal expected, tag(id, 1), 'tag(id,1)'
-    assert_equal expected, tag(id, -1), 'tag(id,-1)'
+    assert_equal expected, kata_tag(id, 1), 'kata_tag(id,1)'
+    assert_equal expected, kata_tag(id, -1), 'kata_tag(id,-1)'
   end
 
   private

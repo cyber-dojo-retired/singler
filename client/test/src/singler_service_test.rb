@@ -22,10 +22,10 @@ class SinglerServiceTest < TestBase
 
   test '966',
   %w( malformed id on any method raises ) do
-    error = assert_raises { singler.manifest(nil) }
+    error = assert_raises { singler.kata_manifest(nil) }
     assert_equal 'ServiceError', error.class.name
     assert_equal 'SinglerService', error.service_name
-    assert_equal 'manifest', error.method_name
+    assert_equal 'kata_manifest', error.method_name
     json = JSON.parse(error.message)
     assert_equal 'ArgumentError', json['class']
     assert_equal 'id:malformed', json['message']
@@ -35,41 +35,41 @@ class SinglerServiceTest < TestBase
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '6E7',
-  %w( retrieved manifest contains id ) do
+  %w( retrieved kata_manifest contains id ) do
     manifest = starter.manifest
-    id = singler.create(manifest, starter.files)
+    id = singler.kata_create(manifest, starter.files)
     manifest['id'] = id
-    assert_equal manifest, singler.manifest(id)
+    assert_equal manifest, singler.kata_manifest(id)
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '5F9', %w(
-  after create() then
-  and exists?() is true
-  and the tags has tag0
-  and the manifest can be retrieved ) do
-    id = singler.create(starter.manifest, starter.files)
-    assert singler.exists?(id)
-    assert_equal([tag0], singler.tags(id))
+  after kata_create() then
+  and kata_exists?() is true
+  and the kata_tags has tag0
+  and the kata_manifest can be retrieved ) do
+    id = singler.kata_create(starter.manifest, starter.files)
+    assert singler.kata_exists?(id)
+    assert_equal([tag0], singler.kata_tags(id))
     expected = {
       'files' => starter.files,
       'stdout' => '',
       'stderr' => '',
       'status' => 0
     }
-    assert_equal expected, singler.tag(id, 0)
-    assert_equal expected, singler.tag(id, -1)
+    assert_equal expected, singler.kata_tag(id, 0)
+    assert_equal expected, singler.kata_tag(id, -1)
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test 'A20',
-  'ran_tests() returns tags' do
+  'kata_ran_tests() returns tags' do
     # This is an optimization to avoid web service
     # having to make a call back to storer to get the
     # tag numbers for the new traffic-light's diff handler.
-    id = singler.create(starter.manifest, starter.files)
+    id = singler.kata_create(starter.manifest, starter.files)
     tag1_files = starter.files
     tag1_files.delete('hiker.h')
     now = [2016,12,5, 21,1,34]
@@ -77,7 +77,7 @@ class SinglerServiceTest < TestBase
     stderr = 'assert failed'
     status = 6
     colour = 'amber'
-    tags = singler.ran_tests(id, 1, tag1_files, now, stdout, stderr, status, colour)
+    tags = singler.kata_ran_tests(id, 1, tag1_files, now, stdout, stderr, status, colour)
     expected = [
       tag0,
       {"colour"=>"amber", "time"=>[2016,12,5, 21,1,34], "number"=>1}
@@ -85,7 +85,7 @@ class SinglerServiceTest < TestBase
     assert_equal expected, tags
 
     now = [2016,12,5, 21,2,15]
-    tags = singler.ran_tests(id, 2, tag1_files, now, stdout, stderr, status, colour)
+    tags = singler.kata_ran_tests(id, 2, tag1_files, now, stdout, stderr, status, colour)
     expected = [
       tag0,
       {"colour"=>"amber", "time"=>[2016,12,5, 21,1,34], "number"=>1},
@@ -97,11 +97,11 @@ class SinglerServiceTest < TestBase
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '722',
-  'ran_tests() with very large file does not raise' do
+  'kata_ran_tests() with very large file does not raise' do
     # This test fails if docker-compose.yml uses
     # [read_only:true] without also using
     # [tmpfs: /tmp]
-    id = singler.create(starter.manifest, starter.files)
+    id = singler.kata_create(starter.manifest, starter.files)
 
     files = starter.files
     files['very_large'] = 'X'*1024*500
@@ -110,7 +110,7 @@ class SinglerServiceTest < TestBase
     stderr = 'assertion failed'
     status = 41
     colour = 'amber'
-    singler.ran_tests(id, 1, files, now, stdout, stderr, status, colour)
+    singler.kata_ran_tests(id, 1, files, now, stdout, stderr, status, colour)
   end
 
   private

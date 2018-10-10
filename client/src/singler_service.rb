@@ -8,29 +8,29 @@ class SinglerService
 
   # - - - - - - - - - - - -
 
-  def exists?(id)
+  def kata_exists?(id)
     get(__method__, id)
   end
 
-  def create(manifest, files)
+  def kata_create(manifest, files)
     post(__method__, manifest, files)
   end
 
-  def manifest(id)
+  def kata_manifest(id)
     get(__method__, id)
   end
 
   # - - - - - - - - - - - -
 
-  def ran_tests(id, n ,files, now, stdout, stderr, status, colour)
+  def kata_ran_tests(id, n ,files, now, stdout, stderr, status, colour)
     post(__method__, id, n, files, now, stdout, stderr, status, colour)
   end
 
-  def tags(id)
+  def kata_tags(id)
     get(__method__, id)
   end
 
-  def tag(id, n)
+  def kata_tag(id, n)
     get(__method__, id, n)
   end
 

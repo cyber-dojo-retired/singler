@@ -37,12 +37,12 @@ class RackDispatcher
     @well_formed_args = WellFormedArgs.new(body)
     args = case name
       when /^sha$/       then []
-      when /^exists$/    then [id]
-      when /^create$/    then [manifest, files]
-      when /^manifest$/  then [id]
-      when /^ran_tests$/ then [id, n, files, now, stdout, stderr, status, colour]
-      when /^tags$/      then [id]
-      when /^tag$/       then [id,n]
+      when /^kata_exists$/    then [id]
+      when /^kata_create$/    then [manifest, files]
+      when /^kata_manifest$/  then [id]
+      when /^kata_ran_tests$/ then [id, n, files, now, stdout, stderr, status, colour]
+      when /^kata_tags$/      then [id]
+      when /^kata_tag$/       then [id,n]
       else
         raise ClientError, 'json:malformed'
     end
@@ -88,7 +88,7 @@ class RackDispatcher
   # - - - - - - - - - - - - - - - -
 
   def query?(name)
-    name == 'exists'
+    name == 'kata_exists'
   end
 
 end

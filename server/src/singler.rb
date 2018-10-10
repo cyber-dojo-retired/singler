@@ -12,13 +12,13 @@ class Singler
 
   # - - - - - - - - - - - - - - - - - - -
 
-  def exists?(id)
+  def kata_exists?(id)
     dir[id].exists?
   end
 
   # - - - - - - - - - - - - - - - - - - -
 
-  def create(manifest, files)
+  def kata_create(manifest, files)
     if manifest['id'].nil?
       id = id_generator.generate
       manifest['id'] = id
@@ -48,14 +48,14 @@ class Singler
 
   # - - - - - - - - - - - - - - - - - - -
 
-  def manifest(id)
+  def kata_manifest(id)
     assert_id_exists(id)
     json_parse(dir[id].read(manifest_filename))
   end
 
   # - - - - - - - - - - - - - - - - - - -
 
-  def ran_tests(id, n, files, now, stdout, stderr, status, colour)
+  def kata_ran_tests(id, n, files, now, stdout, stderr, status, colour)
     assert_id_exists(id)
     unless n >= 1
       invalid('n', n)
@@ -70,14 +70,14 @@ class Singler
 
   # - - - - - - - - - - - - - - - - - - -
 
-  def tags(id)
+  def kata_tags(id)
     assert_id_exists(id)
     read_tags(id)
   end
 
   # - - - - - - - - - - - - - - - - - - -
 
-  def tag(id, n)
+  def kata_tag(id, n)
     if n == -1
       assert_id_exists(id)
       n = most_recent_tag(id)
