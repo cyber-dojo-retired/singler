@@ -22,14 +22,14 @@ class Singler
   def kata_create(manifest, files)
     id = kata_id(manifest)
     dir = kata_dir(id)
-    write_tag(id, 0, files, '', '', 0)
+    tag_write(id, 0, files, '', '', 0)
     dir.write(manifest_filename, json_pretty(manifest))
     tag0 = {
          'event' => 'created',
           'time' => manifest['created'],
         'number' => 0
       }
-    append_tags(id, tag0)
+    tags_append(id, tag0)
     id
   end
 
@@ -48,18 +48,18 @@ class Singler
       invalid('n', n)
     end
 
-    write_tag(id, n, files, stdout, stderr, status)
+    tag_write(id, n, files, stdout, stderr, status)
     tag = { 'colour' => colour, 'time' => now, 'number' => n }
-    append_tags(id, tag)
+    tags_append(id, tag)
 
-    read_tags(id)
+    tags_read(id)
   end
 
   # - - - - - - - - - - - - - - - - - - -
 
   def kata_tags(id)
     assert_id_exists(id)
-    read_tags(id)
+    tags_read(id)
   end
 
   # - - - - - - - - - - - - - - - - - - -
@@ -67,13 +67,13 @@ class Singler
   def kata_tag(id, n)
     if n == -1
       assert_id_exists(id)
-      n = most_recent_tag(id)
+      n = tag_most_recent(id)
     else
       unless tag_exists?(id, n)
         invalid('n', n)
       end
     end
-    read_tag(id, n)
+    tag_read(id, n)
   end
 
   private
@@ -99,17 +99,17 @@ class Singler
 
   # - - - - - - - - - - - - - -
 
-  def append_tags(id, tag)
+  def tags_append(id, tag)
     kata_dir(id).append(tags_filename, json_plain(tag) + "\n")
   end
 
-  def read_tags(id)
-    read_lined_tags(id).lines.map{ |line|
+  def tags_read(id)
+    tags_read_lined(id).lines.map{ |line|
       json_parse(line)
     }
   end
 
-  def read_lined_tags(id)
+  def tags_read_lined(id)
     kata_dir(id).read(tags_filename)
   end
 
@@ -119,7 +119,7 @@ class Singler
 
   # - - - - - - - - - - - - - -
 
-  def write_tag(id, n, files, stdout, stderr, status)
+  def tag_write(id, n, files, stdout, stderr, status)
     dir = kata_dir(id,n)
     unless dir.make
       invalid('n', n)
@@ -134,12 +134,12 @@ class Singler
     dir.write(tag_filename, json_pretty(json))
   end
 
-  def read_tag(id, n)
+  def tag_read(id, n)
     json_parse(kata_dir(id,n).read(tag_filename))
   end
 
-  def most_recent_tag(id)
-    read_lined_tags(id).count("\n") - 1
+  def tag_most_recent(id)
+    tags_read_lined(id).count("\n") - 1
   end
 
   def tag_filename
