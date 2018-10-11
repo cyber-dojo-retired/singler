@@ -18,7 +18,7 @@ run_server_tests()
   docker exec \
     --user root \
     "${SERVER_CID}" \
-      sh -c 'chown -R singler:singler /katas'
+      sh -c 'rm -rf /katas/* && chown -R singler:singler /katas'
 
   docker exec \
     --env COVERAGE_ROOT=${COVERAGE_ROOT} \
