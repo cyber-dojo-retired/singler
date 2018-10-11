@@ -19,7 +19,8 @@ class Singler
 
   # - - - - - - - - - - - - - - - - - - -
 
-  def kata_create(manifest, files)
+  def kata_create(manifest)
+    files = manifest.delete('files')
     id = kata_id(manifest)
     dir = kata_dir(id)
     tag_write(id, 0, files, '', '', 0)
@@ -37,7 +38,9 @@ class Singler
 
   def kata_manifest(id)
     assert_kata_exists(id)
-    json_parse(kata_dir(id).read(manifest_filename))
+    manifest = json_parse(kata_dir(id).read(manifest_filename))
+    manifest['files'] = kata_tag(id, 0)['files']
+    manifest
   end
 
   # - - - - - - - - - - - - - - - - - - -

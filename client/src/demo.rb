@@ -12,9 +12,11 @@ class Demo
   private
 
   def inner_call
+    manifest = starter.manifest
+    manifest['files'] = starter.files
     html = [
       pre('create') {
-        @id = singler.create(starter.manifest, starter.files)
+        @id = singler.create(manifest)
       },
       pre('manifest') {
         singler.manifest(@id)

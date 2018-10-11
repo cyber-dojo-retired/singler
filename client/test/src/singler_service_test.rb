@@ -37,7 +37,8 @@ class SinglerServiceTest < TestBase
   test '6E7',
   %w( retrieved kata_manifest contains id ) do
     manifest = starter.manifest
-    id = singler.kata_create(manifest, starter.files)
+    manifest['files'] = starter.files
+    id = singler.kata_create(manifest)
     manifest['id'] = id
     assert_equal manifest, singler.kata_manifest(id)
   end
@@ -49,7 +50,9 @@ class SinglerServiceTest < TestBase
   and kata_exists?() is true
   and the kata_tags has tag0
   and the kata_manifest can be retrieved ) do
-    id = singler.kata_create(starter.manifest, starter.files)
+    manifest = starter.manifest
+    manifest['files'] = starter.files
+    id = singler.kata_create(manifest)
     assert singler.kata_exists?(id)
     assert_equal([tag0], singler.kata_tags(id))
     expected = {
@@ -69,7 +72,9 @@ class SinglerServiceTest < TestBase
     # This is an optimization to avoid web service
     # having to make a call back to storer to get the
     # tag numbers for the new traffic-light's diff handler.
-    id = singler.kata_create(starter.manifest, starter.files)
+    manifest = starter.manifest
+    manifest['files'] = starter.files
+    id = singler.kata_create(manifest)
     tag1_files = starter.files
     tag1_files.delete('hiker.h')
     now = [2016,12,5, 21,1,34]
@@ -101,7 +106,9 @@ class SinglerServiceTest < TestBase
     # This test fails if docker-compose.yml uses
     # [read_only:true] without also using
     # [tmpfs: /tmp]
-    id = singler.kata_create(starter.manifest, starter.files)
+    manifest = starter.manifest
+    manifest['files'] = starter.files
+    id = singler.kata_create(manifest)
 
     files = starter.files
     files['very_large'] = 'X'*1024*500

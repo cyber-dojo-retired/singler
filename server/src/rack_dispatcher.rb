@@ -44,7 +44,7 @@ class RackDispatcher
     args = case name
       when /^sha$/       then []
       when /^kata_exists$/    then [id]
-      when /^kata_create$/    then [manifest, files]
+      when /^kata_create$/    then [manifest]
       when /^kata_manifest$/  then [id]
       when /^kata_ran_tests$/ then [id, n, files, now, stdout, stderr, status, colour]
       when /^kata_tags$/      then [id]
@@ -87,9 +87,9 @@ class RackDispatcher
     end
   end
 
-  well_formed_args :manifest, :files
+  well_formed_args :manifest
   well_formed_args :id, :n
-  well_formed_args :now, :stdout, :stderr, :status, :colour
+  well_formed_args :files, :now, :stdout, :stderr, :status, :colour
 
   # - - - - - - - - - - - - - - - -
 

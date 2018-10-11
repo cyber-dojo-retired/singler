@@ -15,8 +15,8 @@ class TestBase < HexMiniTest
     singler.kata_exists?(id)
   end
 
-  def kata_create(manifest, files)
-    singler.kata_create(manifest, files)
+  def kata_create(manifest)
+    singler.kata_create(manifest)
   end
 
   def kata_manifest(id)
@@ -42,7 +42,8 @@ class TestBase < HexMiniTest
   def stub_kata_create(stub_id)
     manifest = starter.manifest
     manifest['id'] = stub_id
-    id = kata_create(manifest, starter.files)
+    manifest['files'] = starter.files
+    id = kata_create(manifest)
     assert_equal stub_id, id
     id
   end

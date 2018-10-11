@@ -33,6 +33,15 @@ class WellFormedArgs
         unless base58?(value)
           malformed
         end
+      when 'files'
+        unless value.is_a?(Hash)
+          malformed
+        end
+        value.each { |_filename,content|
+          unless content.is_a?(String)
+            malformed
+          end
+        }
       when 'display_name', 'image_name', 'runner_choice', 'exercise'
         unless value.is_a?(String)
           malformed
@@ -183,6 +192,7 @@ class WellFormedArgs
     image_name
     runner_choice
     created
+    files
   )
 
   # - - - - - - - - - - - - - - - -

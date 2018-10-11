@@ -54,18 +54,17 @@ and visible_files.
                "max_seconds": 10,
         "filename_extension": [ ".c", "*.h" ],
                   "tab_size": 4,
-      },
-      "files": {
-               "hiker.h": "#ifndef HIKER_INCLUDED...",
-               "hiker.c": "#include \"hiker.h\"...",
-        "hiker.tests.c" : "#include <assert.h>\n...",
-         "instructions" : "Write a program that...",
-             "makefile" : "CFLAGS += -I. -Wall...",
-        "cyber-dojo.sh" : "make"
-      }
+                     "files": {
+                               "hiker.h": "#ifndef HIKER_INCLUDED...",
+                               "hiker.c": "#include \"hiker.h\"...",
+                        "hiker.tests.c" : "#include <assert.h>\n...",
+                         "instructions" : "Write a program that...",
+                             "makefile" : "CFLAGS += -I. -Wall...",
+                        "cyber-dojo.sh" : "make"
+                     }
     }
 ```
-- returns the id of the create practice session, eg
+- returns the id of the created practice session, eg
 ```
   { "kata_create": "A551C5"
   }
@@ -90,7 +89,15 @@ Returns the manifest used to create the practice-session with the given id.
                   "exercise": "Fizz_Buzz",
                "max_seconds": 10,
         "filename_extension": [ ".c", "*.h" ],
-                  "tab_size": 4
+                  "tab_size": 4,
+                     "files": {
+                               "hiker.h": "#ifndef HIKER_INCLUDED...",
+                               "hiker.c": "#include \"hiker.h\"...",
+                        "hiker.tests.c" : "#include <assert.h>\n...",
+                         "instructions" : "Write a program that...",
+                             "makefile" : "CFLAGS += -I. -Wall...",
+                        "cyber-dojo.sh" : "make"
+                     }
       }
     }
 ```
@@ -165,7 +172,7 @@ with the given id.
 
 - - - -
 
-## GETkata_ tag
+## GETkata_tag
 Returns the files, stdout, stderr, status,
 for the practice-session with the given id,
 and the given tag number n.
@@ -177,17 +184,19 @@ and the given tag number n.
 ```
 - returns, eg
 ```
-  { "files": {
-            "hiker.h" : "ifndef HIKER_INCLUDED\n...",
-            "hiker.c" : "#include \"hiker.h\"...",
-      "hiker.tests.c" : "#include <assert.h>...",
-       "instructions" : "Write a program that...",
-           "makefile" : "CFLAGS += -I. -Wall...",
-      "cyber-dojo.sh" : "make"
-    },
-    "stdout": "",
-    "stderr": "Assert failed: answer() == 42",
-    "status": 23,
+  { "kata_tag": {
+           "files": {
+              "hiker.h" : "ifndef HIKER_INCLUDED\n...",
+              "hiker.c" : "#include \"hiker.h\"...",
+        "hiker.tests.c" : "#include <assert.h>...",
+         "instructions" : "Write a program that...",
+             "makefile" : "CFLAGS += -I. -Wall...",
+        "cyber-dojo.sh" : "make"
+      },
+      "stdout": "",
+      "stderr": "Assert failed: answer() == 42",
+      "status": 23,
+    }
   }
 ```
 
