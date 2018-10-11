@@ -36,14 +36,14 @@ class Singler
   # - - - - - - - - - - - - - - - - - - -
 
   def kata_manifest(id)
-    assert_id_exists(id)
+    assert_kata_exists(id)
     json_parse(kata_dir(id).read(manifest_filename))
   end
 
   # - - - - - - - - - - - - - - - - - - -
 
   def kata_ran_tests(id, n, files, now, stdout, stderr, status, colour)
-    assert_id_exists(id)
+    assert_kata_exists(id)
     unless n >= 1
       invalid('n', n)
     end
@@ -58,7 +58,7 @@ class Singler
   # - - - - - - - - - - - - - - - - - - -
 
   def kata_tags(id)
-    assert_id_exists(id)
+    assert_kata_exists(id)
     tags_read(id)
   end
 
@@ -66,7 +66,7 @@ class Singler
 
   def kata_tag(id, n)
     if n == -1
-      assert_id_exists(id)
+      assert_kata_exists(id)
       n = tag_most_recent(id)
     else
       unless tag_exists?(id, n)
@@ -91,7 +91,21 @@ class Singler
     id
   end
 
-  # - - - - - - - - - - - - - -
+  def assert_kata_exists(id)
+    unless kata_dir(id).exists?
+      invalid('id', id)
+    end
+  end
+
+  def kata_dir(id, index=nil)
+    # Using 2/2/2 split.
+    # See https://github.com/cyber-dojo/porter
+    args = ['', 'katas', id[0..1], id[2..3], id[4..5]]
+    unless index.nil?
+      args << index.to_s
+    end
+    @disk[File.join(*args)]
+  end
 
   def manifest_filename
     'manifest.json'
@@ -119,6 +133,10 @@ class Singler
 
   # - - - - - - - - - - - - - -
 
+  def tag_exists?(id, n)
+    kata_dir(id, n).exists?
+  end
+
   def tag_write(id, n, files, stdout, stderr, status)
     dir = kata_dir(id,n)
     unless dir.make
@@ -144,20 +162,6 @@ class Singler
 
   def tag_filename
     'tag.json'
-  end
-
-  # - - - - - - - - - - - - - -
-
-  def assert_id_exists(id)
-    unless kata_dir(id).exists?
-      invalid('id', id)
-    end
-  end
-
-  # - - - - - - - - - - - - - -
-
-  def tag_exists?(id, n)
-    kata_dir(id, n).exists?
   end
 
   # - - - - - - - - - - - - - -
@@ -197,18 +201,6 @@ class Singler
 
   def invalid(name, value)
     fail ArgumentError.new("#{name}:invalid:#{value}")
-  end
-
-  # - - - - - - - - - - - - - -
-
-  def kata_dir(id, index=nil)
-    # Using 2/2/2 split.
-    # See https://github.com/cyber-dojo/porter
-    args = ['', 'katas', id[0..1], id[2..3], id[4..5]]
-    unless index.nil?
-      args << index.to_s
-    end
-    @disk[File.join(*args)]
   end
 
 end
