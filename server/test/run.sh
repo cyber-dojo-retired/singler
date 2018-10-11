@@ -9,7 +9,7 @@ fi
 readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 readonly TEST_LOG=${COVERAGE_ROOT}/test.log
 
-rm -rf /singler/ids/*
+rm -rf /katas/*
 
 mkdir -p ${COVERAGE_ROOT}
 cd ${MY_DIR}/src
