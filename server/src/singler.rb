@@ -8,7 +8,7 @@ class Singler
   end
 
   def sha
-    IO.read('/app/sha.txt').strip
+    @disk['/app'].read('sha.txt').strip
   end
 
   # - - - - - - - - - - - - - - - - - - -
