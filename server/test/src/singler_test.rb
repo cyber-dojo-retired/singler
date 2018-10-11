@@ -88,6 +88,7 @@ class SinglerTest < TestBase
   ) do
     manifest = starter.manifest
     ell = 'L'
+
     id = '12345' + ell.upcase
     manifest['id'] = id
     assert_equal id, kata_create(manifest, starter.files)

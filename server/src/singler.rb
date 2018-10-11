@@ -89,7 +89,7 @@ class Singler
   end
 
   def assert_kata_exists(id)
-    unless kata_dir(id).exists?
+    unless kata_exists?(id)
       invalid('id', id)
     end
   end
