@@ -26,7 +26,7 @@ class Base58Test < TestBase
   every letter of the alphabet can be used as part of a dir name
   ) do
     base.alphabet.each_char do |letter|
-      name = "/tmp/base58/#{letter}"
+      name = "/tmp/base/#{letter}"
       stdout,stderr,r = Open3.capture3("mkdir -vp #{name}")
       refute_equal '', stdout
       assert_equal '', stderr
@@ -37,6 +37,7 @@ class Base58Test < TestBase
   # - - - - - - - - - - - - - - - - - - -
 
   test '066', %w(
+  string generation is sufficiently random that there is
   no 6-digit string duplicate in 25,000 repeats ) do
     ids = {}
     repeats = 25000
@@ -45,7 +46,7 @@ class Base58Test < TestBase
       ids[s] ||= 0
       ids[s] += 1
     end
-    assert_equal 0, repeats - ids.keys.size
+    assert repeats, ids.keys.size
   end
 
   # - - - - - - - - - - - - - - - - - - -
