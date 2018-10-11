@@ -13,7 +13,7 @@ class ExternalDiskWriterTest < TestBase
 
   # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  test '436',
+  test '435',
   'dir can already exist' do
     dir = disk['/tmp']
     assert dir.exists?
@@ -21,19 +21,27 @@ class ExternalDiskWriterTest < TestBase
 
   # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  test '437',
-  'dir.exists? is false before dir.make and true after' do
-    dir = disk['/katas/FD/F4/37']
-    refute dir.exists?
+  test '436',
+  'dir.make succeeds if dir is made and fails if dir already exists' do
+    dir = disk['/katas/FD/F4/36']
     assert dir.make
-    assert dir.exists?
     refute dir.make
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  test '437',
+  'dir.exists? is true after a successful dir.make' do
+    dir = disk['/katas/FD/F4/37']
+    refute dir.exists?
+    assert dir.make
+    assert dir.exists?
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - -
+
   test '438',
-  'dir.read() reads back what dir.write() wrote' do
+  'dir.read() reads back what dir.write() writes' do
     dir = disk['/katas/FD/F4/38']
     dir.make
     filename = 'limerick.txt'
