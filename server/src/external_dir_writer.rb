@@ -26,15 +26,15 @@ class ExternalDirWriter
   # - - - - - - - - - - - - - - - - - - - - - - - -
 
   def append(filename, content)
-    open(filename, 'a'){ |fd| fd.write(content) }
+    open(filename, 'a') { |fd| fd.write(content) }
   end
 
   def write(filename, content)
-    open(filename, 'w'){ |fd| fd.write(content) }
+    open(filename, 'w') { |fd| fd.write(content) }
   end
 
   def read(filename)
-    open(filename, 'r'){ |fd| fd.read }
+    open(filename, 'r') { |fd| fd.read }
   end
 
   private
