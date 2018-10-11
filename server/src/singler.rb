@@ -138,7 +138,6 @@ class Singler
     unless dir.make
       invalid('n', n)
     end
-
     json = {
       'files' => files,
       'stdout' => stdout,
