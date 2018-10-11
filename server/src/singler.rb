@@ -81,8 +81,7 @@ class Singler
   def kata_id(manifest)
     id = manifest['id']
     if id.nil?
-      id = generate_id
-      manifest['id'] = id
+      manifest['id'] = id = generate_id
     elsif kata_exists?(id)
       invalid('id', id)
     end
