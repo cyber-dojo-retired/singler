@@ -25,6 +25,10 @@ class Base58
       s.chars.all?{ |char| letter?(char) }
   end
 
+  def self.alphabet
+    @@ALPHABET
+  end
+
   private
 
   def self.letter
@@ -37,10 +41,6 @@ class Base58
 
   def self.letter?(char)
     alphabet.include?(char)
-  end
-
-  def self.alphabet
-    @@ALPHABET
   end
 
   @@ALPHABET = %w{
