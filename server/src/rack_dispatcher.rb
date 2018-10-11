@@ -2,6 +2,12 @@ require_relative 'client_error'
 require_relative 'well_formed_args'
 require 'json'
 
+# Rack calls singler.kata_create() in threads so in
+# theory you could get a race condition with both
+# threads attempting a create with the same id.
+# Assuming id generation is reasonably well behaved
+# (random and large alphabet) this is extremely unlikely.
+
 class RackDispatcher
 
   def initialize(singler, request_class)

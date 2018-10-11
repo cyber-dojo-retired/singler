@@ -1,7 +1,5 @@
 require_relative 'singler'
 require_relative 'external_disk_writer'
-require_relative 'external_id_generator'
-require_relative 'external_id_validator'
 
 class Externals
 
@@ -13,15 +11,7 @@ class Externals
     @disk ||= ExternalDiskWriter.new
   end
 
-  def id_generator
-    @id_generator ||= ExternalIdGenerator.new(self)
-  end
-
   # - - - - - - - - - - - - - - - - - - -
-
-  def id_validator
-    @id_validator ||= ExternalIdValidator.new(self)
-  end
 
   def kata_dir(id, index=nil)
     # Using 2/2/2 split.

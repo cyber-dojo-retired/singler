@@ -1,3 +1,4 @@
+require_relative 'base58'
 require 'json'
 
 class Singler
@@ -20,11 +21,11 @@ class Singler
 
   def kata_create(manifest, files)
     if manifest['id'].nil?
-      id = id_generator.generate
+      id = generate_id
       manifest['id'] = id
     else
       id = manifest['id']
-      unless id_validator.valid?(id)
+      unless valid?(id)
         invalid('id', id)
       end
     end
@@ -175,22 +176,33 @@ class Singler
 
   # - - - - - - - - - - - - - -
 
-  def kata_dir(id, index=nil)
-    @externals.kata_dir(id, index)
-  end
-
-  def id_generator
-    @externals.id_generator
-  end
-
-  def id_validator
-    @externals.id_validator
+  def generate_id
+    loop do
+      id = Base58.string(6)
+      if valid?(id)
+        return id
+      end
+    end
   end
 
   # - - - - - - - - - - - - - -
 
+  def valid?(id)
+    if id.upcase.include?('L')
+      false
+    else
+      !kata_dir(id).exists?
+    end
+  end
+
   def invalid(name, value)
     fail ArgumentError.new("#{name}:invalid:#{value}")
+  end
+
+  # - - - - - - - - - - - - - -
+
+  def kata_dir(id, index=nil)
+    @externals.kata_dir(id, index)
   end
 
 end
