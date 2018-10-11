@@ -1,6 +1,7 @@
 require_relative 'hex_mini_test'
 require_relative 'external_starter'
-require_relative '../../src/externals'
+require_relative '../../src/external_disk_writer'
+require_relative '../../src/singler'
 
 class TestBase < HexMiniTest
 
@@ -56,14 +57,11 @@ class TestBase < HexMiniTest
     starter.creation_time
   end
 
-  def externals
-    @externals ||= Externals.new
-  end
-
   private
 
   def singler
-    externals.singler
+    @disk ||= ExternalDiskWriter.new
+    @singler ||= Singler.new(@disk)
   end
 
 end

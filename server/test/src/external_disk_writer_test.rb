@@ -1,4 +1,5 @@
 require_relative 'test_base'
+require_relative '../../src/external_disk_writer'
 
 class ExternalDiskWriterTest < TestBase
 
@@ -7,14 +8,14 @@ class ExternalDiskWriterTest < TestBase
   end
 
   def disk
-    externals.disk
+    ExternalDiskWriter.new
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '437',
   'dir.exists? is false before dir.make and true after' do
-    dir = disk['/katas/FC/FD/C8']
+    dir = disk['/katas/FD/F4/37']
     refute dir.exists?
     assert dir.make
     assert dir.exists?
@@ -25,7 +26,7 @@ class ExternalDiskWriterTest < TestBase
 
   test '438',
   'dir.read() reads back what dir.write() wrote' do
-    dir = disk['/katas/F7/C1/4D']
+    dir = disk['/katas/FD/F4/38']
     dir.make
     filename = 'limerick.txt'
     content = 'the boy stood on the burning deck'
@@ -37,7 +38,7 @@ class ExternalDiskWriterTest < TestBase
 
   test '439',
   'dir.append() appends to the end' do
-    dir = disk['/katas/D9/8A/EC']
+    dir = disk['/katas/FD/F4/39']
     dir.make
     filename = 'readme.md'
     content = 'hello world'

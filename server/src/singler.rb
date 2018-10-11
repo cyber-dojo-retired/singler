@@ -3,8 +3,8 @@ require 'json'
 
 class Singler
 
-  def initialize(externals)
-    @externals = externals
+  def initialize(disk)
+    @disk = disk
   end
 
   def sha
@@ -208,7 +208,7 @@ class Singler
     unless index.nil?
       args << index.to_s
     end
-    @externals.disk[File.join(*args)]
+    @disk[File.join(*args)]
   end
 
 end
