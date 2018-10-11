@@ -3,9 +3,16 @@ require 'open3'
 class ExternalDirWriter
 
   def initialize(id, index)
-    @id = id
-    @index = index
+    # Using 2/2/2 split.
+    # See https://github.com/cyber-dojo/porter
+    args = ['', 'katas', id[0..1], id[2..3], id[4..5]]
+    unless index.nil?
+      args << index.to_s
+    end
+    @name = File.join(*args)
   end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - -
 
   def exists?
     File.directory?(name)
@@ -39,15 +46,7 @@ class ExternalDirWriter
 
   private
 
-  def name
-    # Using 2/2/2 split.
-    # See https://github.com/cyber-dojo/porter
-    args = ['', 'singler', 'ids', @id[0..1], @id[2..3], @id[4..5]]
-    unless @index.nil?
-      args << @index.to_s
-    end
-    File.join(*args)
-  end
+  attr_reader :name
 
   def pathed(filename)
     File.join(name, filename)
