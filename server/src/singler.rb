@@ -84,7 +84,7 @@ class Singler
       manifest['id'] = id
     else
       id = manifest['id']
-      unless valid?(id)
+      if kata_exists?(id)
         invalid('id', id)
       end
     end
@@ -182,21 +182,13 @@ class Singler
   def generate_id
     loop do
       id = Base58.string(6)
-      if valid?(id)
+      if !kata_exists?(id)
         return id
       end
     end
   end
 
   # - - - - - - - - - - - - - -
-
-  def valid?(id)
-    if id.upcase.include?('L')
-      false
-    else
-      !kata_dir(id).exists?
-    end
-  end
 
   def invalid(name, value)
     fail ArgumentError.new("#{name}:invalid:#{value}")
