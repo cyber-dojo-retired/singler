@@ -4,14 +4,14 @@ require_relative '../../src/well_formed_args'
 class WellFormedArgsTest < TestBase
 
   def self.hex_prefix
-    '0A0C4'
+    '0A0'
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
   # c'tor
   # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  test 'A04',
+  test 'A49',
   'ctor raises when its string arg is not valid json' do
     expected = 'json:malformed'
     # abc is not a valid top-level json element
