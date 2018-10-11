@@ -44,6 +44,41 @@ class SinglerTest < TestBase
 
   #- - - - - - - - - - - - - - - - - - - - - -
 
+  test '424',
+  'kata_create() ignores a generated id
+  when a kata with that id already exists' do
+    real_disk = ExternalDiskWriter.new
+    stub_disk = StubDiskDirWriter.new(real_disk)
+    singler = Singler.new(stub_disk)
+    singler.kata_create(starter.manifest, starter.files)
+    assert_equal 3, stub_disk.count
+  end
+
+  class StubDiskDirWriter
+    def initialize(disk)
+      @disk = disk
+      @count = 0
+    end
+    attr_reader :count
+    def [](name)
+      @name = name
+      self
+    end
+    def exists?
+      @count += 1
+      if @count < 3
+        true
+      else
+        @disk[@name].exists?
+      end
+    end
+    def method_missing(m, *args)
+      @disk[@name].send(m, *args)
+    end
+  end
+
+  #- - - - - - - - - - - - - - - - - - - - - -
+
   test '42C', %w(
   kata_create() does NOT raise when the id is provided
   and contains the letter L (ell, lowercase or uppercase)
@@ -65,8 +100,8 @@ class SinglerTest < TestBase
   #- - - - - - - - - - - - - - - - - - - - - -
 
   test '422', %w(
-  kata_create(manifest) can be passed the id
-  and its used when that id does not already exist ) do
+  kata_create(manifest) uses a given id
+  when the id does not already exist ) do
     explicit_id = 'CE2BD6'
     manifest = starter.manifest
     manifest['id'] = explicit_id
@@ -77,8 +112,8 @@ class SinglerTest < TestBase
   #- - - - - - - - - - - - - - - - - - - - - -
 
   test '423', %w(
-  kata_create(manifest) can be passed the id
-  and raises when that id already exists ) do
+  kata_create(manifest) raises
+  when it is passed an id that already exists ) do
     explicit_id = 'A01DE8'
     manifest = starter.manifest
     manifest['id'] = explicit_id
