@@ -13,6 +13,14 @@ class ExternalDiskWriterTest < TestBase
 
   # - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  test '436',
+  'dir can already exist' do
+    dir = disk['/tmp']
+    assert dir.exists?
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - -
+
   test '437',
   'dir.exists? is false before dir.make and true after' do
     dir = disk['/katas/FD/F4/37']
