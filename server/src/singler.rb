@@ -20,16 +20,7 @@ class Singler
   # - - - - - - - - - - - - - - - - - - -
 
   def kata_create(manifest, files)
-    if manifest['id'].nil?
-      id = generate_id
-      manifest['id'] = id
-    else
-      id = manifest['id']
-      unless valid?(id)
-        invalid('id', id)
-      end
-    end
-
+    id = kata_id(manifest)
     dir = kata_dir(id)
     unless dir.make
       # :nocov:
@@ -92,6 +83,21 @@ class Singler
   end
 
   private
+
+  def kata_id(manifest)
+    if manifest['id'].nil?
+      id = generate_id
+      manifest['id'] = id
+    else
+      id = manifest['id']
+      unless valid?(id)
+        invalid('id', id)
+      end
+    end
+    id
+  end
+
+  # - - - - - - - - - - - - - -
 
   def manifest_filename
     'manifest.json'
