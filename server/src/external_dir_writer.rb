@@ -27,20 +27,24 @@ class ExternalDirWriter
   # - - - - - - - - - - - - - - - - - - - - - - - -
 
   def append(filename, content)
-    File.open(pathed(filename), 'a') { |fd| fd.write(content) }
+    open(filename, 'a'){ |fd| fd.write(content) }
   end
 
   def write(filename, content)
-    File.open(pathed(filename), 'w') { |fd| fd.write(content) }
+    open(filename, 'w'){ |fd| fd.write(content) }
   end
 
   def read(filename)
-    File.open(pathed(filename), 'r') { |fd| fd.read }
+    open(filename, 'r'){ |fd| fd.read }
   end
 
   private
 
   attr_reader :name
+
+  def open(filename, mode)
+    File.open(pathed(filename), mode) { |fd| yield fd }
+  end
 
   def pathed(filename)
     File.join(name, filename)
