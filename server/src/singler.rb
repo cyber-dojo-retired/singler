@@ -22,14 +22,8 @@ class Singler
   def kata_create(manifest, files)
     id = kata_id(manifest)
     dir = kata_dir(id)
-    unless dir.make
-      # :nocov:
-      invalid('id', id)
-      # :nocov:
-    end
-
-    dir.write(manifest_filename, json_pretty(manifest))
     write_tag(id, 0, files, '', '', 0)
+    dir.write(manifest_filename, json_pretty(manifest))
     tag0 = {
          'event' => 'created',
           'time' => manifest['created'],
