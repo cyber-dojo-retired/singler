@@ -12,23 +12,21 @@ class Demo
   private
 
   def inner_call
-    manifest = starter.manifest
-    manifest['files'] = starter.files
     html = [
-      pre('create') {
-        @id = singler.create(manifest)
+      pre('kata_create') {
+        @id = singler.kata_create(starter.manifest)
       },
-      pre('manifest') {
-        singler.manifest(@id)
+      pre('kata_manifest') {
+        singler.kata_manifest(@id)
       },
-      pre('ran_tests') {
-        singler.ran_tests(@id, 1, edited_files, now, stdout, stderr, status, colour)
+      pre('kata_ran_tests') {
+        singler.kata_ran_tests(@id, 1, edited_files, now, stdout, stderr, status, colour)
       },
-      pre('tags') {
-        singler.tags(@id)
+      pre('kata_tags') {
+        singler.kata_tags(@id)
       },
-      pre('tag') {
-        singler.tag(@id, 1)
+      pre('kata_tag') {
+        singler.kata_tag(@id, 1)
       }
     ].join
     [ 200, { 'Content-Type' => 'text/html' }, [ html ] ]
@@ -37,7 +35,7 @@ class Demo
   # - - - - - - - - - - - - - - - - -
 
   def edited_files
-    files = starter.files
+    files = starter.manifest['files']
     edited = files['hiker.c']
     files['hiker.c'] = edited.sub('6 * 9', '6 * 7')
     files
