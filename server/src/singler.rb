@@ -13,7 +13,7 @@ class Singler
   # - - - - - - - - - - - - - - - - - - -
 
   def kata_exists?(id)
-    dir(id).exists?
+    kata_dir(id).exists?
   end
 
   # - - - - - - - - - - - - - - - - - - -
@@ -29,13 +29,14 @@ class Singler
       end
     end
 
-    unless dir(id).make
+    dir = kata_dir(id)
+    unless dir.make
       # :nocov:
       invalid('id', id)
       # :nocov:
     end
 
-    dir(id).write(manifest_filename, json_pretty(manifest))
+    dir.write(manifest_filename, json_pretty(manifest))
     write_tag(id, 0, files, '', '', 0)
     tag0 = {
          'event' => 'created',
@@ -50,7 +51,7 @@ class Singler
 
   def kata_manifest(id)
     assert_id_exists(id)
-    json_parse(dir(id).read(manifest_filename))
+    json_parse(kata_dir(id).read(manifest_filename))
   end
 
   # - - - - - - - - - - - - - - - - - - -
@@ -98,7 +99,7 @@ class Singler
   # - - - - - - - - - - - - - -
 
   def append_tags(id, tag)
-    dir(id).append(tags_filename, json_plain(tag) + "\n")
+    kata_dir(id).append(tags_filename, json_plain(tag) + "\n")
   end
 
   def read_tags(id)
@@ -108,7 +109,7 @@ class Singler
   end
 
   def read_lined_tags(id)
-    dir(id).read(tags_filename)
+    kata_dir(id).read(tags_filename)
   end
 
   def tags_filename
@@ -118,7 +119,8 @@ class Singler
   # - - - - - - - - - - - - - -
 
   def write_tag(id, n, files, stdout, stderr, status)
-    unless dir(id,n).make
+    dir = kata_dir(id,n)
+    unless dir.make
       invalid('n', n)
     end
 
@@ -128,11 +130,11 @@ class Singler
       'stderr' => stderr,
       'status' => status
     }
-    dir(id,n).write(tag_filename, json_pretty(json))
+    dir.write(tag_filename, json_pretty(json))
   end
 
   def read_tag(id, n)
-    json_parse(dir(id,n).read(tag_filename))
+    json_parse(kata_dir(id,n).read(tag_filename))
   end
 
   def most_recent_tag(id)
@@ -146,7 +148,7 @@ class Singler
   # - - - - - - - - - - - - - -
 
   def assert_id_exists(id)
-    unless dir(id).exists?
+    unless kata_dir(id).exists?
       invalid('id', id)
     end
   end
@@ -154,7 +156,7 @@ class Singler
   # - - - - - - - - - - - - - -
 
   def tag_exists?(id, n)
-    dir(id, n).exists?
+    kata_dir(id, n).exists?
   end
 
   # - - - - - - - - - - - - - -
@@ -173,14 +175,8 @@ class Singler
 
   # - - - - - - - - - - - - - -
 
-  def dir(id, index=nil)
-    # Using 2/2/2 split.
-    # See https://github.com/cyber-dojo/porter
-    args = ['', 'katas', id[0..1], id[2..3], id[4..5]]
-    unless index.nil?
-      args << index.to_s
-    end
-    @externals.disk[File.join(*args)]
+  def kata_dir(id, index=nil)
+    @externals.kata_dir(id, index)
   end
 
   def id_generator
