@@ -3,14 +3,14 @@ require_relative 'test_base'
 class ExternalIdValidatorTest < TestBase
 
   def self.hex_prefix
-    'C72E3'
+    'C72'
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - -
 
   test '921',
-  'true when no group with the id exists, false it does already exists' do
-    id = '828754'
+  'true when no group with the id exists, false when it does already exists' do
+    id = 'C72921'
     assert_valid(id)
     stub_kata_create(id)
     refute_valid(id)

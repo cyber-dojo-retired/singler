@@ -3,7 +3,7 @@ require_relative 'test_base'
 class SinglerTest < TestBase
 
   def self.hex_prefix
-    '97431'
+    '974'
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - -

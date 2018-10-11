@@ -9,13 +9,14 @@ class ExternalIdValidator
     if id.upcase.include?('L')
       false
     else
-      !dir[id].exists?
+      args = ['', 'katas', id[0..1], id[2..3], id[4..5]]
+      !disk[File.join(*args)].exists?
     end
   end
 
   private
 
-  def dir
+  def disk
     @externals.disk
   end
 

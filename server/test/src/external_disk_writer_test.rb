@@ -3,7 +3,7 @@ require_relative 'test_base'
 class ExternalDiskWriterTest < TestBase
 
   def self.hex_prefix
-    'FDF13'
+    'FDF'
   end
 
   def disk
@@ -14,7 +14,7 @@ class ExternalDiskWriterTest < TestBase
 
   test '437',
   'dir.exists? is false before dir.make and true after' do
-    dir = disk['FCFDC8']
+    dir = disk['/katas/FC/FD/C8']
     refute dir.exists?
     assert dir.make
     assert dir.exists?
@@ -25,7 +25,7 @@ class ExternalDiskWriterTest < TestBase
 
   test '438',
   'dir.read() reads back what dir.write() wrote' do
-    dir = disk['F7C14D']
+    dir = disk['/katas/F7/C1/4D']
     dir.make
     filename = 'limerick.txt'
     content = 'the boy stood on the burning deck'
@@ -37,13 +37,14 @@ class ExternalDiskWriterTest < TestBase
 
   test '439',
   'dir.append() appends to the end' do
-    dir = disk['D98AEC']
+    dir = disk['/katas/D9/8A/EC']
     dir.make
     filename = 'readme.md'
-    dir.append(filename, "## GET tags\n")
-    assert_equal "## GET tags\n", dir.read(filename)
-    dir.append(filename, "## POST create\n")
-    assert_equal "## GET tags\n## POST create\n", dir.read(filename)
+    content = 'hello world'
+    dir.append(filename, content)
+    assert_equal content, dir.read(filename)
+    dir.append(filename, content.reverse)
+    assert_equal "#{content}#{content.reverse}", dir.read(filename)
   end
 
 end

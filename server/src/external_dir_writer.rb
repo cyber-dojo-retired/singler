@@ -2,14 +2,8 @@ require 'open3'
 
 class ExternalDirWriter
 
-  def initialize(id, index)
-    # Using 2/2/2 split.
-    # See https://github.com/cyber-dojo/porter
-    args = ['', 'katas', id[0..1], id[2..3], id[4..5]]
-    unless index.nil?
-      args << index.to_s
-    end
-    @name = File.join(*args)
+  def initialize(name)
+    @name = name
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - -
