@@ -35,7 +35,7 @@ class Demo
   # - - - - - - - - - - - - - - - - -
 
   def edited_files
-    files = starter.manifest['files']
+    files = starter.manifest['visible_files']
     edited = files['hiker.c']
     files['hiker.c'] = edited.sub('6 * 9', '6 * 7')
     files
