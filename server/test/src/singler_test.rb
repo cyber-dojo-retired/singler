@@ -37,7 +37,6 @@ class SinglerTest < TestBase
   'kata_create() generates an id if one is not supplied' do
     manifest = starter.manifest
     refute manifest.key?('id')
-    manifest['files'] = starter.files
     id = kata_create(manifest)
     assert manifest.key?('id')
     assert_equal id, manifest['id']
@@ -52,7 +51,6 @@ class SinglerTest < TestBase
     stub_disk = StubDiskDirWriter.new(real_disk)
     singler = Singler.new(stub_disk)
     manifest = starter.manifest
-    manifest['files'] = starter.files
     singler.kata_create(manifest)
     assert_equal 3, stub_disk.count
   end
@@ -90,7 +88,6 @@ class SinglerTest < TestBase
   ids that are not unique in their first 6 characters)
   ) do
     manifest = starter.manifest
-    manifest['files'] = starter.files
     ell = 'L'
 
     id = '12345' + ell.upcase
@@ -109,7 +106,6 @@ class SinglerTest < TestBase
   when the id does not already exist ) do
     explicit_id = 'CE2BD6'
     manifest = starter.manifest
-    manifest['files'] = starter.files
     manifest['id'] = explicit_id
     id = kata_create(manifest)
     assert_equal explicit_id, id
@@ -122,13 +118,11 @@ class SinglerTest < TestBase
   when it is passed an id that already exists ) do
     explicit_id = 'A01DE8'
     manifest = starter.manifest
-    manifest['files'] = starter.files
     manifest['id'] = explicit_id
     id = kata_create(manifest)
     assert_equal explicit_id, id
 
     manifest = starter.manifest
-    manifest['files'] = starter.files
     manifest['id'] = id
     error = assert_raises(ArgumentError) {
       kata_create(manifest)
@@ -152,7 +146,6 @@ class SinglerTest < TestBase
   test '42E',
   'create/manifest round-trip' do
     m = starter.manifest
-    m['files'] = starter.files
     m['id'] = '0ADDE7'
     id = kata_create(m.clone)
     assert_equal '0ADDE7', id
@@ -269,7 +262,8 @@ class SinglerTest < TestBase
     diagnostic = '#0 kata_tags(id)'
     assert_equal expected_tags, kata_tags(id), diagnostic
 
-    expected = rag_tag(starter.files, '', '', 0)
+    files = starter.manifest['visible_files']
+    expected = rag_tag(files, '', '', 0)
     assert_equal expected, kata_tag(id, 0), 'kata_tag(id,0)'
     assert_equal expected, kata_tag(id, -1), 'kata_tag(id,-1)'
 

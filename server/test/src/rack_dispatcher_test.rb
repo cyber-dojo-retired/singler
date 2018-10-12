@@ -64,9 +64,7 @@ class RackDispatcherTest < TestBase
 
   test 'E5C',
   'dispatch to kata_create' do
-    manifest = starter.manifest
-    manifest['files'] = starter.files
-    args = { manifest: manifest }
+    args = { manifest: starter.manifest }
     assert_dispatch('kata_create', args,
       'hello from SinglerStub.kata_create'
     )
@@ -77,7 +75,6 @@ class RackDispatcherTest < TestBase
   test 'E5D',
   'kata_create(manifest) can include group which holds group-id' do
     manifest = starter.manifest
-    manifest['files'] = starter.files
     manifest['group'] = '18Q67A'
     args = { manifest: manifest }
     assert_dispatch('kata_create', args,

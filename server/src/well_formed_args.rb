@@ -33,7 +33,7 @@ class WellFormedArgs
         unless base58?(value)
           malformed
         end
-      when 'files'
+      when 'visible_files'
         unless value.is_a?(Hash)
           malformed
         end
@@ -192,7 +192,7 @@ class WellFormedArgs
     image_name
     runner_choice
     created
-    files
+    visible_files
   )
 
   # - - - - - - - - - - - - - - - -

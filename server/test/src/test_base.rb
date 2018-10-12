@@ -42,7 +42,6 @@ class TestBase < HexMiniTest
   def stub_kata_create(stub_id)
     manifest = starter.manifest
     manifest['id'] = stub_id
-    manifest['files'] = starter.files
     id = kata_create(manifest)
     assert_equal stub_id, id
     id
